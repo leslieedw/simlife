@@ -208,6 +208,145 @@ export const ALL_EVENTS: EventCard[] = [
     ],
   },
 
+  {
+    id: 'primary_friend',
+    ageRange: [7, 12],
+    title: '最好的朋友',
+    description: '你在学校有了一个关系最好的同学。你们……',
+    choices: [
+      {
+        id: 'same_interest',
+        text: '因为同样喜欢漫画/游戏/运动而成为朋友',
+        statChanges: { social: 5, mental: 3 },
+        personalityDelta: { extrovert: 1, empathy: 1 },
+        followUpText: '那段时光单纯得像白纸，你们聊什么都觉得有意思。',
+      },
+      {
+        id: 'competitive_friend',
+        text: '是个比你厉害很多的人，你一直想追上他/她',
+        statChanges: { intelligence: 4, social: 2 },
+        personalityDelta: { resilience: 1, rational: 1 },
+        followUpText: '有人比你强，其实是一件幸运的事。',
+      },
+      {
+        id: 'no_close_friend',
+        text: '其实没有，你一直是一个人玩',
+        statChanges: { social: -3, intelligence: 3 },
+        personalityDelta: { extrovert: -1, rational: 1 },
+        followUpText: '你花了很多时间和自己待着，读书或者发呆。',
+      },
+    ],
+  },
+
+  {
+    id: 'primary_hobby',
+    ageRange: [8, 12],
+    title: '课余时间',
+    description: '放学之后，你最喜欢做什么？',
+    choices: [
+      {
+        id: 'play_outside',
+        text: '和一群孩子在外面疯玩到天黑',
+        statChanges: { fitness: 5, social: 4, intelligence: -1 },
+        personalityDelta: { extrovert: 2, adventure: 1 },
+        followUpText: '那些泥巴和汗水，是你最真实的童年。',
+      },
+      {
+        id: 'read_books',
+        text: '窝在家里看书或者玩游戏',
+        statChanges: { intelligence: 5, fitness: -2 },
+        personalityDelta: { extrovert: -1, rational: 1 },
+        followUpText: '你比同龄人早很多年接触了另一个世界。',
+      },
+      {
+        id: 'extra_class',
+        text: '被塞满了各种补习班和兴趣班',
+        requirement: { minWealth: 'middle' },
+        statChanges: { intelligence: 4, mental: -3 },
+        personalityDelta: { resilience: 1, rational: 1 },
+        followUpText: '你有时候不知道，这些到底是为了谁。',
+      },
+      {
+        id: 'help_family',
+        text: '帮家里干活，没什么课余时间',
+        requirement: { maxStats: { wealth: 35 } },
+        statChanges: { fitness: 3, mental: -2, social: -2 },
+        personalityDelta: { resilience: 2, materialistic: 1 },
+        followUpText: '你很小就知道，有些事情是没办法的。',
+      },
+    ],
+  },
+
+  {
+    id: 'primary_teacher',
+    ageRange: [9, 12],
+    title: '一个老师',
+    description: '小学里有个老师让你印象深刻。',
+    choices: [
+      {
+        id: 'inspiring_teacher',
+        text: '他/她发现了你的某个天赋，一直鼓励你',
+        statChanges: { intelligence: 4, mental: 5 },
+        addTags: ['ambitious'],
+        personalityDelta: { resilience: 1, adventure: 1 },
+        followUpText: '被一个大人认真对待，是一件很有力量的事。',
+      },
+      {
+        id: 'harsh_teacher',
+        text: '他/她经常当众批评你，你很怕他/她',
+        statChanges: { mental: -5, social: -2 },
+        personalityDelta: { extrovert: -1, resilience: 1 },
+        followUpText: '你学会了如何在压力下继续走路。',
+      },
+      {
+        id: 'indifferent_teacher',
+        text: '其实没有，老师们都不太注意你',
+        statChanges: { mental: -2 },
+        personalityDelta: { extrovert: -1 },
+        followUpText: '你习惯了不被看见。有时候这也是一种自由。',
+      },
+    ],
+  },
+
+  {
+    id: 'family_change',
+    ageRange: [9, 14],
+    title: '家里的变化',
+    description: '你家里发生了一件事……',
+    weight: 0.7,
+    choices: [
+      {
+        id: 'sibling_born',
+        text: '妈妈生了弟弟或妹妹，你不再是唯一的孩子',
+        statChanges: { eq: 3, social: 2, mental: -2 },
+        personalityDelta: { empathy: 1, resilience: 1 },
+        followUpText: '你第一次需要学着分享。',
+      },
+      {
+        id: 'parent_lost_job',
+        text: '爸爸/妈妈失业了，家里变得很紧张',
+        statChanges: { mental: -5, wealth: -8 },
+        addTags: ['poverty_scar'],
+        personalityDelta: { resilience: 1, materialistic: 1 },
+        followUpText: '你开始懂事，不再开口要东西。',
+      },
+      {
+        id: 'moved_city',
+        text: '家里搬到了新城市，你要重新交朋友',
+        statChanges: { social: -4, eq: 3, adventure: 0 },
+        personalityDelta: { resilience: 1, extrovert: -1 },
+        followUpText: '第一天在新学校，你一个人坐在角落吃饭。',
+      },
+      {
+        id: 'grandparent_died',
+        text: '最疼你的爷爷/奶奶/外公/外婆走了',
+        statChanges: { mental: -6, eq: 3 },
+        personalityDelta: { empathy: 2, resilience: 1 },
+        followUpText: '那是你第一次真正理解"失去"这个词。',
+      },
+    ],
+  },
+
   // ============================================================
   // 12-18岁：青春期
   // ============================================================
@@ -414,6 +553,48 @@ export const ALL_EVENTS: EventCard[] = [
         statChanges: { wealth: 8, fitness: 5, mental: -4 },
         personalityDelta: { resilience: 2, materialistic: 2 },
         followUpText: '钱是真实的，辛苦也是真实的。',
+      },
+    ],
+  },
+
+  {
+    id: 'stress_coping',
+    ageRange: [20, 30],
+    title: '压力太大了',
+    description: '那段时间压力大到喘不过气。你开始……',
+    weight: 0.6,
+    requirement: { maxStats: { mental: 50 } },
+    choices: [
+      {
+        id: 'exercise_release',
+        text: '靠运动和睡觉扛过去',
+        statChanges: { mental: 4, fitness: 4 },
+        personalityDelta: { resilience: 2 },
+        followUpText: '你发现身体是最可靠的情绪出口。',
+      },
+      {
+        id: 'alcohol_habit',
+        text: '开始喝酒，每晚一杯变成每晚一瓶',
+        statChanges: { mental: -5, fitness: -4, social: 2 },
+        addTags: ['addiction_risk'],
+        personalityDelta: { resilience: -1, adventure: 1 },
+        followUpText: '酒精让夜晚好过一点，但早上更难受了。',
+      },
+      {
+        id: 'therapy',
+        text: '去咨询了心理咨询师',
+        requirement: { minWealth: 'middle' },
+        statChanges: { mental: 8, eq: 3 },
+        personalityDelta: { rational: 1, empathy: 1 },
+        followUpText: '第一次有人真正听你说话，不评判，只是听。',
+        lockedHint: '（需要：有能力负担咨询费用）',
+      },
+      {
+        id: 'numb_through',
+        text: '麻木地撑着，什么都感觉不到了',
+        statChanges: { mental: -8, eq: -3 },
+        personalityDelta: { resilience: 1, empathy: -2, extrovert: -1 },
+        followUpText: '感觉不到痛，也感觉不到别的了。',
       },
     ],
   },
