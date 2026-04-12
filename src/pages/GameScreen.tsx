@@ -5,6 +5,7 @@ interface Props {
   state: GameState;
   totalAges: number;
   currentAgeIndex: number;
+  skippedAges: number[];
   onChoice: (choiceId: string) => void;
   onContinue: () => void;
 }
@@ -40,9 +41,19 @@ function StatBar({ label, value }: { label: string; value: number }) {
   );
 }
 
-export function GameScreen({ state, totalAges, currentAgeIndex, onChoice, onContinue }: Props) {
+// 根据跳过的年份生成一句自然的"时光流逝"描述
+function buildTimePassedText(skippedAges: number[]): string {
+  if (skippedAges.length === 0) return '';
+  if (skippedAges.length === 1) return `${skippedAges[0]}岁那年，没有什么特别的事发生。`;
+  const first = skippedAges[0];
+  const last = skippedAges[skippedAges.length - 1];
+  return `从${first}岁到${last}岁，生活平静地流过，没有什么值得一说的。`;
+}
+
+export function GameScreen({ state, totalAges, currentAgeIndex, skippedAges, onChoice, onContinue }: Props) {
   const { age, stats, currentEvent, phase } = state;
   const progress = (currentAgeIndex / (totalAges - 1)) * 100;
+  const timePassedText = buildTimePassedText(skippedAges);
 
   return (
     <div className="min-h-screen bg-[#0f0f0f] flex flex-col max-w-lg mx-auto">
@@ -73,6 +84,13 @@ export function GameScreen({ state, totalAges, currentAgeIndex, onChoice, onCont
       <div className="flex-1 px-6 py-6 flex flex-col">
         {phase === 'event' && currentEvent ? (
           <>
+            {/* 时光流逝提示（如果从空白年跳过来）*/}
+            {timePassedText && (
+              <div className="mb-5 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/5">
+                <p className="text-gray-500 text-sm italic">{timePassedText}</p>
+              </div>
+            )}
+
             {/* 事件卡 */}
             <div className="mb-6">
               <div className="text-xs text-gray-500 uppercase tracking-widest mb-2">发生了什么</div>
@@ -113,7 +131,6 @@ export function GameScreen({ state, totalAges, currentAgeIndex, onChoice, onCont
           </>
         ) : phase === 'result' && state.lifeHistory.length > 0 ? (
           <>
-            {/* 结果展示 */}
             <div className="flex-1 flex flex-col justify-center">
               <div className="text-xs text-gray-500 uppercase tracking-widest mb-4">你的选择</div>
               {(() => {
@@ -129,7 +146,6 @@ export function GameScreen({ state, totalAges, currentAgeIndex, onChoice, onCont
                         {last.followUpText}
                       </p>
                     )}
-                    {/* 属性变化提示 */}
                     {Object.keys(last.statChanges).length > 0 && (
                       <div className="flex flex-wrap gap-2">
                         {Object.entries(last.statChanges).map(([key, delta]) => (
@@ -159,18 +175,7 @@ export function GameScreen({ state, totalAges, currentAgeIndex, onChoice, onCont
               继续人生 →
             </button>
           </>
-        ) : (
-          /* 没有事件，直接跳过 */
-          <div className="flex-1 flex flex-col items-center justify-center text-center">
-            <div className="text-gray-500 mb-6">这一年，平静地过去了。</div>
-            <button
-              onClick={onContinue}
-              className="px-8 py-3 border border-white/20 text-white rounded-xl hover:bg-white/10 transition-all"
-            >
-              继续 →
-            </button>
-          </div>
-        )}
+        ) : null}
       </div>
     </div>
   );
