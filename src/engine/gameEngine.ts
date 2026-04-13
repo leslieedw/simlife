@@ -214,8 +214,20 @@ function generateBirthTags(birth: BirthProfile): Set<HiddenTag> {
   if (birth.familyLove < 35) tags.add('good_girl_conditioning');
   if (birth.familyLove < 20) tags.add('maternal_wound');
   if (birth.familyWealth === 'poor') tags.add('poverty_scar');
-  if (birth.familyStructure === 'orphan') tags.add('maternal_wound');
-  if (birth.familyStructure === 'single_parent' && birth.familyLove > 60) tags.add('female_solidarity');
+
+  // 家庭结构标签
+  if (birth.familyStructure === 'orphan') {
+    tags.add('orphan_born');
+    tags.add('maternal_wound');
+  } else if (birth.familyStructure === 'single_parent') {
+    tags.add('has_mother');
+    if (birth.familyLove > 60) tags.add('female_solidarity');
+  } else {
+    // complete, divorced
+    tags.add('has_mother');
+    tags.add('has_father');
+  }
+
   return tags;
 }
 

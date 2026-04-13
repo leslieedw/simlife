@@ -62,7 +62,11 @@ export type HiddenTag =
   | 'has_children'              // 已育
   | 'never_married'             // 主动选择不进入婚姻
   | 'abroad_experience'         // 有出国经历
-  | 'entrepreneur';             // 有创业经历
+  | 'entrepreneur'              // 有创业经历
+  // ── 出生家庭结构标签（由出生背景自动生成）──
+  | 'has_mother'                // 有/曾有母亲
+  | 'has_father'                // 有/曾有父亲
+  | 'orphan_born';              // 孤儿，无父母
 
 // ============================================================
 // 人格维度——女性成长六维

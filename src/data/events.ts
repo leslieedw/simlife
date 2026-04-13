@@ -39,10 +39,44 @@ export const ALL_EVENTS: EventCard[] = [
   },
 
   {
+    id: 'orphan_early_years',
+    ageRange: [3, 6],
+    title: '没有人来接你',
+    description: '别的小孩放学有人来接，你没有。福利院的阿姨很忙，轮不到你被抱。你学会了不哭，因为哭了也没人来。',
+    requirement: { hasTags: ['orphan_born'] },
+    choices: [
+      {
+        id: 'learn_independence',
+        text: '你很早就学会了自己穿衣服、自己吃饭、自己睡觉',
+        statChanges: { mental: -3, fitness: 2, eq: -2 },
+        personalityDelta: { resistance: 2, authenticity: 1, thriving: -1 },
+        followUpText: '你不是坚强，你只是没有另一个选项。但这个习惯后来保护了你很多次。',
+      },
+      {
+        id: 'find_older_sister',
+        text: '一个大一点的女孩照顾你，你叫她姐姐',
+        statChanges: { mental: 4, social: 3 },
+        addTags: ['female_solidarity'],
+        personalityDelta: { connection: 3, selfExpression: 1, thriving: 1 },
+        followUpText: '她不是你的家人，但她是你最早知道"被看见"是什么感觉的人。',
+      },
+      {
+        id: 'withdraw_inside',
+        text: '你变得很安静，几乎不说话，在角落里看着别人',
+        statChanges: { mental: -6, intelligence: 2, social: -3 },
+        addTags: ['high_sensitivity'],
+        personalityDelta: { selfExpression: -2, structuralAwareness: 1 },
+        followUpText: '你在沉默里学会了观察。别人看不见你，但你看见了很多东西。',
+      },
+    ],
+  },
+
+  {
     id: 'parents_world',
     ageRange: [3, 6],
     title: '爸爸妈妈的世界',
     description: '你开始观察爸妈之间是什么样的。你看见……',
+    requirement: { lacksTag: ['orphan_born'], hasTags: ['has_father'] },
     choices: [
       {
         id: 'father_dominate',
@@ -156,6 +190,7 @@ export const ALL_EVENTS: EventCard[] = [
       {
         id: 'tell_mom',
         text: '去找妈妈，她帮你处理，但只说"以后小心点"',
+        requirement: { hasTags: ['has_mother'] },
         statChanges: { mental: -2, eq: 2 },
         personalityDelta: { connection: 1 },
         followUpText: '她没有解释更多。你明白了，有些事情是不被说出口的。',
@@ -338,6 +373,7 @@ export const ALL_EVENTS: EventCard[] = [
       {
         id: 'tell_mom_ignored',
         text: '告诉了妈妈，她说"以后少穿那种衣服"',
+        requirement: { hasTags: ['has_mother'] },
         statChanges: { mental: -5, eq: -2 },
         addTags: ['male_gaze_trauma', 'maternal_wound'],
         personalityDelta: { selfExpression: -2, structuralAwareness: 2 },
@@ -402,7 +438,7 @@ export const ALL_EVENTS: EventCard[] = [
     title: '读书还是嫁人',
     description: '家里快供不起你读书了。亲戚说："女孩子读那么多书干嘛，找个好人嫁了不就行了。" 爸妈没说话。',
     weight: 0.5,
-    requirement: { maxStats: { wealth: 30 } },
+    requirement: { maxStats: { wealth: 30 }, lacksTag: ['orphan_born'] },
     choices: [
       {
         id: 'accept_fate',
@@ -636,6 +672,7 @@ export const ALL_EVENTS: EventCard[] = [
       {
         id: 'give_to_family',
         text: '转了一半给父母，这是应该的',
+        requirement: { lacksTag: ['orphan_born'] },
         statChanges: { wealth: -5, social: 2, mental: -1 },
         personalityDelta: { connection: 1, authenticity: -1 },
         followUpText: '他们说"懂事"。你微笑。内心有一个声音说：这是我的钱。那个声音被你按下去了。',
@@ -916,6 +953,7 @@ export const ALL_EVENTS: EventCard[] = [
     ageRange: [33, 45],
     title: '妈妈',
     description: '你和妈妈之间有过很多裂缝。但有一天，你看着她的手，忽然看见了她一生承受过什么。',
+    requirement: { hasTags: ['has_mother'] },
     choices: [
       {
         id: 'forgive_understand',
@@ -1222,6 +1260,7 @@ export const ALL_EVENTS: EventCard[] = [
       {
         id: 'mother_helps',
         text: '妈妈来了，虽然她不懂，但她帮你抱着孩子，让你睡了一觉',
+        requirement: { hasTags: ['has_mother'] },
         statChanges: { mental: 4, social: 2 },
         personalityDelta: { connection: 2, thriving: 1 },
         followUpText: '有时候，被帮助不需要对方完全理解你。那觉睡完之后，世界没有改变，但你有了一点力气。',
@@ -1370,6 +1409,7 @@ export const ALL_EVENTS: EventCard[] = [
     title: '爸妈老了',
     description: '爸妈开始需要照顾了。兄弟姐妹里，所有人默认地把这件事交给了你——因为你是女儿，或者因为你"看起来更有时间"。',
     weight: 0.6,
+    requirement: { lacksTag: ['orphan_born'] },
     choices: [
       {
         id: 'take_all',
@@ -1730,7 +1770,7 @@ export const ALL_EVENTS: EventCard[] = [
     title: '遗产',
     description: '父母分配财产，房子和大部分资产给了儿子（你的兄弟），说"女儿嫁出去了，是别人家的人"。',
     weight: 0.4,
-    requirement: { minStats: { wealth: 30 } },
+    requirement: { minStats: { wealth: 30 }, lacksTag: ['orphan_born'] },
     choices: [
       {
         id: 'accept_silently',
