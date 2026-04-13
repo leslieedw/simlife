@@ -408,6 +408,7 @@ export const ALL_EVENTS: EventCard[] = [
         id: 'accept_fate',
         text: '觉得他们说的有道理，考虑辍学',
         statChanges: { intelligence: -5, mental: -8 },
+        addTags: ['dropped_out'],
         personalityDelta: { resistance: -2, structuralAwareness: -1, thriving: -2 },
         followUpText: '你合上了书包。没有人问你想不想读。那个问题，从来没有人问过你。',
       },
@@ -477,13 +478,14 @@ export const ALL_EVENTS: EventCard[] = [
     ageRange: [18, 18],
     title: '高考与出路',
     description: '高考结束了。你坐在成绩单前，想到接下来的每一条路。',
+    requirement: { lacksTag: ['dropped_out'] },
     choices: [
       {
         id: 'good_score_university',
         text: '考得不错，去外地上大学，第一次离开家',
         requirement: { minStats: { intelligence: 65 } },
         statChanges: { intelligence: 8, social: 4, mental: 3 },
-        addTags: ['academic_escape'],
+        addTags: ['academic_escape', 'higher_education'],
         personalityDelta: { thriving: 2, selfExpression: 1, resistance: 1 },
         followUpText: '在那个陌生的城市，没有人认识你。你发现你可以成为任何人，或者慢慢地，成为你自己。',
       },
@@ -491,6 +493,7 @@ export const ALL_EVENTS: EventCard[] = [
         id: 'local_university',
         text: '成绩一般，在本地上了大学，每周回家',
         statChanges: { intelligence: 3, social: 2 },
+        addTags: ['higher_education'],
         personalityDelta: { resistance: -1 },
         followUpText: '距离没有拉开，家的引力还在。你一边读书一边听着关于你该怎样的话。',
       },
@@ -499,7 +502,7 @@ export const ALL_EVENTS: EventCard[] = [
         text: '没考好，也不想复读，直接去城市打工',
         statChanges: { wealth: 8, intelligence: -3, fitness: 2 },
         addTags: ['economic_independence_drive'],
-        personalityDelta: { thriving: 1, materialistic: 2, resistance: 1 },
+        personalityDelta: { thriving: 1, resistance: 1 },
         followUpText: '你第一次拿到工资，在出租屋里哭了。那是属于你自己的钱，没有人能拿走。',
       },
       {
@@ -507,7 +510,7 @@ export const ALL_EVENTS: EventCard[] = [
         text: '亲戚介绍了一个还不错的男人，家里说"不读了，嫁了吧"',
         requirement: { maxStats: { wealth: 35 } },
         statChanges: { wealth: 5, intelligence: -5, mental: -5 },
-        addTags: ['good_girl_conditioning'],
+        addTags: ['good_girl_conditioning', 'married'],
         personalityDelta: { selfExpression: -2, resistance: -3, thriving: -2 },
         followUpText: '婚礼上你穿着红衣服，笑着。没有人问你想不想。那个问题，从来没有人问过你。',
         lockedHint: '（需要：家境有限）',
@@ -524,6 +527,7 @@ export const ALL_EVENTS: EventCard[] = [
     ageRange: [19, 21],
     title: '自由的味道',
     description: '大学，你第一次可以自己决定很多事。你……',
+    requirement: { hasTags: ['higher_education'] },
     choices: [
       {
         id: 'explore_self',
@@ -732,6 +736,7 @@ export const ALL_EVENTS: EventCard[] = [
         id: 'marry_right_person',
         text: '嫁给一个真正尊重你的人，你们谈过很多关于将来如何分工',
         statChanges: { mental: 5, social: 4, eq: 3 },
+        addTags: ['married'],
         personalityDelta: { thriving: 2, connection: 2, authenticity: 2 },
         followUpText: '没有完美的婚姻。但有一种婚姻，让你每天早上醒来，还是你自己。',
       },
@@ -739,6 +744,7 @@ export const ALL_EVENTS: EventCard[] = [
         id: 'marry_under_pressure',
         text: '在家里和社会的压力下嫁了，他还不错但你也不确定',
         statChanges: { mental: -3, wealth: 3 },
+        addTags: ['married'],
         personalityDelta: { resistance: -2, authenticity: -2, selfExpression: -1 },
         followUpText: '你告诉自己，感情是慢慢培养的。这话有时候是真的，有时候是你给自己的安慰剂。',
       },
@@ -746,7 +752,7 @@ export const ALL_EVENTS: EventCard[] = [
         id: 'stay_single',
         text: '决定不结婚，至少现在不',
         statChanges: { mental: 4, social: -3, wealth: 3 },
-        addTags: ['childless_by_choice', 'economic_independence_drive'],
+        addTags: ['childless_by_choice', 'economic_independence_drive', 'never_married'],
         personalityDelta: { resistance: 3, selfExpression: 3, authenticity: 3, thriving: 2 },
         followUpText: '你解释给所有人听，然后停止解释了。你不欠任何人一个解释。',
       },
@@ -755,7 +761,7 @@ export const ALL_EVENTS: EventCard[] = [
         text: '他有一些让你不安的地方，但你以为爱能改变人',
         requirement: { hasTags: ['trauma_bond'] },
         statChanges: { mental: -8, social: -3, wealth: -3 },
-        addTags: ['trauma_bond'],
+        addTags: ['trauma_bond', 'married'],
         personalityDelta: { selfExpression: -3, resistance: -2, thriving: -3 },
         followUpText: '爱没能改变他。它消耗的是你。',
         lockedHint: '（需要：对某段关系有依赖的印记）',
@@ -769,19 +775,21 @@ export const ALL_EVENTS: EventCard[] = [
     title: '生还是不生',
     description: '结婚后，婆家开始催生孩子。"年龄大了生不了"，"传宗接代"，"你工作可以以后再找"。你还没有想好。',
     weight: 0.6,
+    requirement: { hasTags: ['married'], lacksTag: ['childless_by_choice', 'never_married', 'has_children'] },
     choices: [
       {
         id: 'have_baby_for_others',
         text: '生了，主要是为了让家里安静',
         statChanges: { mental: -6, fitness: -5, wealth: -8, social: 2 },
-        addTags: ['second_shift_burden'],
+        addTags: ['second_shift_burden', 'has_children'],
         personalityDelta: { selfExpression: -2, resistance: -2, thriving: -2 },
         followUpText: '孩子来了。你爱他/她，但你也知道，这不是你当初选择的理由。',
       },
       {
         id: 'decide_for_self',
-        text: '和伴侣认真谈过，你们一起做了决定',
+        text: '和伴侣认真谈过，决定生，是你们两个人的决定',
         statChanges: { mental: 3, eq: 3 },
+        addTags: ['has_children'],
         personalityDelta: { authenticity: 2, selfExpression: 2, thriving: 1 },
         followUpText: '这件事，是你自己的。不是因为顺从，不是因为压力。这个区别，比结果更重要。',
       },
@@ -802,6 +810,7 @@ export const ALL_EVENTS: EventCard[] = [
     title: '第二班次',
     description: '你下班回家，发现家里的事基本都是你在做。他工作了一天就是休息，你工作了一天还要洗碗做饭。',
     weight: 0.7,
+    requirement: { hasTags: ['married'], lacksTag: ['never_married'] },
     choices: [
       {
         id: 'accept_silently',
@@ -1185,6 +1194,7 @@ export const ALL_EVENTS: EventCard[] = [
     title: '生完孩子之后',
     description: '孩子出生了。你不知道为什么，你哭的次数比以前多很多，有时候对着孩子的脸，你感到一种说不清的恐惧和空洞。这不是你"应该有"的感受。',
     weight: 0.6,
+    requirement: { hasTags: ['has_children'] },
     choices: [
       {
         id: 'hide_it',
@@ -1324,7 +1334,7 @@ export const ALL_EVENTS: EventCard[] = [
     title: '你被迫离职了',
     description: '生完孩子后，公司明里暗里让你待不下去——不给你重要项目，绩效突然变差，开始频繁让你"自愿"加班到深夜。你明白那是什么意思。',
     weight: 0.5,
-    requirement: { hasTags: ['second_shift_burden'] },
+    requirement: { hasTags: ['has_children'] },
     choices: [
       {
         id: 'quit_quietly',
@@ -1417,6 +1427,299 @@ export const ALL_EVENTS: EventCard[] = [
         addTags: ['creative_outlet', 'high_sensitivity'],
         personalityDelta: { selfExpression: 3, authenticity: 2, thriving: 2 },
         followUpText: '你不是在解决它，你是在给它一个容器。有时候，这就够了。',
+      },
+    ],
+  },
+
+  // ============================================================
+  // 辍学路径专属事件
+  // ============================================================
+
+  {
+    id: 'dropout_life',
+    ageRange: [16, 19],
+    title: '没有上大学的那些年',
+    description: '你没有走进大学的大门。你有自己的路，虽然没有人帮你规划过。你做了……',
+    requirement: { hasTags: ['dropped_out'] },
+    choices: [
+      {
+        id: 'factory_worker',
+        text: '去工厂打工，流水线，住宿舍，每月领工资',
+        statChanges: { wealth: 6, fitness: -3, intelligence: -3, mental: -5 },
+        addTags: ['economic_independence_drive', 'poverty_scar'],
+        personalityDelta: { thriving: -1, structuralAwareness: 2, resistance: 1 },
+        followUpText: '你的手变粗了，但你知道一件事：只要有工作，就饿不死。那是一种很沉的踏实，也是一种很沉的束缚。',
+      },
+      {
+        id: 'apprentice_skill',
+        text: '跟着一个师傅学手艺——美发、厨师、修电器',
+        statChanges: { intelligence: 3, wealth: 4, social: 3 },
+        addTags: ['economic_independence_drive'],
+        personalityDelta: { thriving: 2, selfExpression: 1, resistance: 1 },
+        followUpText: '你学到了一门手艺，也学到了"把东西做好"的踏实感。没有人教你，但你学会了。',
+      },
+      {
+        id: 'stay_home_wait',
+        text: '家里人说先在家里等着，他们给你张罗婚事',
+        statChanges: { mental: -8, social: -4 },
+        addTags: ['good_girl_conditioning'],
+        personalityDelta: { selfExpression: -2, resistance: -2, thriving: -2 },
+        followUpText: '你在等待里慢慢失去了对"自己想要什么"这个问题的感觉。',
+      },
+      {
+        id: 'self_study_online',
+        text: '靠网课和自学，学了一门技能——设计、编程、运营',
+        requirement: { minStats: { intelligence: 55 } },
+        statChanges: { intelligence: 6, wealth: 2, mental: 3 },
+        addTags: ['economic_independence_drive', 'rebel_spirit'],
+        personalityDelta: { thriving: 2, resistance: 2, authenticity: 2 },
+        followUpText: '没有文凭，但你有真本事。你花了很长时间证明这件事，但你证明了。',
+        lockedHint: '（需要：有足够的学习能力）',
+      },
+    ],
+  },
+
+  // ============================================================
+  // 出国/创业路径事件
+  // ============================================================
+
+  {
+    id: 'abroad_opportunity',
+    ageRange: [19, 29],
+    title: '出国的机会',
+    description: '出现了一个出国的可能——留学、工作签证、还是跟着一段感情到了异国。你考虑了很久。',
+    weight: 0.5,
+    choices: [
+      {
+        id: 'go_study_abroad',
+        text: '出去读书，借了钱，或者拿了奖学金',
+        requirement: { minStats: { intelligence: 60 } },
+        statChanges: { intelligence: 10, wealth: -15, social: 3, mental: 2 },
+        addTags: ['abroad_experience', 'academic_escape'],
+        personalityDelta: { selfExpression: 3, authenticity: 3, structuralAwareness: 2, thriving: 2 },
+        followUpText: '在另一个语言里，你发现了一个更大的世界，也发现了一个从来没人告诉过你可以存在的自己。',
+        lockedHint: '（需要：有足够的学识）',
+      },
+      {
+        id: 'go_work_abroad',
+        text: '去工作，做服务业或者找到了专业工作',
+        statChanges: { wealth: 8, social: 2, mental: 1, intelligence: 4 },
+        addTags: ['abroad_experience', 'economic_independence_drive'],
+        personalityDelta: { thriving: 2, resistance: 2, selfExpression: 2 },
+        followUpText: '异国他乡，没有一个认识你的人，没有一个对你有期待的眼神。你突然自由了，也突然孤独了。这两件事，一起很有意思。',
+      },
+      {
+        id: 'follow_partner_abroad',
+        text: '跟着伴侣去了，放弃了自己在这边的工作',
+        statChanges: { social: -3, wealth: -5, mental: -4 },
+        personalityDelta: { selfExpression: -2, resistance: -1, thriving: -1 },
+        followUpText: '语言不通，朋友圈在家里，工作没了。你发现，"我们"这个概念，消耗的是你的世界。',
+      },
+      {
+        id: 'turn_down_abroad',
+        text: '没去，家里需要你，或者你还没准备好',
+        statChanges: { mental: -2 },
+        personalityDelta: { structuralAwareness: 1 },
+        followUpText: '那个机会走了。也许有下一次，也许没有。你以后某一天还是会想起这件事。',
+      },
+    ],
+  },
+
+  {
+    id: 'start_own_business',
+    ageRange: [24, 40],
+    title: '自己干',
+    description: '你想了很久，你决定自己开始做一件事。不是为了别人，是你想做的那件事。',
+    weight: 0.4,
+    requirement: { hasTags: ['economic_independence_drive'] },
+    choices: [
+      {
+        id: 'go_for_it',
+        text: '开始了，小小的，但是是你的',
+        statChanges: { wealth: -10, intelligence: 5, mental: 3, social: 2 },
+        addTags: ['entrepreneur', 'rebel_spirit'],
+        personalityDelta: { thriving: 3, selfExpression: 3, authenticity: 3, resistance: 2 },
+        followUpText: '前几年很难，你很多次不确定值不值得。但你没有放弃。那件事是你的，失败了也是你的，成功了更是你的。',
+      },
+      {
+        id: 'too_risky',
+        text: '还是算了，风险太大，继续打工',
+        statChanges: { mental: -3 },
+        personalityDelta: { thriving: -1, authenticity: -1 },
+        followUpText: '那个想法还留在你心里的某个地方。也许有一天，你会重新拿出来看看。',
+      },
+      {
+        id: 'start_with_partner',
+        text: '和朋友一起创业，互相支持',
+        statChanges: { wealth: -8, intelligence: 4, social: 5, mental: 2 },
+        addTags: ['entrepreneur', 'female_solidarity'],
+        personalityDelta: { thriving: 2, connection: 3, selfExpression: 2, authenticity: 2 },
+        followUpText: '一个人做很难，两个人做也很难——但有个人一起难，会不一样。',
+      },
+      {
+        id: 'fail_then_learn',
+        text: '开始了，然后失败了，赔了不少钱',
+        statChanges: { wealth: -20, mental: -5, intelligence: 5 },
+        addTags: ['entrepreneur'],
+        personalityDelta: { structuralAwareness: 2, thriving: -1, resistance: 1 },
+        followUpText: '那笔钱很久才还完。但你学到了一些书本上学不到的东西——关于自己，关于世界如何运作。',
+      },
+    ],
+  },
+
+  // ============================================================
+  // 危险处境事件
+  // ============================================================
+
+  {
+    id: 'intimate_image_abuse',
+    ageRange: [16, 30],
+    title: '那些照片',
+    description: '你发现你前任或者现任偷拍了你，或者在你不知情的情况下保留了你的亲密照片，现在他拿这些威胁你，或者你只是突然知道了这件事。',
+    weight: 0.35,
+    choices: [
+      {
+        id: 'silence_out_of_fear',
+        text: '什么都没做，太害怕了，也不知道能怎么办',
+        statChanges: { mental: -12, social: -4 },
+        addTags: ['male_gaze_trauma', 'trauma_bond'],
+        personalityDelta: { selfExpression: -2, resistance: -2, thriving: -3 },
+        followUpText: '那种东西压着你，不知道什么时候会爆炸。你活在这个不确定里，慢慢地，其他事情也失去了颜色。',
+      },
+      {
+        id: 'delete_and_cut',
+        text: '要求他删除，然后立刻断绝一切联系',
+        statChanges: { mental: -5, social: -3 },
+        removeTags: ['trauma_bond'],
+        personalityDelta: { resistance: 3, selfExpression: 2, authenticity: 2 },
+        followUpText: '他也许真的删了，也许没有。你无法完全控制这件事。但你能控制的：你不再让他靠近你。',
+      },
+      {
+        id: 'report_to_police',
+        text: '去报警，知道这在很多地方是违法的',
+        requirement: { minStats: { intelligence: 55 } },
+        statChanges: { mental: -4, social: 2 },
+        addTags: ['rebel_spirit', 'glass_ceiling_seen'],
+        personalityDelta: { resistance: 4, selfExpression: 3, structuralAwareness: 3 },
+        followUpText: '警察不一定帮上忙，流程很麻烦，有人让你"想想清楚"。但你把这件事变成了一个有记录的事实。这件事发生过，不是你的错，它有了一个名字。',
+        lockedHint: '（需要：有足够的判断力和知识）',
+      },
+      {
+        id: 'tell_trusted_person',
+        text: '告诉了一个信任的朋友或家人',
+        requirement: { hasTags: ['female_solidarity'] },
+        statChanges: { mental: 3, social: 1 },
+        personalityDelta: { connection: 2, selfExpression: 2, structuralAwareness: 2 },
+        followUpText: '被接住的感觉，是真实的。她没有问"你为什么要那样做"，她只是说"这不是你的问题"。那句话，救了你很多。',
+      },
+    ],
+  },
+
+  {
+    id: 'domestic_violence',
+    ageRange: [25, 50],
+    title: '那一拳，或者那句话',
+    description: '他打了你，或者那种伤害是另一种方式——持续的羞辱、威胁、让你相信你一无是处。你意识到这不对。',
+    weight: 0.4,
+    requirement: { hasTags: ['married', 'trauma_bond'] },
+    choices: [
+      {
+        id: 'leave_with_help',
+        text: '联系了妇女庇护所或者一个朋友，开始计划离开',
+        requirement: { hasTags: ['female_solidarity'] },
+        statChanges: { mental: -5, wealth: -8, social: 2 },
+        removeTags: ['trauma_bond', 'married'],
+        addTags: ['survived_violence', 'rebel_spirit'],
+        personalityDelta: { resistance: 4, selfExpression: 3, thriving: 2, structuralAwareness: 3 },
+        followUpText: '离开是一个过程，不是一个瞬间。但你迈出了那一步。那一步，是整个人生里最重的一步之一。',
+      },
+      {
+        id: 'stay_out_of_fear',
+        text: '没办法走，孩子、钱、威胁——你被困住了',
+        statChanges: { mental: -10, fitness: -5, social: -4 },
+        personalityDelta: { selfExpression: -2, thriving: -3, resistance: -1 },
+        followUpText: '困住你的不只是一道门，是整个系统——经济、社会关系、对孩子的担心。你不是不想走，是没有出路可以走。',
+      },
+      {
+        id: 'report_police',
+        text: '打了报警电话',
+        statChanges: { mental: -3, social: -2 },
+        addTags: ['glass_ceiling_seen', 'survived_violence'],
+        personalityDelta: { resistance: 3, selfExpression: 2, structuralAwareness: 3 },
+        followUpText: '警察来了，处理结果也许不尽如人意。但那通电话，是你告诉自己"这不正常，我值得被保护"的第一句话。',
+      },
+      {
+        id: 'endure_silently',
+        text: '忍着，以为这次是最后一次',
+        statChanges: { mental: -8, fitness: -4 },
+        personalityDelta: { selfExpression: -3, thriving: -3 },
+        followUpText: '没有最后一次，只有这次之后的下次。你的身体记住了每一次，即使你的心试图忘记。',
+      },
+    ],
+  },
+
+  {
+    id: 'postpartum_body_recovery',
+    ageRange: [27, 35],
+    title: '身体的账单',
+    description: '生育之后，没有人告诉你身体会是这样。盆底肌损伤，漏尿，疤痕，掉发，激素紊乱。你的身体发生了很大的变化，但每个人都在问孩子好不好，没有人问你。',
+    weight: 0.65,
+    requirement: { hasTags: ['has_children'] },
+    choices: [
+      {
+        id: 'ignore_and_push_on',
+        text: '忍着，没时间处理，孩子更重要',
+        statChanges: { fitness: -8, mental: -5 },
+        addTags: ['good_girl_conditioning'],
+        personalityDelta: { selfExpression: -2, thriving: -2 },
+        followUpText: '你的身体用另一种方式告诉你它在那里。那些被忽视的痛，会在某天某刻找到你。',
+      },
+      {
+        id: 'seek_medical_help',
+        text: '去看了医生，开始做产后康复',
+        statChanges: { fitness: 5, mental: 3 },
+        personalityDelta: { authenticity: 2, thriving: 2, selfExpression: 2 },
+        followUpText: '你把自己放进了"值得被照顾"的那个清单里。这件事比它听起来更难。',
+      },
+      {
+        id: 'grieve_and_accept',
+        text: '承认身体变了，允许自己为此悲伤',
+        statChanges: { mental: 4, eq: 4 },
+        personalityDelta: { authenticity: 3, selfExpression: 2, structuralAwareness: 2 },
+        followUpText: '没有人告诉你，悲伤这个变化是正当的。但它是。你的身体为了一个新生命经历了巨大的事，它值得被好好看见。',
+      },
+    ],
+  },
+
+  {
+    id: 'bad_influence_youth',
+    ageRange: [15, 22],
+    title: '那条路',
+    description: '你认识了一群人——也许是网络，也许是街头，也许是逃课的地方。他们说只要跟着他们，不用那么累，钱也来得快。',
+    weight: 0.35,
+    choices: [
+      {
+        id: 'get_pulled_in',
+        text: '慢慢被带进去了，做过一些事——传销、陪侍、或者更危险的边界',
+        statChanges: { mental: -10, wealth: -5, social: -5 },
+        addTags: ['trauma_bond', 'early_sexualization'],
+        personalityDelta: { selfExpression: -2, resistance: -2, thriving: -3, structuralAwareness: 2 },
+        followUpText: '那段时间发生的事，有些你现在还不想碰。但你也知道，那不是你"本来"的路，是一些人设了一个你不知道是陷阱的门，然后你进去了。',
+      },
+      {
+        id: 'sense_danger',
+        text: '感觉不对劲，找借口离开了那个圈子',
+        statChanges: { mental: 2 },
+        personalityDelta: { resistance: 2, structuralAwareness: 2, authenticity: 1 },
+        followUpText: '你靠本能走了。那个本能，后来你越来越信任它了。',
+      },
+      {
+        id: 'got_out_with_help',
+        text: '有个人帮你脱身了——老师、一个朋友、或者家人',
+        statChanges: { mental: 4, social: 2 },
+        addTags: ['female_solidarity'],
+        personalityDelta: { connection: 2, thriving: 1, structuralAwareness: 2 },
+        followUpText: '被救不是软弱。接受帮助需要勇气。那个人后来你总是想起来。',
       },
     ],
   },

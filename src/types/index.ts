@@ -54,7 +54,15 @@ export type HiddenTag =
   | 'childless_by_choice'       // 主动不婚不育
   | 'late_bloomer'              // 晚开的花：在沉默很久之后，终于开始活出自己
   | 'poverty_scar'              // 贫困烙印
-  | 'rebel_spirit';             // 反骨：不愿被定义，一直在越界
+  | 'rebel_spirit'              // 反骨：不愿被定义，一直在越界
+  // ── 生命路径状态标签 ──
+  | 'dropped_out'               // 辍学：未完成高中或大学
+  | 'higher_education'          // 大学路径：考入并就读大学
+  | 'married'                   // 已婚状态
+  | 'has_children'              // 已育
+  | 'never_married'             // 主动选择不进入婚姻
+  | 'abroad_experience'         // 有出国经历
+  | 'entrepreneur';             // 有创业经历
 
 // ============================================================
 // 人格维度——女性成长六维
