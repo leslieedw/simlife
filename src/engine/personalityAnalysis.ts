@@ -198,7 +198,7 @@ const PERSONALITY_TYPES: PersonalityType[] = [
     score: (s, t) => (t.has('has_children') ? 5 : 0) + (s.connection >= 4 ? 3 : 0) + (s.thriving <= 1 ? 3 : 0) },
   { name: '钥匙', subtitle: '她找到了那把锁的答案',
     score: (s, t) => (t.has('economic_independence_drive') ? 5 : 0) + (s.resistance >= 5 ? 4 : 0) },
-  { name: '空房间', subtitle: '伍尔夫说的那间',
+  { name: '空房间', subtitle: '伍尔夫笔下的那间',
     score: (s, t) => (t.has('creative_outlet') ? 5 : 0) + (s.authenticity >= 5 ? 4 : 0) },
 
   // ── Blade types (智识/锋利) ──

@@ -300,7 +300,7 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
             <p className="text-gray-600 text-xs mt-5 italic">
               这不是一个有标准答案的游戏。没有最优解。
               <br />
-              我们只是幸运的幸存者，回头看一遍来时的路。
+              我们只是幸运的幸存者。
             </p>
           </div>
 
