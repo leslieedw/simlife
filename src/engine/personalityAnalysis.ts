@@ -151,52 +151,105 @@ interface PersonalityType {
 }
 
 const PERSONALITY_TYPES: PersonalityType[] = [
-  { name: '燃烧的边界人', subtitle: '她知道那些规则是给谁写的，然后越过去了',
-    score: (s) => (s.resistance >= 6 ? s.resistance - 5 : 0) + (s.selfExpression >= 5 ? 2 : 0) + (s.authenticity >= 4 ? 1 : 0) },
-  { name: '联结者', subtitle: '她的力量来自与其他女性站在一起',
-    score: (s, t) => (s.connection >= 6 ? s.connection - 5 : 0) + (s.thriving >= 3 ? 1 : 0) + (t.has('female_solidarity') ? 2 : 0) },
-  { name: '清醒的目击者', subtitle: '她看见了，她说出来了，哪怕声音颤抖',
-    score: (s, t) => (s.structuralAwareness >= 6 ? s.structuralAwareness - 5 : 0) + (s.selfExpression >= 4 ? 1 : 0) + (t.has('glass_ceiling_seen') ? 2 : 0) },
-  { name: '自己的人', subtitle: '活在内心标准里，而不是别人的眼光里',
-    score: (s) => (s.authenticity >= 5 ? s.authenticity - 4 : 0) + (s.selfExpression >= 4 ? 2 : 0) + (s.thriving >= 3 ? 1 : 0) },
-  { name: '高敏感创造者', subtitle: '她感受得多，也因此创造得深',
-    score: (_s, t) => (t.has('high_sensitivity') ? 4 : 0) + (t.has('creative_outlet') ? 4 : 0) },
-  { name: '幸存与绽放', subtitle: '她从最深处走出来，依然向着光',
-    score: (s, t) => (t.has('survived_violence') ? 5 : 0) + (s.thriving >= 1 ? 2 : 0) + (s.resistance >= 2 ? 1 : 0) },
-  { name: '用知识凿路的人', subtitle: '她把书页变成了离开的船票',
-    score: (s, t) => (t.has('academic_escape') ? 4 : 0) + (t.has('higher_education') ? 2 : 0) + (s.structuralAwareness >= 2 ? 2 : 0) },
-  { name: '藏起来的人', subtitle: '她的真实自我在等待一个安全的地方',
-    score: (s) => (s.selfExpression <= -3 ? Math.abs(s.selfExpression) - 2 : 0) + (s.authenticity <= -2 ? Math.abs(s.authenticity) - 1 : 0) },
-  { name: '沉重的承担者', subtitle: '她扛着太多不属于自己的重量',
-    score: (s, t) => (s.thriving <= -2 ? Math.abs(s.thriving) - 1 : 0) + (s.resistance <= -1 ? 2 : 0) + (t.has('second_shift_burden') ? 3 : 0) },
-  { name: '觉醒中的女性', subtitle: '她在理解自己所在的世界，也在理解自己',
-    score: (s) => (s.connection >= 2 && s.connection <= 4 ? 3 : 0) + (s.structuralAwareness >= 2 && s.structuralAwareness <= 4 ? 3 : 0) },
-  { name: '越界的人', subtitle: '她轻轻地或者用力地走出了那条线',
-    score: (s, t) => (s.resistance >= 3 && s.resistance <= 5 ? 2 : 0) + (t.has('rebel_spirit') ? 3 : 0) + (s.authenticity >= 3 ? 1 : 0) },
-  { name: '压抑的火焰', subtitle: '她体内有很多力气，但还没有找到出口',
-    score: (s) => (s.resistance >= 3 ? 2 : 0) + (s.selfExpression <= -2 ? Math.abs(s.selfExpression) : 0) },
-  { name: '疲惫的照顾者', subtitle: '她爱得很深，但忘了自己也需要被爱',
-    score: (s, t) => (t.has('second_shift_burden') ? 4 : 0) + (t.has('good_girl_conditioning') ? 2 : 0) + (s.thriving <= 0 ? 2 : 0) + (s.connection >= 1 ? 1 : 0) },
-  { name: '在碎片里找自己', subtitle: '她感受到的太多，世界的容量又太小',
-    score: (s, t) => (t.has('high_sensitivity') ? 3 : 0) + (s.thriving <= 1 ? 3 : 0) + (s.selfExpression >= 0 ? 2 : 0) + (t.has('creative_outlet') ? 1 : 0) },
-  { name: '清醒的妥协者', subtitle: '她看透了一切，但还是选择了留下',
-    score: (s, t) => (s.structuralAwareness >= 2 ? 2 : 0) + (s.resistance <= 1 ? 3 : 0) + (t.has('good_girl_conditioning') ? 2 : 0) },
-  { name: '迟来的觉醒者', subtitle: '她来得很晚，但她来了，而且是全部的自己',
-    score: (s, t) => (t.has('late_bloomer') ? 6 : 0) + (s.thriving >= 1 ? 2 : 0) },
-  { name: '温柔的革命者', subtitle: '她的温柔不是软弱，是一种选择',
-    score: (s, t) => (s.connection >= 2 ? 2 : 0) + (s.authenticity >= 2 ? 2 : 0) + (s.resistance >= 1 && s.resistance <= 4 ? 2 : 0) + (t.has('female_solidarity') ? 2 : 0) },
-  { name: '从贫瘠里长出来的人', subtitle: '那片土地没有养分，但她还是长起来了',
-    score: (s, t) => (t.has('poverty_scar') ? 5 : 0) + (s.thriving >= 0 ? 2 : 0) + (s.resistance >= 1 ? 1 : 0) },
-  { name: '命名者', subtitle: '她给那些沉默已久的事情，第一次起了名字',
-    score: (s, t) => (t.has('glass_ceiling_seen') ? 4 : 0) + (s.structuralAwareness >= 2 ? 2 : 0) + (s.selfExpression >= 1 ? 2 : 0) },
-  { name: '行走中的人', subtitle: '人生还没走完，她也还在成为自己',
+  // ── Fire types (反抗/力量) ──
+  { name: '野火', subtitle: '越烧越亮',
+    score: (s) => (s.resistance >= 9 ? 5 : 0) + (s.selfExpression >= 7 ? 4 : 0) },
+  { name: '闷烧', subtitle: '火在里面，出口堵了',
+    score: (s) => (s.resistance >= 5 ? 4 : 0) + (s.selfExpression <= 0 ? 5 : 0) },
+  { name: '火柴', subtitle: '只亮了一下，但她记得那道光',
+    score: (s) => (s.resistance >= 3 && s.resistance <= 6 ? 4 : 0) + (s.thriving <= 0 ? 5 : 0) },
+  { name: '雷暴', subtitle: '她的沉默攒够了，一次说完',
+    score: (s, t) => (s.resistance >= 6 ? 4 : 0) + (s.structuralAwareness >= 7 ? 3 : 0) + (t.has('survived_violence') ? 5 : 0) },
+
+  // ── Water types (联结/流动) ──
+  { name: '暗流', subtitle: '不喊口号，但不可逆转',
+    score: (s) => (s.connection >= 6 ? 4 : 0) + (s.authenticity >= 6 ? 3 : 0) + (s.resistance >= 3 && s.resistance <= 6 ? 3 : 0) },
+  { name: '深井', subtitle: '她很深，没人看得见底',
+    score: (s, t) => (t.has('high_sensitivity') ? 5 : 0) + (s.selfExpression <= 0 ? 5 : 0) },
+  { name: '潮汐', subtitle: '来来去去，每次都留下什么',
+    score: (s) => (s.connection >= 6 ? 4 : 0) + (s.selfExpression >= 5 ? 4 : 0) },
+  { name: '织网的人', subtitle: '她把断掉的线重新接上',
+    score: (s, t) => (s.connection >= 8 ? 5 : 0) + (t.has('female_solidarity') ? 3 : 0) },
+
+  // ── Plant types (成长/生命力) ──
+  { name: '石缝草', subtitle: '没有土壤也能长',
+    score: (s, t) => (t.has('poverty_scar') ? 6 : 0) + (s.thriving >= 1 ? 3 : 0) },
+  { name: '霜后花', subtitle: '来得晚，但开得真',
+    score: (s, t) => (t.has('late_bloomer') ? 6 : 0) + (s.thriving >= 2 ? 3 : 0) },
+  { name: '向阳花', subtitle: '不管怎样，一直朝着光',
+    score: (s) => (s.thriving >= 5 ? 5 : 0) + (s.authenticity >= 5 ? 4 : 0) },
+  { name: '枯木', subtitle: '她停了，不是不想长',
+    score: (s, t) => (s.thriving <= -3 ? 5 : 0) + (t.has('addiction') ? 6 : 0) },
+
+  // ── Light/Shadow types (意识/真实) ──
+  { name: '醒着的人', subtitle: '知道了就回不去了',
+    score: (s) => (s.structuralAwareness >= 8 ? 5 : 0) + (s.selfExpression >= 5 ? 4 : 0) },
+  { name: '第三只眼', subtitle: '看见了，但说不出口',
+    score: (s) => (s.structuralAwareness >= 6 ? 4 : 0) + (s.resistance <= 2 ? 5 : 0) },
+  { name: '镜子', subtitle: '她先看清了自己',
+    score: (s) => (s.authenticity >= 7 ? 5 : 0) + (s.structuralAwareness >= 6 ? 4 : 0) },
+  { name: '面具', subtitle: '戴太久，长在脸上了',
+    score: (s, t) => (s.authenticity <= -3 ? 6 : 0) + (t.has('good_girl_conditioning') ? 3 : 0) },
+
+  // ── Object types (角色/负担) ──
+  { name: '蜡烛', subtitle: '照亮所有人，烧完自己',
+    score: (s, t) => (t.has('second_shift_burden') ? 5 : 0) + (s.thriving <= 0 ? 4 : 0) + (s.connection >= 3 ? 2 : 0) },
+  { name: '盾牌', subtitle: '她保护别人，没人保护她',
+    score: (s, t) => (t.has('has_children') ? 5 : 0) + (s.connection >= 4 ? 3 : 0) + (s.thriving <= 1 ? 3 : 0) },
+  { name: '钥匙', subtitle: '她找到了那把锁的答案',
+    score: (s, t) => (t.has('economic_independence_drive') ? 5 : 0) + (s.resistance >= 5 ? 4 : 0) },
+  { name: '空房间', subtitle: '伍尔夫说的那间',
+    score: (s, t) => (t.has('creative_outlet') ? 5 : 0) + (s.authenticity >= 5 ? 4 : 0) },
+
+  // ── Blade types (智识/锋利) ──
+  { name: '刀锋', subtitle: '太聪明是一种孤独',
+    score: (_s, t) => (t.has('academic_escape') ? 5 : 0) + (t.has('glass_ceiling_seen') ? 5 : 0) },
+  { name: '磨刀石', subtitle: '用知识把自己磨出来',
+    score: (s, t) => (t.has('academic_escape') ? 4 : 0) + (t.has('higher_education') ? 4 : 0) + (s.structuralAwareness >= 4 ? 3 : 0) },
+  { name: '纸上谈兵', subtitle: '什么都懂，什么都改变不了',
+    score: (s) => (s.structuralAwareness >= 7 ? 4 : 0) + (s.resistance <= 1 ? 5 : 0) + (s.thriving <= 0 ? 3 : 0) },
+
+  // ── Bird types (自由/关系) ──
+  { name: '笼中鸟', subtitle: '她以为那是家',
+    score: (_s, t) => (t.has('married') ? 4 : 0) + (t.has('trauma_bond') ? 6 : 0) },
+  { name: '出笼的鸟', subtitle: '终于飞出去了',
+    score: (_s, t) => (t.has('abroad_experience') ? 5 : 0) + (t.has('rebel_spirit') ? 4 : 0) },
+  { name: '候鸟', subtitle: '一直在找一个可以停的地方',
+    score: (s, t) => (t.has('abroad_experience') ? 5 : 0) + (s.connection <= 2 ? 5 : 0) },
+  { name: '孤岛', subtitle: '不是孤独，是完整',
+    score: (s, t) => (t.has('never_married') ? 5 : 0) + (s.authenticity >= 6 ? 4 : 0) },
+
+  // ── Trauma/Rebirth types ──
+  { name: '裂缝', subtitle: '伤口是光进来的地方',
+    score: (_s, t) => (t.has('high_sensitivity') ? 4 : 0) + (t.has('creative_outlet') ? 5 : 0) },
+  { name: '灰烬', subtitle: '从烧完的地方重新长出来',
+    score: (s, t) => (t.has('survived_violence') ? 5 : 0) + (s.thriving >= 3 ? 4 : 0) },
+  { name: '疤', subtitle: '证明她活过最难的部分',
+    score: (s, t) => (t.has('survived_violence') ? 5 : 0) + (s.thriving <= 1 ? 4 : 0) },
+
+  // ── Self types ──
+  { name: '自洽', subtitle: '不需要世界同意',
+    score: (s) => (s.authenticity >= 8 ? 5 : 0) + (s.thriving >= 4 ? 4 : 0) },
+  { name: '寻路人', subtitle: '还在走，还没到',
     score: () => 2 }, // 默认有基底分，永远有机会
+
+  // ── Special combo types ──
+  { name: '容器', subtitle: '所有碎片都装进了创作里',
+    score: (_s, t) => (t.has('creative_outlet') ? 4 : 0) + (t.has('high_sensitivity') ? 3 : 0) + (t.has('trauma_bond') ? 4 : 0) },
+  { name: '根', subtitle: '在土里撑住了上面所有人',
+    score: (s, t) => (s.connection >= 5 ? 4 : 0) + (t.has('second_shift_burden') ? 4 : 0) + (s.thriving >= 1 ? 3 : 0) },
+  { name: '种子', subtitle: '还没发芽，但她是完整的',
+    score: (s) => {
+      const dims = [s.selfExpression, s.resistance, s.structuralAwareness, s.connection, s.authenticity, s.thriving];
+      const allMild = dims.every(d => d >= -2 && d <= 2);
+      return allMild ? 8 : 0;
+    } },
 ];
 
 function generateTypeName(scores: PersonalityScores, tags: Set<HiddenTag>): { name: string; subtitle: string } {
   // 边界：所有分数都是 0（玩家跳过了所有选择）
   const allZero = Object.values(scores).every(v => v === 0);
-  if (allZero) return { name: '旁观者', subtitle: '她站在所有岔路口，但一步都没有迈出去' };
+  if (allZero) return { name: '旁观者', subtitle: '站在岔路口，一步没迈' };
 
   // 评分所有类型
   const scored = PERSONALITY_TYPES
@@ -204,7 +257,7 @@ function generateTypeName(scores: PersonalityScores, tags: Set<HiddenTag>): { na
     .filter(t => t.s > 0)
     .sort((a, b) => b.s - a.s);
 
-  if (scored.length === 0) return { name: '行走中的人', subtitle: '人生还没走完，她也还在成为自己' };
+  if (scored.length === 0) return { name: '寻路人', subtitle: '还在走，还没到' };
 
   // 从前3名里加权随机（分数越高概率越大，但不是100%）
   const top = scored.slice(0, 3);
