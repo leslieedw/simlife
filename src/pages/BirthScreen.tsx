@@ -6,6 +6,44 @@ interface Props {
   onDebugSimulate?: () => void;
 }
 
+// 女字旁的字——贬义（红）和褒义（金）
+const DEROGATORY_CHARS = [
+  '妖', '奸', '婊', '嫉', '妒', '嫌', '奴', '妄', '娼', '婪',
+  '嫖', '妨', '姘', '媚', '佞', '妓', '嫡', '妾', '嬲', '耍',
+  '妖', '嫂', '婢', '妃', '嫁', '娶', '妥', '妮', '媳', '妆',
+];
+const POSITIVE_CHARS = [
+  '好', '妙', '娟', '婉', '婷', '姿', '娴', '媛', '嫣', '姝',
+];
+
+// 随机数据池
+const COVER_STATS = [
+  [
+    '全球 1.3 亿女孩从未踏入过学校。',
+    '每三个女性中有一个经历过暴力。',
+    '财富 500 强的女性 CEO 不到 10%。',
+    '在一些地方，她们在出生之前就消失了。',
+  ],
+  [
+    '全球女性承担了 75% 的无偿照护劳动。',
+    '每年有 1200 万女孩在 18 岁之前被迫结婚。',
+    '女性拥有全世界不到 20% 的土地。',
+    '中国出生性别比最高峰达到 120:100。那些多出来的男孩背后，是消失的女孩。',
+  ],
+  [
+    '法国女性直到 1965 年才能不经丈夫同意开银行账户。距今 61 年。',
+    '瑞士女性直到 1971 年才获得投票权。距今 55 年。',
+    '中国第一部《反家庭暴力法》2016 年才生效。距今 10 年。',
+    '沙特女性 2018 年才被允许开车。距今 8 年。',
+  ],
+  [
+    '剑桥大学 1869 年招收了第一个女学生，但直到 1948 年才允许女性获得学位。',
+    'NASA 直到 1978 年才接受女性宇航员。',
+    '全球仍有 27 个国家的法律不允许女性和男性从事同样的工作。',
+    '全球女性平均收入比男性低 20%，做的工作并不少。',
+  ],
+];
+
 const COVER_QUOTES = [
   { text: '一个人如果没有房间，就没有完整的自我。', attribution: '弗吉尼亚·伍尔夫' },
   { text: '女人不是天生的，是被塑造的。', attribution: '西蒙·波伏娃' },
@@ -48,6 +86,24 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
   const [step, setStep] = useState(-1); // -1 = cover page
   const [wealth, setWealth] = useState<FamilyWealth | null>(null);
   const coverQuote = useMemo(() => COVER_QUOTES[Math.floor(Math.random() * COVER_QUOTES.length)], []);
+  const coverStats = useMemo(() => COVER_STATS[Math.floor(Math.random() * COVER_STATS.length)], []);
+  // 生成背景散落的女字旁汉字
+  const bgChars = useMemo(() => {
+    const chars: { char: string; x: number; y: number; size: number; opacity: number; negative: boolean }[] = [];
+    for (let i = 0; i < 40; i++) {
+      const isNeg = Math.random() < 0.75; // 75% 贬义
+      const pool = isNeg ? DEROGATORY_CHARS : POSITIVE_CHARS;
+      chars.push({
+        char: pool[Math.floor(Math.random() * pool.length)],
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: 14 + Math.random() * 28,
+        opacity: 0.04 + Math.random() * 0.06,
+        negative: isNeg,
+      });
+    }
+    return chars;
+  }, []);
   const [structure, setStructure] = useState<FamilyStructure | null>(null);
   const [city, setCity] = useState<BirthCity | null>(null);
   const [love, setLove] = useState(50);
@@ -183,8 +239,29 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
   // ====== 封面页 ======
   if (step === -1) {
     return (
-      <div className="min-h-screen bg-[#0f0f0f] flex flex-col justify-center items-center px-6">
-        <div className="max-w-lg w-full text-center">
+      <div className="min-h-screen bg-[#0f0f0f] flex flex-col justify-center items-center px-6 relative overflow-hidden">
+
+        {/* 背景：女字旁汉字散落 */}
+        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+          {bgChars.map((c, i) => (
+            <span
+              key={i}
+              className="absolute font-serif"
+              style={{
+                left: `${c.x}%`,
+                top: `${c.y}%`,
+                fontSize: `${c.size}px`,
+                opacity: c.opacity,
+                color: c.negative ? '#ef4444' : '#d4a853',
+                transform: `rotate(${Math.random() * 30 - 15}deg)`,
+              }}
+            >
+              {c.char}
+            </span>
+          ))}
+        </div>
+
+        <div className="max-w-lg w-full text-center relative z-10">
           {/* 引子 */}
           <p className="text-gray-600 text-xs italic mb-10">
             「{coverQuote.text}」
@@ -192,18 +269,14 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
           </p>
 
           {/* 标题 */}
-          <h1 className="text-4xl font-bold text-white tracking-wide mb-6">她的一生</h1>
+          <h1 className="text-5xl font-bold text-white tracking-widest mb-6">她</h1>
 
-          {/* 简介 */}
+          {/* 数据 */}
           <div className="mb-10 px-2">
             <p className="text-gray-500 text-xs leading-loose">
-              全球 1.3 亿女孩从未踏入过学校。
-              <br />
-              每三个女性中有一个经历过暴力。
-              <br />
-              财富 500 强的女性 CEO 不到 10%。
-              <br />
-              在一些地方，她们在出生之前就消失了。
+              {coverStats.map((line, i) => (
+                <span key={i}>{line}<br /></span>
+              ))}
             </p>
             <p className="text-gray-400 text-sm leading-relaxed mt-5">
               你有没有想过，如果当时做了另一个选择，
@@ -236,7 +309,7 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
         {onDebugSimulate && (
           <button
             onClick={onDebugSimulate}
-            className="fixed bottom-4 right-4 w-8 h-8 rounded-full border border-dashed border-amber-500/20 text-amber-500/40 text-[9px] font-mono hover:border-amber-500/50 hover:text-amber-500/80 transition-all flex items-center justify-center"
+            className="fixed bottom-4 right-4 w-8 h-8 rounded-full border border-dashed border-amber-500/20 text-amber-500/40 text-[9px] font-mono hover:border-amber-500/50 hover:text-amber-500/80 transition-all flex items-center justify-center z-20"
             title="DEV: 快速模拟 → 直达结局"
           >
             ▶
@@ -251,7 +324,7 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
     <div className="min-h-screen bg-[#0f0f0f] flex flex-col">
       {/* 顶部标题 */}
       <div className="text-center pt-10 pb-6 px-6">
-        <h1 className="text-xl font-bold text-white tracking-wide">她的一生</h1>
+        <h1 className="text-xl font-bold text-white tracking-widest">她</h1>
       </div>
 
       {/* 进度条 */}
