@@ -122,6 +122,7 @@ export const ENDINGS: Ending[] = [
     description: '你不是没想过改变。但是钱不够。经济依赖是一种看不见的锁，它让所有的门看起来都是关着的。',
     flavor: '穷不是罪，但这个社会让穷的女性付出了最高的代价。',
     requirement: {
+      hasTags: ['in_debt'],
       maxStats: { wealth: 15 },
     },
     culturalQuotes: [
@@ -129,6 +130,80 @@ export const ENDINGS: Ending[] = [
       { text: '贫穷是一种暴力，只不过没有人坐牢。', attribution: '改自女性主义经济学思想', type: 'prose' },
       { text: '女人没有经济独立，一切自由都是别人施舍的。', attribution: '西蒙·波伏娃 · 《第二性》', type: 'prose' },
       { text: '我知道那扇门在哪里，但我没有钥匙。', attribution: '萧红风格', type: 'prose' },
+    ],
+  },
+
+  {
+    id: 'beauty_faded',
+    title: '当容貌不再是货币',
+    rarity: 'common',
+    description: '你曾经因为好看得到过很多东西——关注、机会、保护、特殊待遇。你习惯了那种被看见的感觉。然后有一天，它停了。不是突然的，是慢慢的，像退潮。你发现当潮水退去的时候，你不确定自己还剩下什么。',
+    flavor: '她最大的资产有保质期，但没人提前告诉她。',
+    requirement: {
+      hasTags: ['beauty_currency'],
+      minStats: { appearance: 55 },
+      maxStats: { inner: 40 },
+    },
+    culturalQuotes: [
+      { text: '红颜弹指老，刹那芳华。', attribution: '金庸 · 《天龙八部》', type: 'prose' },
+      { text: '她用青春换了很多东西，但那些东西都不记得她的名字。', attribution: '张爱玲风格', type: 'prose' },
+      { text: '容貌是这个世界给女人的第一份礼物，也是第一个陷阱。', attribution: '西蒙·波伏娃 · 精神', type: 'prose' },
+      { text: '镜子里的人越来越陌生了。不是因为老了，是因为她从来没认识过自己。', attribution: '亦舒风格', type: 'prose' },
+    ],
+  },
+
+  {
+    id: 'gifted_then_caged',
+    title: '天才少女的婚姻',
+    rarity: 'uncommon',
+    description: '你小时候是最聪明的那个，所有人都说你前途无量。然后你结了婚，有了孩子，慢慢地，"聪明"这个词从你的标签里消失了。取而代之的是"贤惠"、"能干"、"顾家"。你的智力没有变，但使用它的空间被压缩到了每天的菜单和家长群。',
+    flavor: '她的大脑能解微积分，但现在用来记牛奶的保质期。',
+    requirement: {
+      minStats: { intelligence: 60 },
+      hasTags: ['married', 'has_children'],
+      maxStats: { inner: 40 },
+    },
+    culturalQuotes: [
+      { text: '如果莎士比亚有一个妹妹，同样才华横溢——她嫁了人，生了孩子，然后没有人再提起她。', attribution: '弗吉尼亚·伍尔夫 · 《一间自己的房间》', type: 'prose' },
+      { text: '女人的才华被浪费在家务里，这不是选择，是结构。', attribution: '西蒙·波伏娃 · 精神', type: 'prose' },
+      { text: '我的脑子还在，但我的世界已经缩成了一间厨房。', attribution: '杨本芬 · 精神', type: 'prose' },
+      { text: '她曾经看见过更大的天空。这让后来的屋顶，更让人窒息。', attribution: '萧红 · 精神', type: 'prose' },
+    ],
+  },
+
+  {
+    id: 'lonely_abroad',
+    title: '异乡人',
+    rarity: 'uncommon',
+    description: '你出去了，你看到了更大的世界。但在那个更大的世界里，你是一个没有根的人。语言、文化、身份——所有东西都需要翻译。你自由了，但你也孤独了。有时候你分不清这是自由还是流放。',
+    flavor: '她走得够远了。但远方没有家。',
+    requirement: {
+      hasTags: ['abroad_experience'],
+      maxStats: { social: 35 },
+    },
+    culturalQuotes: [
+      { text: '心若没有栖息的地方，到哪里都是在流浪。', attribution: '三毛', type: 'prose' },
+      { text: '我在别人的国度里学会了很多事，唯独没学会不想家。', attribution: '三毛 · 精神', type: 'prose' },
+      { text: '自由和孤独是双胞胎。你不可能只要一个。', attribution: '弗吉尼亚·伍尔夫 · 精神', type: 'prose' },
+      { text: '回不去的地方叫故乡，到不了的地方叫远方。', attribution: '民谣意境', type: 'lyric' },
+    ],
+  },
+
+  {
+    id: 'creative_fire',
+    title: '用疼痛写字的人',
+    rarity: 'uncommon',
+    description: '你把所有不能说出口的东西都放进了创作里——文字、画面、音乐、任何能容纳你的容器。你的作品比你勇敢。它们替你说了那些你不敢说的话，记住了那些你想忘记的事。',
+    flavor: '她的伤口变成了墨水。',
+    requirement: {
+      hasTags: ['creative_outlet', 'high_sensitivity'],
+      minStats: { intelligence: 50 },
+    },
+    culturalQuotes: [
+      { text: '我写作不是因为我有话说，而是因为不写我会死。', attribution: '萧红 · 精神', type: 'prose' },
+      { text: '艺术是伤口的另一个名字。', attribution: '玛格丽特·杜拉斯 · 精神', type: 'prose' },
+      { text: '她把那些碎片都收好了，然后用它们拼出了一幅画。', attribution: '席慕蓉 · 精神', type: 'prose' },
+      { text: '写下来。写下来就是活下来。', attribution: '杨本芬 · 七十岁开始写作', type: 'prose' },
     ],
   },
 
