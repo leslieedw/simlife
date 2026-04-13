@@ -1,6 +1,58 @@
 import { useEffect, useMemo } from 'react';
 import type { PersonalityScores, HiddenTag } from '../types';
 import { generatePersonalityAnalysis } from '../engine/personalityAnalysis';
+import {
+  Flame, CloudLightning, Sparkles, Zap,
+  Waves, Droplets, Compass, Network,
+  Sprout, Flower2, Sun, TreeDeciduous,
+  Eye, ScanEye, PersonStanding, Drama,
+  CandlestickChart, Shield, KeyRound, DoorOpen,
+  Sword, GraduationCap, BookX,
+  Lock, Bird, Navigation, Mountain,
+  Split, FlameKindling, HeartCrack,
+  Check, Footprints, CircleDot,
+  Container, Anchor, Leaf,
+  type LucideIcon,
+} from 'lucide-react';
+
+const TYPE_ICONS: Record<string, LucideIcon> = {
+  '野火': Flame,
+  '闷烧': Sparkles,
+  '火柴': Zap,
+  '雷暴': CloudLightning,
+  '暗流': Waves,
+  '深井': Droplets,
+  '潮汐': Compass,
+  '织网的人': Network,
+  '石缝草': Sprout,
+  '霜后花': Flower2,
+  '向阳花': Sun,
+  '枯木': TreeDeciduous,
+  '醒着的人': Eye,
+  '第三只眼': ScanEye,
+  '镜子': PersonStanding,
+  '面具': Drama,
+  '蜡烛': CandlestickChart,
+  '盾牌': Shield,
+  '钥匙': KeyRound,
+  '空房间': DoorOpen,
+  '刀锋': Sword,
+  '磨刀石': GraduationCap,
+  '纸上谈兵': BookX,
+  '笼中鸟': Lock,
+  '出笼的鸟': Bird,
+  '候鸟': Navigation,
+  '孤岛': Mountain,
+  '裂缝': Split,
+  '灰烬': FlameKindling,
+  '疤': HeartCrack,
+  '自洽': Check,
+  '寻路人': Footprints,
+  '旁观者': CircleDot,
+  '容器': Container,
+  '根': Anchor,
+  '种子': Leaf,
+};
 
 interface Props {
   personality: PersonalityScores;
@@ -51,7 +103,20 @@ export function AnalysisScreen({ personality, tags, onRestart }: Props) {
 
       {/* 人格类型 */}
       <div className="pt-12 pb-8 text-center">
-        <div className="text-xs text-gray-500 uppercase tracking-widest mb-3">你的人格</div>
+        <div className="text-xs text-gray-500 uppercase tracking-widest mb-4">你的人格</div>
+
+        {/* 图标 */}
+        {(() => {
+          const Icon = TYPE_ICONS[result.typeName];
+          return Icon ? (
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 rounded-full border border-white/15 bg-white/[0.04] flex items-center justify-center">
+                <Icon className="w-8 h-8 text-white/70" strokeWidth={1.5} />
+              </div>
+            </div>
+          ) : null;
+        })()}
+
         <h1 className="text-2xl font-bold text-white mb-2">【{result.typeName}】</h1>
         <p className="text-gray-400 text-sm italic mb-6">{result.typeSubtitle}</p>
 
