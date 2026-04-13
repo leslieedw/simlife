@@ -143,51 +143,74 @@ function describeThriving(score: number): { desc: string; dual?: string } {
 // 人格类型名
 // ============================================================
 
+// 所有人格类型定义 + 评分函数
+interface PersonalityType {
+  name: string;
+  subtitle: string;
+  score: (s: PersonalityScores, t: Set<HiddenTag>) => number;
+}
+
+const PERSONALITY_TYPES: PersonalityType[] = [
+  { name: '燃烧的边界人', subtitle: '她知道那些规则是给谁写的，然后越过去了',
+    score: (s) => (s.resistance >= 6 ? s.resistance - 5 : 0) + (s.selfExpression >= 5 ? 2 : 0) + (s.authenticity >= 4 ? 1 : 0) },
+  { name: '联结者', subtitle: '她的力量来自与其他女性站在一起',
+    score: (s, t) => (s.connection >= 6 ? s.connection - 5 : 0) + (s.thriving >= 3 ? 1 : 0) + (t.has('female_solidarity') ? 2 : 0) },
+  { name: '清醒的目击者', subtitle: '她看见了，她说出来了，哪怕声音颤抖',
+    score: (s, t) => (s.structuralAwareness >= 6 ? s.structuralAwareness - 5 : 0) + (s.selfExpression >= 4 ? 1 : 0) + (t.has('glass_ceiling_seen') ? 2 : 0) },
+  { name: '自己的人', subtitle: '活在内心标准里，而不是别人的眼光里',
+    score: (s) => (s.authenticity >= 5 ? s.authenticity - 4 : 0) + (s.selfExpression >= 4 ? 2 : 0) + (s.thriving >= 3 ? 1 : 0) },
+  { name: '高敏感创造者', subtitle: '她感受得多，也因此创造得深',
+    score: (_s, t) => (t.has('high_sensitivity') ? 4 : 0) + (t.has('creative_outlet') ? 4 : 0) },
+  { name: '幸存与绽放', subtitle: '她从最深处走出来，依然向着光',
+    score: (s, t) => (t.has('survived_violence') ? 5 : 0) + (s.thriving >= 1 ? 2 : 0) + (s.resistance >= 2 ? 1 : 0) },
+  { name: '用知识凿路的人', subtitle: '她把书页变成了离开的船票',
+    score: (s, t) => (t.has('academic_escape') ? 4 : 0) + (t.has('higher_education') ? 2 : 0) + (s.structuralAwareness >= 2 ? 2 : 0) },
+  { name: '藏起来的人', subtitle: '她的真实自我在等待一个安全的地方',
+    score: (s) => (s.selfExpression <= -3 ? Math.abs(s.selfExpression) - 2 : 0) + (s.authenticity <= -2 ? Math.abs(s.authenticity) - 1 : 0) },
+  { name: '沉重的承担者', subtitle: '她扛着太多不属于自己的重量',
+    score: (s, t) => (s.thriving <= -2 ? Math.abs(s.thriving) - 1 : 0) + (s.resistance <= -1 ? 2 : 0) + (t.has('second_shift_burden') ? 3 : 0) },
+  { name: '觉醒中的女性', subtitle: '她在理解自己所在的世界，也在理解自己',
+    score: (s) => (s.connection >= 2 && s.connection <= 4 ? 3 : 0) + (s.structuralAwareness >= 2 && s.structuralAwareness <= 4 ? 3 : 0) },
+  { name: '越界的人', subtitle: '她轻轻地或者用力地走出了那条线',
+    score: (s, t) => (s.resistance >= 3 && s.resistance <= 5 ? 2 : 0) + (t.has('rebel_spirit') ? 3 : 0) + (s.authenticity >= 3 ? 1 : 0) },
+  { name: '压抑的火焰', subtitle: '她体内有很多力气，但还没有找到出口',
+    score: (s) => (s.resistance >= 3 ? 2 : 0) + (s.selfExpression <= -2 ? Math.abs(s.selfExpression) : 0) },
+  { name: '疲惫的照顾者', subtitle: '她爱得很深，但忘了自己也需要被爱',
+    score: (s, t) => (t.has('second_shift_burden') ? 4 : 0) + (t.has('good_girl_conditioning') ? 2 : 0) + (s.thriving <= 0 ? 2 : 0) + (s.connection >= 1 ? 1 : 0) },
+  { name: '在碎片里找自己', subtitle: '她感受到的太多，世界的容量又太小',
+    score: (s, t) => (t.has('high_sensitivity') ? 3 : 0) + (s.thriving <= 1 ? 3 : 0) + (s.selfExpression >= 0 ? 2 : 0) + (t.has('creative_outlet') ? 1 : 0) },
+  { name: '清醒的妥协者', subtitle: '她看透了一切，但还是选择了留下',
+    score: (s, t) => (s.structuralAwareness >= 2 ? 2 : 0) + (s.resistance <= 1 ? 3 : 0) + (t.has('good_girl_conditioning') ? 2 : 0) },
+  { name: '迟来的觉醒者', subtitle: '她来得很晚，但她来了，而且是全部的自己',
+    score: (s, t) => (t.has('late_bloomer') ? 6 : 0) + (s.thriving >= 1 ? 2 : 0) },
+  { name: '温柔的革命者', subtitle: '她的温柔不是软弱，是一种选择',
+    score: (s, t) => (s.connection >= 2 ? 2 : 0) + (s.authenticity >= 2 ? 2 : 0) + (s.resistance >= 1 && s.resistance <= 4 ? 2 : 0) + (t.has('female_solidarity') ? 2 : 0) },
+  { name: '从贫瘠里长出来的人', subtitle: '那片土地没有养分，但她还是长起来了',
+    score: (s, t) => (t.has('poverty_scar') ? 5 : 0) + (s.thriving >= 0 ? 2 : 0) + (s.resistance >= 1 ? 1 : 0) },
+  { name: '命名者', subtitle: '她给那些沉默已久的事情，第一次起了名字',
+    score: (s, t) => (t.has('glass_ceiling_seen') ? 4 : 0) + (s.structuralAwareness >= 2 ? 2 : 0) + (s.selfExpression >= 1 ? 2 : 0) },
+  { name: '行走中的人', subtitle: '人生还没走完，她也还在成为自己',
+    score: () => 2 }, // 默认有基底分，永远有机会
+];
+
 function generateTypeName(scores: PersonalityScores, tags: Set<HiddenTag>): { name: string; subtitle: string } {
-  const { selfExpression, resistance, structuralAwareness, connection, authenticity, thriving } = scores;
+  // 评分所有类型
+  const scored = PERSONALITY_TYPES
+    .map(t => ({ ...t, s: t.score(scores, tags) }))
+    .filter(t => t.s > 0)
+    .sort((a, b) => b.s - a.s);
 
-  if (resistance >= 5 && selfExpression >= 4 && authenticity >= 3)
-    return { name: '燃烧的边界人', subtitle: '她知道那些规则是给谁写的，然后越过去了' };
-  if (connection >= 5 && authenticity >= 3 && thriving >= 3)
-    return { name: '联结者', subtitle: '她的力量来自与其他女性站在一起' };
-  if (structuralAwareness >= 5 && selfExpression >= 3 && resistance >= 2)
-    return { name: '清醒的目击者', subtitle: '她看见了，她说出来了，哪怕声音颤抖' };
-  if (authenticity >= 5 && selfExpression >= 4 && thriving >= 2)
-    return { name: '自己的人', subtitle: '活在内心标准里，而不是别人的眼光里' };
-  if (tags.has('high_sensitivity') && (tags.has('creative_outlet') || selfExpression >= 3))
-    return { name: '高敏感创造者', subtitle: '她感受得多，也因此创造得深' };
-  if (tags.has('survived_violence') && thriving >= 2)
-    return { name: '幸存与绽放', subtitle: '她从最深处走出来，依然向着光' };
-  if (tags.has('academic_escape') && structuralAwareness >= 2)
-    return { name: '用知识凿路的人', subtitle: '她把书页变成了离开的船票' };
-  if (selfExpression <= -4 && authenticity <= -3)
-    return { name: '藏起来的人', subtitle: '她的真实自我在等待一个安全的地方' };
-  if (thriving <= -3 && resistance <= -2)
-    return { name: '沉重的承担者', subtitle: '她扛着太多不属于自己的重量' };
-  if (connection >= 3 && structuralAwareness >= 3)
-    return { name: '觉醒中的女性', subtitle: '她在理解自己所在的世界，也在理解自己' };
-  if (resistance >= 3 && authenticity >= 2)
-    return { name: '越界的人', subtitle: '她轻轻地或者用力地走出了那条线' };
+  if (scored.length === 0) return { name: '行走中的人', subtitle: '人生还没走完，她也还在成为自己' };
 
-  // 新增人格类型
-  if (resistance >= 4 && selfExpression <= -3)
-    return { name: '压抑的火焰', subtitle: '她体内有很多力气，但还没有找到出口' };
-  if (tags.has('second_shift_burden') && connection >= 2 && thriving <= -1)
-    return { name: '疲惫的照顾者', subtitle: '她爱得很深，但忘了自己也需要被爱' };
-  if (tags.has('high_sensitivity') && thriving <= -1 && selfExpression >= 2)
-    return { name: '在碎片里找自己', subtitle: '她感受到的太多，世界的容量又太小' };
-  if (structuralAwareness >= 4 && resistance <= -2)
-    return { name: '清醒的妥协者', subtitle: '她看透了一切，但还是选择了留下' };
-  if (tags.has('late_bloomer') && thriving >= 2)
-    return { name: '迟来的觉醒者', subtitle: '她来得很晚，但她来了，而且是全部的自己' };
-  if (connection >= 3 && authenticity >= 3 && resistance >= 1)
-    return { name: '温柔的革命者', subtitle: '她的温柔不是软弱，是一种选择' };
-  if (tags.has('poverty_scar') && thriving >= 1 && resistance >= 2)
-    return { name: '从贫瘠里长出来的人', subtitle: '那片土地没有养分，但她还是长起来了' };
-  if (structuralAwareness >= 3 && tags.has('glass_ceiling_seen') && selfExpression >= 2)
-    return { name: '命名者', subtitle: '她给那些沉默已久的事情，第一次起了名字' };
-
-  return { name: '行走中的人', subtitle: '人生还没走完，她也还在成为自己' };
+  // 从前3名里加权随机（分数越高概率越大，但不是100%）
+  const top = scored.slice(0, 3);
+  const totalWeight = top.reduce((sum, t) => sum + t.s * t.s, 0); // 平方让高分更有优势但不绝对
+  let rand = Math.random() * totalWeight;
+  for (const t of top) {
+    rand -= t.s * t.s;
+    if (rand <= 0) return { name: t.name, subtitle: t.subtitle };
+  }
+  return { name: top[0].name, subtitle: top[0].subtitle };
 }
 
 // ============================================================
@@ -379,55 +402,65 @@ const WRITER_PROFILES: Record<string, WriterProfile> = {
   },
 };
 
+// 每个作家的亲和度评分
+interface WriterScorer {
+  key: string;
+  score: (s: PersonalityScores, t: Set<HiddenTag>) => number;
+}
+
+const WRITER_SCORERS: WriterScorer[] = [
+  { key: 'xiaohong', score: (s, t) =>
+    (t.has('poverty_scar') ? 4 : 0) + (t.has('academic_escape') ? 2 : 0) +
+    (s.resistance >= 3 ? 2 : 0) + (s.thriving >= 0 && s.thriving <= 3 ? 1 : 0) },
+  { key: 'zhangailing', score: (s, t) =>
+    (t.has('trauma_bond') ? 4 : 0) + (t.has('beauty_currency') ? 3 : 0) +
+    (s.structuralAwareness >= 3 ? 2 : 0) + (s.authenticity <= 0 ? 2 : 0) },
+  { key: 'woolf', score: (s, t) =>
+    (t.has('creative_outlet') ? 4 : 0) + (s.authenticity >= 3 ? 2 : 0) +
+    (s.selfExpression >= 3 ? 2 : 0) + (t.has('higher_education') ? 1 : 0) },
+  { key: 'beauvoir', score: (s, t) =>
+    (s.structuralAwareness >= 4 ? 3 : 0) + (s.resistance >= 3 ? 2 : 0) +
+    (t.has('glass_ceiling_seen') ? 3 : 0) + (s.connection >= 2 ? 1 : 0) },
+  { key: 'sanmao', score: (s, t) =>
+    (t.has('rebel_spirit') ? 4 : 0) + (s.authenticity >= 3 ? 2 : 0) +
+    (s.resistance >= 3 ? 2 : 0) + (t.has('abroad_experience') ? 3 : 0) },
+  { key: 'yishu', score: (s, t) =>
+    (t.has('economic_independence_drive') ? 4 : 0) + (s.authenticity >= 2 ? 2 : 0) +
+    (t.has('entrepreneur') ? 3 : 0) + (s.thriving >= 1 ? 1 : 0) },
+  { key: 'lorde', score: (s, t) =>
+    (s.connection >= 3 ? 3 : 0) + (t.has('female_solidarity') ? 4 : 0) +
+    (s.selfExpression >= 2 ? 2 : 0) + (s.structuralAwareness >= 3 ? 1 : 0) },
+  { key: 'duras', score: (s, t) =>
+    (s.thriving <= -1 ? Math.abs(s.thriving) : 0) + (t.has('trauma_bond') ? 3 : 0) +
+    (s.selfExpression <= -2 ? 2 : 0) + (s.authenticity <= -1 ? 1 : 0) },
+  { key: 'oliver', score: (s, t) =>
+    (t.has('high_sensitivity') ? 4 : 0) + (s.thriving >= 0 ? 2 : 0) +
+    (s.authenticity >= 1 ? 1 : 0) + (s.connection >= 1 ? 1 : 0) },
+  { key: 'yangbenfen', score: (s, t) =>
+    (t.has('late_bloomer') ? 5 : 0) + (s.thriving >= 0 ? 1 : 0) +
+    (s.connection >= 1 ? 2 : 0) + (t.has('has_children') ? 1 : 0) },
+  { key: 'ximurong', score: (s) =>
+    2 + (s.authenticity >= 0 ? 1 : 0) + (s.thriving >= -1 && s.thriving <= 3 ? 1 : 0) }, // 默认基底分
+];
+
 function generateCulturalMatch(scores: PersonalityScores, tags: Set<HiddenTag>): CulturalMatch {
-  const { selfExpression, resistance, structuralAwareness, connection, authenticity, thriving } = scores;
+  // 评分所有作家
+  const scored = WRITER_SCORERS
+    .map(w => ({ key: w.key, s: w.score(scores, tags) }))
+    .filter(w => w.s > 0)
+    .sort((a, b) => b.s - a.s);
 
-  let profile: WriterProfile;
+  // 从前4名里加权随机
+  const top = scored.slice(0, 4);
+  const totalWeight = top.reduce((sum, w) => sum + w.s * w.s, 0);
+  let rand = Math.random() * totalWeight;
+  let chosen = top[0].key;
+  for (const w of top) {
+    rand -= w.s * w.s;
+    if (rand <= 0) { chosen = w.key; break; }
+  }
 
-  // 萧红型：贫困 + 韧性（收紧条件：必须有贫困印记或学业逃脱标签）
-  if (tags.has('poverty_scar') && (resistance >= 2 || tags.has('academic_escape')))
-    profile = WRITER_PROFILES.xiaohong;
-
-  // 张爱玲型：关系创伤 + 清醒的悲观
-  else if ((tags.has('trauma_bond') || tags.has('beauty_currency')) && structuralAwareness >= 3)
-    profile = WRITER_PROFILES.zhangailing;
-
-  // 伍尔夫型：创造力 + 需要自己的空间
-  else if (tags.has('creative_outlet') && authenticity >= 3)
-    profile = WRITER_PROFILES.woolf;
-
-  // 波伏娃型：高度结构性意识 + 反抗
-  else if (structuralAwareness >= 5 || (structuralAwareness >= 4 && resistance >= 4))
-    profile = WRITER_PROFILES.beauvoir;
-
-  // 三毛型：反骨 + 真实 + 自由
-  else if (tags.has('rebel_spirit') && authenticity >= 4 && resistance >= 3)
-    profile = WRITER_PROFILES.sanmao;
-
-  // 亦舒型：经济独立 + 清醒
-  else if (tags.has('economic_independence_drive') && authenticity >= 3)
-    profile = WRITER_PROFILES.yishu;
-
-  // Audre Lorde型：深度女性联结 + 发声
-  else if (connection >= 5 && tags.has('female_solidarity'))
-    profile = WRITER_PROFILES.lorde;
-
-  // 杜拉斯型：深渊/消耗/创伤
-  else if (thriving <= -3 && (tags.has('trauma_bond') || selfExpression <= -4))
-    profile = WRITER_PROFILES.duras;
-
-  // Mary Oliver型：高敏感 + 活在此刻
-  else if (tags.has('high_sensitivity') && thriving >= 0)
-    profile = WRITER_PROFILES.oliver;
-
-  // 杨本芬型：晚开的花 / 普通女性的尊严
-  else if (tags.has('late_bloomer') || (thriving >= 1 && connection >= 1))
-    profile = WRITER_PROFILES.yangbenfen;
-
-  // 席慕蓉型（默认）
-  else
-    profile = WRITER_PROFILES.ximurong;
-
+  const profile = WRITER_PROFILES[chosen] ?? WRITER_PROFILES.ximurong;
   return {
     writer: profile.writer,
     resonantQuote: pickRandom(profile.quotes),
