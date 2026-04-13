@@ -442,6 +442,143 @@ export const ENDINGS: Ending[] = [
   },
 
   {
+    id: 'hollow_success',
+    title: '千疮百孔的成功者',
+    rarity: 'uncommon',
+    description: '你在所有人眼里都很成功——好工作、好房子、也许还有好家庭。朋友圈里的照片永远精致，年终总结永远漂亮。但你知道那些光鲜底下是什么。你每天戴着一张完美的面具，但面具后面的人快要不存在了。你已经很久没有哭过了——不是因为不想哭，是因为忘记了怎么哭。',
+    flavor: '她赢了所有人定义的游戏，唯独输了自己。',
+    requirement: {
+      minStats: { worldly: 65 },
+      maxStats: { inner: 30 },
+    },
+    culturalQuotes: [
+      {
+        text: '生活是一袭华美的袍，爬满了蚤子。',
+        attribution: '张爱玲',
+        type: 'prose',
+      },
+      {
+        text: '我什么都有了。除了我自己。',
+        attribution: '亦舒 · 《我的前半生》精神',
+        type: 'prose',
+      },
+      {
+        text: '成功不是终点，它是另一个笼子——只不过笼子是镀金的。',
+        attribution: '弗吉尼亚·伍尔夫 · 精神',
+        type: 'prose',
+      },
+      {
+        text: '你看我光鲜亮丽，看不到我夜里独自崩溃的样子。',
+        attribution: '陈绮贞 · 歌意',
+        type: 'lyric',
+      },
+    ],
+  },
+
+  {
+    id: 'phoenix_rising',
+    title: '浴火重生',
+    rarity: 'rare',
+    description: '你经历了最坏的事情——那些让别人光是听说都会沉默的事。你被打碎过，不止一次。但你做了一件很多人做不到的事：你从废墟里爬起来了，然后你用那些碎片重新拼了一个自己。这个新的自己，不完美，有裂痕，但比从前更真实，更强壮，更不愿意被任何人定义。',
+    flavor: '她在灰烬里站了起来。不是因为她不痛，是因为她决定不再让痛定义她。',
+    requirement: {
+      hasTags: ['survived_violence'],
+      personalityMin: { resistance: 4, thriving: 3 },
+      minStats: { inner: 50 },
+    },
+    culturalQuotes: [
+      {
+        text: '我从地狱来，到天堂去，正路过人间。',
+        attribution: '改自萧红 · 精神',
+        type: 'prose',
+      },
+      {
+        text: '那些杀不死你的，会让你变成一个他们无法想象的存在。',
+        attribution: '改自尼采，女性幸存者的宣言',
+        type: 'prose',
+      },
+      {
+        text: '她走过最深的夜，所以她认得出哪些光是真的。',
+        attribution: '玛雅·安杰卢 · 精神',
+        type: 'prose',
+      },
+      {
+        text: '我不是被修复的，我是被重建的。用的是我自己的手。',
+        attribution: '奥德丽·洛德 · 《Sister Outsider》精神',
+        type: 'prose',
+      },
+    ],
+  },
+
+  {
+    id: 'quiet_rebel',
+    title: '温柔的反叛者',
+    rarity: 'uncommon',
+    description: '你没有烧掉任何东西，没有举过标语，没有上过新闻。但你身边的人都知道——你在的地方，规则会慢慢地、安静地、不可逆转地改变。你用一种不让人防备的方式，松动了那些绑住所有人的绳子。有人叫你"温柔"，你觉得这个词被严重低估了。',
+    flavor: '她没有推翻什么，但她改变了所有人呼吸的方式。',
+    requirement: {
+      personalityMin: { resistance: 3, authenticity: 3, connection: 3 },
+      minStats: { inner: 50, social: 50 },
+    },
+    culturalQuotes: [
+      {
+        text: '真正的强大，是温柔。因为温柔意味着你不需要用力。',
+        attribution: '三毛 · 散文精神',
+        type: 'prose',
+      },
+      {
+        text: '革命不一定是暴风，有时候它是一棵树的根，慢慢地撑裂了水泥。',
+        attribution: '奥德丽·洛德 · 精神',
+        type: 'prose',
+      },
+      {
+        text: '我来了，我看见了，我安静地改变了一切。',
+        attribution: '改自凯撒名言，女性主义改写',
+        type: 'prose',
+      },
+      {
+        text: '最深的水，流得最安静。',
+        attribution: '中国谚语',
+        type: 'poem',
+      },
+    ],
+  },
+
+  {
+    id: 'genius_unfulfilled',
+    title: '被浪费的天才',
+    rarity: 'uncommon',
+    description: '你是最聪明的那个人——在每一间教室里、每一个会议室里、每一段对话里。但这个世界从来没有给过你应得的舞台。不是因为你不够好，是因为你是女的、因为你穷、因为你没有"关系"、因为你没有一张让人信服的脸。你的才华像一颗种子落在了水泥地上——它发了芽，但永远没有长成应有的样子。',
+    flavor: '世界亏欠她一个舞台。她亏欠自己一声叹息。',
+    requirement: {
+      minStats: { intelligence: 75 },
+      maxStats: { worldly: 30, wealth: 30 },
+    },
+    culturalQuotes: [
+      {
+        text: '我生来就是高山而非溪流，我欲于群峰之巅俯视平庸的沟壑。',
+        attribution: '张桂梅',
+        type: 'prose',
+      },
+      {
+        text: '如果莎士比亚有一个妹妹，同样才华横溢——她会怎样？',
+        attribution: '弗吉尼亚·伍尔夫 · 《一间自己的房间》',
+        type: 'prose',
+      },
+      {
+        text: '她的才华是一把刀，但没有人给她一块可以雕刻的石头。',
+        attribution: '萧红 · 精神',
+        type: 'prose',
+      },
+      {
+        text: '天才是不分性别的，但机会分。',
+        attribution: '西蒙·波伏娃 · 《第二性》精神',
+        type: 'prose',
+      },
+    ],
+  },
+
+  {
     id: 'ordinary_passage',
     title: '人间走过一遭',
     rarity: 'common',

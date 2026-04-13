@@ -3045,4 +3045,354 @@ export const ALL_EVENTS: EventCard[] = [
       },
     ],
   },
+
+  // ============================================================
+  // 属性触发事件：高属性解锁的特殊剧情
+  // ============================================================
+
+  // ── 智识触发 ──
+
+  {
+    id: 'genius_class',
+    ageRange: [10, 14],
+    title: '天才班选拔',
+    description: '你的成绩太好了，好到老师们开会讨论了你。学校决定送你去重点培养——天才班、竞赛队、或者市里的实验项目。这本来是好事。但是……',
+    requirement: { minStats: { intelligence: 75 } },
+    choices: [
+      {
+        id: 'genius_go',
+        text: '去。这是你离开这里的机会。',
+        statChanges: { intelligence: 6, worldly: 4, inner: 2 },
+        addTags: ['academic_escape'],
+        personalityDelta: { selfExpression: 1, thriving: 1 },
+        followUpText: '你走进了一个更大的世界。那里的人不关心你长什么样，只关心你的脑子。你第一次觉得，也许"聪明"可以带你去一个不一样的地方。',
+      },
+      {
+        id: 'genius_cant_afford',
+        text: '家里拿不出那笔钱。你妈说"女孩子读那么多也没用"。',
+        requirement: { maxStats: { wealth: 30 } },
+        statChanges: { inner: -6, intelligence: 1 },
+        personalityDelta: { structuralAwareness: 2, thriving: -1 },
+        followUpText: '你看着那封通知书被折起来放进抽屉，然后再也没有人提过。你知道那不是你的错，但那种感觉——被关在门外——你记了很久。',
+      },
+      {
+        id: 'genius_isolated',
+        text: '去了，但班里只有你一个女生。你每天都在证明自己。',
+        statChanges: { intelligence: 4, inner: -3, social: -2 },
+        personalityDelta: { resistance: 2, authenticity: -1 },
+        followUpText: '男生们的眼神从来不是友善的——要么是"你不属于这里"，要么是另一种更让人不舒服的注视。你学会了把头埋进书本，假装看不见。',
+      },
+      {
+        id: 'genius_decline',
+        text: '不去。你不想离开你的朋友。',
+        statChanges: { social: 3, inner: 1, intelligence: -2 },
+        personalityDelta: { connection: 2, authenticity: 1 },
+        followUpText: '你选择了留下来。有时候你会想"如果去了会怎样"，但你看着身边的人笑，觉得这个选择也不坏。不是每个机会都必须抓住。',
+      },
+    ],
+  },
+
+  {
+    id: 'academic_competition',
+    ageRange: [15, 18],
+    title: '全国竞赛',
+    description: '你被选去参加全国竞赛——数学、物理、化学、信息学，什么都好。这是证明自己的机会。你准备了很久，但走进考场那天，你听见有人说了一句话。',
+    requirement: { minStats: { intelligence: 70 } },
+    choices: [
+      {
+        id: 'competition_win',
+        text: '你赢了。奖牌、报道、大学保送——一切都来了。',
+        statChanges: { intelligence: 6, worldly: 5, inner: 3 },
+        addTags: ['academic_escape'],
+        personalityDelta: { selfExpression: 2, thriving: 2 },
+        followUpText: '你的名字第一次出现在你没想过的地方。有人采访你，问你"作为女生怎么看待理科"。你笑了笑，心想：我看到的是题目，不是性别。',
+      },
+      {
+        id: 'competition_lose',
+        text: '你没有拿到名次，但你在准备过程中学到了比赛场上更多的东西。',
+        statChanges: { intelligence: 3, inner: 2 },
+        personalityDelta: { structuralAwareness: 1, authenticity: 1 },
+        followUpText: '输了的那天你哭了很久。后来你意识到，那不是终点。你学到的思维方式、那种钻进问题里的快感，没有人能把它从你身上拿走。',
+      },
+      {
+        id: 'competition_sexism',
+        text: '带队老师拍拍你的肩说："能来就不错了，女生一般拿不到这个奖的。"',
+        statChanges: { intelligence: 2, inner: -4 },
+        personalityDelta: { structuralAwareness: 3, resistance: 1, thriving: -1 },
+        followUpText: '你不知道该回什么。你只知道，你准备了三个月，他用一句话就把你归类了。你发誓要么证明他错了，要么永远记住这种感觉——好提醒自己，不要对别人说同样的话。',
+      },
+    ],
+  },
+
+  // ── 社交/情商触发 ──
+
+  {
+    id: 'natural_leader',
+    ageRange: [22, 35],
+    title: '天生的引力',
+    description: '你天生就会说话，会读人，会让人信任你。不是那种刻意的讨好，是一种让人觉得安全的能力。有人注意到了这一点，建议你去做管理、带团队，或者走一条更"有用"的路。',
+    requirement: { minStats: { social: 65 } },
+    choices: [
+      {
+        id: 'leader_take_role',
+        text: '接了管理的位置。你决定试试看自己能走多远。',
+        statChanges: { worldly: 5, wealth: 4, social: 2 },
+        personalityDelta: { selfExpression: 1, thriving: 1 },
+        followUpText: '你做得很好。但你也发现，作为女性管理者，你每天要花一半的力气让人相信你有资格坐在这里。另一半才是真正做事。',
+      },
+      {
+        id: 'leader_start_own',
+        text: '不想给别人打工了。你有自己的想法，自己干。',
+        statChanges: { worldly: 3, wealth: -2, inner: 4 },
+        addTags: ['entrepreneur'],
+        personalityDelta: { selfExpression: 2, resistance: 1, thriving: 1 },
+        followUpText: '创业的头一年你瘦了十斤，失眠了两百个晚上。但你第一次觉得，每天早上醒来是因为自己想做的事，不是别人安排的。',
+      },
+      {
+        id: 'leader_emotional_labor',
+        text: '你意识到你一直在做的"管理"其实是——免费的情绪劳动。',
+        statChanges: { inner: -3, social: 2 },
+        personalityDelta: { structuralAwareness: 3, authenticity: 1 },
+        followUpText: '每次团队有矛盾，你调解。有人哭了，你安慰。有人不满，你沟通。但你的工资单上从来没有"情绪劳动"这一栏。你开始明白，这个世界对女性的"善解人意"有多贪婪。',
+      },
+      {
+        id: 'leader_help_women',
+        text: '你用你的能力去帮助其他女性——连接、推荐、托底。',
+        statChanges: { social: 4, inner: 3, worldly: 1 },
+        addTags: ['female_solidarity'],
+        personalityDelta: { connection: 3, thriving: 1 },
+        followUpText: '你拉了三个女同事进了你的项目组，推荐了两个实习生，悄悄帮一个被上司骚扰的新人转了部门。没有人知道是你做的。但你们之间有了一种默契——那种只有女性之间才有的、"我懂你"的眼神。',
+      },
+    ],
+  },
+
+  {
+    id: 'mentor_appears',
+    ageRange: [20, 30],
+    title: '贵人',
+    description: '一个前辈——也许是你的老师、上司、或者一个偶然认识的人——真心帮你。不求回报，不带条件，不试图控制你。这在你的人生里，是第一次。',
+    requirement: { minStats: { social: 60 } },
+    choices: [
+      {
+        id: 'mentor_accept',
+        text: '你接受了她/他的帮助，认真地成长。',
+        statChanges: { worldly: 4, inner: 3, social: 3, intelligence: 2 },
+        personalityDelta: { thriving: 2, connection: 1 },
+        followUpText: '你学到的不只是技术或知识。你学到的是——一个人可以怎样对另一个人好，不是因为利益，是因为他们真的觉得你值得。这改变了你看世界的方式。',
+      },
+      {
+        id: 'mentor_suspicious',
+        text: '你不敢相信。你的经历告诉你，免费的好意通常是有代价的。',
+        statChanges: { inner: -2, social: -1 },
+        personalityDelta: { structuralAwareness: 1, authenticity: 1, connection: -1 },
+        followUpText: '你和那个人保持了距离。也许你是对的——小心没有错。也许你错过了什么。你不知道。但你知道，是那些过去的事教会你这样的。不是你的错。',
+      },
+      {
+        id: 'mentor_pay_forward',
+        text: '多年后，你成了别人的贵人。你把当年得到的，传了下去。',
+        statChanges: { social: 4, inner: 4, worldly: 2 },
+        addTags: ['female_solidarity'],
+        personalityDelta: { connection: 2, thriving: 1, authenticity: 1 },
+        followUpText: '你找到了一个比你年轻的女孩，她的处境像极了当年的你。你没有说大道理，只是在她需要的时候出现了。那天你想起了你的贵人，突然理解了她/他当年的眼神——那不是怜悯，是认出。',
+      },
+    ],
+  },
+
+  // ── 体能触发 ──
+
+  {
+    id: 'sports_talent',
+    ageRange: [10, 16],
+    title: '体校招生',
+    description: '你的身体天赋被发现了。教练说你有潜力，可以去体校，走专业路线——短跑、游泳、体操，什么都行。但训练很苦，而且总有人说："女孩子练这个太辛苦了，以后嫁不出去。"',
+    requirement: { minStats: { fitness: 75 } },
+    choices: [
+      {
+        id: 'sports_go',
+        text: '去。你想知道自己的身体能做到什么。',
+        statChanges: { fitness: 6, worldly: 4, inner: 4 },
+        addTags: ['rebel_spirit'],
+        personalityDelta: { selfExpression: 2, resistance: 1, thriving: 1 },
+        followUpText: '训练的日子苦到你不想回忆。但你第一次站在领奖台上的时候，所有的声音都消失了——只有你的心跳和你自己的名字。那一刻你知道：你的身体不是用来被看的，是用来做事的。',
+      },
+      {
+        id: 'sports_parents_no',
+        text: '父母不让去。"女孩子练体育，以后怎么办？"',
+        statChanges: { inner: -4, fitness: 1 },
+        personalityDelta: { structuralAwareness: 2, selfExpression: -1, thriving: -1 },
+        followUpText: '你把运动鞋放回了鞋柜。很多年以后，你偶尔看到电视上的运动员，会想：如果当初去了，会怎样？这个问题没有答案，但它一直在那里。',
+      },
+      {
+        id: 'sports_injured',
+        text: '去了，训练太苦，受了伤。身体恢复了，但梦想没有。',
+        statChanges: { fitness: -3, inner: -2, worldly: 1 },
+        personalityDelta: { resistance: 1, structuralAwareness: 1 },
+        followUpText: '伤好了以后，教练说"休息一下吧"。你知道那不是休息，是结束。你学到了一件事：努力不一定有结果，但身体记住了所有的付出。',
+      },
+      {
+        id: 'sports_prove_wrong',
+        text: '你去了，你忍了，你用成绩堵住了所有人的嘴。',
+        statChanges: { fitness: 5, worldly: 5, inner: 5 },
+        addTags: ['rebel_spirit'],
+        personalityDelta: { resistance: 2, selfExpression: 2, thriving: 2 },
+        followUpText: '每次有人说"女孩子不行"，你就跑得更快一点。不是为了证明给他们看——是为了证明给自己看。后来，你不需要再证明什么了。你的存在本身就是答案。',
+      },
+    ],
+  },
+
+  {
+    id: 'physical_challenge',
+    ageRange: [25, 45],
+    title: '极限挑战',
+    description: '你的身体状态一直很好。你决定做一件从来没做过的事——马拉松、攀岩、铁人三项。不是为了给谁看，是为了知道自己的极限在哪里。',
+    requirement: { minStats: { fitness: 60 } },
+    choices: [
+      {
+        id: 'challenge_complete',
+        text: '你完成了。越过终点线的那一刻，你哭了。',
+        statChanges: { inner: 5, worldly: 3, fitness: 3 },
+        personalityDelta: { selfExpression: 1, thriving: 2, authenticity: 1 },
+        followUpText: '那种感觉不是"赢了"，是"活着"。你的身体告诉你：你比你以为的更强。这句话你以前只在鸡汤里看过，现在你信了。',
+      },
+      {
+        id: 'challenge_inspire',
+        text: '你完成了，而且带动了身边的人一起动起来。',
+        statChanges: { social: 4, inner: 4, worldly: 2, fitness: 2 },
+        personalityDelta: { connection: 2, thriving: 1 },
+        followUpText: '你的朋友们开始跟你一起跑步。一个同事说："看到你做到了，我觉得我也可以试试。"你发现，你的力量不只是你自己的——它会传染。',
+      },
+      {
+        id: 'challenge_injury',
+        text: '训练过度，受伤了。身体在提醒你：它也有极限。',
+        statChanges: { fitness: -4, inner: -2, wealth: -2 },
+        personalityDelta: { structuralAwareness: 1, authenticity: 1 },
+        followUpText: '躺在病床上的那几天，你想了很多。你一直在逼自己——工作、生活、身体——好像只有不停地前进才值得存在。也许，学会停下来，也是一种力量。',
+      },
+    ],
+  },
+
+  // ── 外貌触发 ──
+
+  {
+    id: 'scouted_for_modeling',
+    ageRange: [15, 22],
+    title: '星探',
+    description: '在商场、在街上、在学校门口——有人递给你一张名片，说你可以做模特，可以拍广告，可以试试演艺圈。你低头看着那张名片，不知道该不该信。',
+    requirement: { minStats: { appearance: 75 } },
+    choices: [
+      {
+        id: 'modeling_try',
+        text: '你去试了。镜头前的世界，光鲜得让人眩晕。',
+        statChanges: { wealth: 5, worldly: 4, inner: -4 },
+        addTags: ['beauty_currency'],
+        personalityDelta: { selfExpression: -1, authenticity: -2 },
+        followUpText: '你赚到了以前想都不敢想的钱。但你也开始明白，这个行业要的不是你——是你的脸。而脸，是会老的。你每天照镜子的时间越来越长，但越看越不认识自己。',
+      },
+      {
+        id: 'modeling_decline',
+        text: '你把名片丢进了垃圾桶。你不想靠脸吃饭。',
+        statChanges: { inner: 3, intelligence: 1 },
+        personalityDelta: { authenticity: 2, resistance: 1 },
+        followUpText: '你的朋友说你傻，"多少人想要这个机会"。但你知道自己想要什么——不是被看见，是被理解。这两件事完全不同。',
+      },
+      {
+        id: 'modeling_exploited',
+        text: '你去了，但发现那个"机会"背后是陷阱。',
+        statChanges: { inner: -6, social: -3, wealth: -2 },
+        addTags: ['early_sexualization', 'male_gaze_trauma'],
+        personalityDelta: { structuralAwareness: 2, thriving: -2 },
+        followUpText: '他们要你穿得越来越少，拍的东西越来越不对。你说不的时候，他们说"你不做有的是人做"。你离开了，但那些照片可能还在某个地方。你学到了一件事：对女孩来说，"机会"这个词需要加引号。',
+      },
+      {
+        id: 'modeling_advocacy',
+        text: '你进了这个行业，然后开始用你的平台说话。',
+        statChanges: { worldly: 4, inner: 2, social: 3 },
+        personalityDelta: { selfExpression: 2, structuralAwareness: 1, resistance: 1 },
+        followUpText: '你接了广告，也接了采访。但你开始说那些别人不说的话——关于身材焦虑，关于行业里的潜规则，关于"美"是谁定义的。有人骂你"咬喂你的手"，但更多的女孩给你发私信说"谢谢你"。',
+      },
+    ],
+  },
+
+  {
+    id: 'appearance_target',
+    ageRange: [14, 30],
+    title: '因为长得好看',
+    description: '你没有做错任何事。你只是长了那样一张脸。但这张脸，给你带来了你没有要求的注意力——有些让人不舒服，有些让人害怕。',
+    requirement: { minStats: { appearance: 70 } },
+    weight: 0.4,
+    choices: [
+      {
+        id: 'appearance_stalked',
+        text: '有人开始跟踪你。上学的路上、下班的路上、甚至在你家楼下。',
+        statChanges: { inner: -6, social: -3 },
+        addTags: ['male_gaze_trauma'],
+        personalityDelta: { thriving: -2, structuralAwareness: 2 },
+        followUpText: '你换了好几条回家的路，开始戴口罩、穿宽大的衣服。你妈说"你穿成这样干嘛"。你没有告诉她原因。你只是想做一个不被注视的普通人，但连这个都变成了奢侈品。',
+      },
+      {
+        id: 'appearance_rumors',
+        text: '关于你的谣言开始传了。"她一定是靠脸上去的。"',
+        statChanges: { inner: -4, social: -4, worldly: -2 },
+        personalityDelta: { structuralAwareness: 2, authenticity: -1 },
+        followUpText: '你升职了，有人说你睡了领导。你拿了奖学金，有人说老师偏心。你做什么都对，但在别人眼里，你做什么都因为那张脸。你开始恨自己的脸。',
+      },
+      {
+        id: 'appearance_strategic',
+        text: '你学会了利用这种注意力——不是讨好，是策略。',
+        statChanges: { worldly: 3, wealth: 2, inner: -1 },
+        addTags: ['beauty_currency'],
+        personalityDelta: { structuralAwareness: 2, authenticity: -1 },
+        followUpText: '你知道他们在看什么。你也知道怎么让他们看到你想让他们看到的。这不是你想要的人生技能，但在这个世界里，它管用。你只是偶尔会想：如果你长得普通，你会不会活得更轻松一点？',
+      },
+      {
+        id: 'appearance_protected',
+        text: '你的朋友们围在你身边，像一面墙一样保护你。',
+        statChanges: { social: 4, inner: 3 },
+        addTags: ['female_solidarity'],
+        personalityDelta: { connection: 3, thriving: 1 },
+        followUpText: '她们不让你一个人走夜路，不让你一个人去见陌生人，在有人盯着你看的时候挡在你前面。你知道这不该是女孩子需要做的事。但她们做了。你第一次理解了"姐妹"这个词的重量。',
+      },
+    ],
+  },
+
+  // ── 运气触发 ──
+
+  {
+    id: 'windfall',
+    ageRange: [20, 50],
+    title: '意外之财',
+    description: '一笔钱从天而降——也许是彩票、也许是远房亲戚的遗产、也许是加密货币涨了一百倍、也许是你随手买的基金赶上了好时候。总之，你突然有了一笔你没有预期过的钱。',
+    requirement: { minStats: { luck: 75 } },
+    weight: 0.3,
+    choices: [
+      {
+        id: 'windfall_invest',
+        text: '你冷静下来，把钱做了合理的安排。',
+        statChanges: { wealth: 8, inner: 2, worldly: 2 },
+        personalityDelta: { structuralAwareness: 1, thriving: 1 },
+        followUpText: '你没有马上花掉。你买了保险、还了一部分债、剩下的做了稳健投资。不是因为你不想花，是因为你知道，对女人来说，钱不只是钱——是选择权、是说"不"的底气。',
+      },
+      {
+        id: 'windfall_spend',
+        text: '你花了。全部花了。你觉得你值得。',
+        statChanges: { wealth: -2, inner: 3, worldly: 2 },
+        personalityDelta: { selfExpression: 2, authenticity: 1 },
+        followUpText: '你去旅行了，买了一直想买但买不起的东西，请朋友们吃了一顿好的。钱花完了，但那些记忆留下了。也许这不是最"理性"的选择，但谁规定女人花钱一定要理性？',
+      },
+      {
+        id: 'windfall_family',
+        text: '你把大部分给了家人。他们需要。',
+        statChanges: { wealth: 1, social: 3, inner: -1 },
+        personalityDelta: { connection: 1, authenticity: -1 },
+        followUpText: '妈妈的手术费、弟弟的学费、家里的欠款。你一笔一笔地还清了别人的债。你的账户又回到了从前的数字。有人说你傻，有人说你孝顺。你只是觉得，你好像一直在为别人的人生买单。',
+      },
+      {
+        id: 'windfall_scammed',
+        text: '你想让钱生钱，结果被骗了。',
+        statChanges: { wealth: -5, inner: -4, social: -2 },
+        personalityDelta: { structuralAwareness: 1, thriving: -1 },
+        followUpText: '那个"投资顾问"说得天花乱坠，你信了。钱没了，人也找不到了。你不敢告诉家人，因为他们一定会说"女人就是不会理财"。但骗你的那个人，也不是女人。',
+      },
+    ],
+  },
 ];
