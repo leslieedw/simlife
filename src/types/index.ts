@@ -4,14 +4,13 @@
 
 export interface Stats {
   intelligence: number;  // 智识 0-100
-  eq: number;            // 情感智力 0-100
   appearance: number;    // 外貌 0-100
   fitness: number;       // 体能 0-100
   luck: number;          // 运气 0-100
   wealth: number;        // 财富 0-100
-  worldly: number;       // 世俗认可 0-100��社会/体制对你人生的评分，低不代表差）
-  inner: number;         // 内心能量 0-100（真实的心理状态，创伤降、真实选择升）
-  social: number;        // 社会关系 0-100
+  worldly: number;       // 世俗认可 0-100（低不代表差）
+  inner: number;         // 内心能量 0-100（真实心理状态）
+  social: number;        // 社交情商 0-100（人际 + 情感智力）
 }
 
 // ============================================================
@@ -20,12 +19,10 @@ export interface Stats {
 
 export type FamilyWealth = 'poor' | 'working' | 'middle' | 'rich' | 'elite';
 export type FamilyStructure = 'complete' | 'single_parent' | 'orphan' | 'divorced';
-export type BirthCity = 'rural' | 'small_city' | 'mid_city' | 'mega_city' | 'beijing_shanghai';
 
 export interface BirthProfile {
   familyWealth: FamilyWealth;
   familyStructure: FamilyStructure;
-  birthCity: BirthCity;
   parentEducation: 'low' | 'mid' | 'high';
   familyLove: number;
 }
@@ -121,7 +118,6 @@ export interface EventRequirement {
   lacksTag?: HiddenTag[];
   minWealth?: FamilyWealth;
   ageRange?: [number, number];
-  birthCity?: BirthCity[];
 }
 
 export interface ChoiceOption {

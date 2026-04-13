@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import type { BirthProfile, FamilyWealth, FamilyStructure, BirthCity } from '../types';
+import type { BirthProfile, FamilyWealth, FamilyStructure } from '../types';
 
 interface Props {
   onComplete: (birth: BirthProfile) => void;
@@ -102,17 +102,10 @@ const STRUCTURE_OPTIONS: { value: FamilyStructure; label: string }[] = [
   { value: 'orphan', label: '孤儿/寄养' },
 ];
 
-const CITY_OPTIONS: { value: BirthCity; label: string; desc: string }[] = [
-  { value: 'rural', label: '农村', desc: '大山里或田野间' },
-  { value: 'small_city', label: '小县城', desc: '安静，机会不多' },
-  { value: 'mid_city', label: '普通地级市', desc: '平凡的城市' },
-  { value: 'mega_city', label: '省会/大城市', desc: '机会多，竞争也大' },
-  { value: 'beijing_shanghai', label: '北上广深', desc: '最顶级的起点之一' },
-];
-
 export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
-  const [step, setStep] = useState(-1); // -1 = cover page
+  const [step, setStep] = useState(-1); // -1 = cover page, 0-2 = birth config
   const [wealth, setWealth] = useState<FamilyWealth | null>(null);
+  const [structure, setStructure] = useState<FamilyStructure | null>(null);
   const coverQuote = useMemo(() => COVER_QUOTES[Math.floor(Math.random() * COVER_QUOTES.length)], []);
   const coverStats = useMemo(() => pickRandomStats(), []);
   // 生成背景散落的女字旁汉字
@@ -133,23 +126,20 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
     }
     return chars;
   }, []);
-  const [structure, setStructure] = useState<FamilyStructure | null>(null);
-  const [city, setCity] = useState<BirthCity | null>(null);
   const [love, setLove] = useState(50);
   const [education, setEducation] = useState<'low' | 'mid' | 'high'>('mid');
 
   function handleRandom() {
     const w = WEALTH_OPTIONS[Math.floor(Math.random() * WEALTH_OPTIONS.length)].value;
     const s = STRUCTURE_OPTIONS[Math.floor(Math.random() * STRUCTURE_OPTIONS.length)].value;
-    const c = CITY_OPTIONS[Math.floor(Math.random() * CITY_OPTIONS.length)].value;
     const l = Math.floor(Math.random() * 80) + 10;
     const e = (['low', 'mid', 'high'] as const)[Math.floor(Math.random() * 3)];
-    onComplete({ familyWealth: w, familyStructure: s, birthCity: c, familyLove: l, parentEducation: e });
+    onComplete({ familyWealth: w, familyStructure: s, familyLove: l, parentEducation: e });
   }
 
   function handleComplete() {
-    if (!wealth || !structure || !city) return;
-    onComplete({ familyWealth: wealth, familyStructure: structure, birthCity: city, familyLove: love, parentEducation: education });
+    if (!wealth || !structure) return;
+    onComplete({ familyWealth: wealth, familyStructure: structure, familyLove: love, parentEducation: education });
   }
 
   const steps = [
@@ -194,28 +184,7 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
       </div>
     </div>,
 
-    // Step 2: 出生城市
-    <div key="city" className="space-y-4">
-      <h2 className="text-xl font-bold text-white">你出生在哪里？</h2>
-      <div className="space-y-3">
-        {CITY_OPTIONS.map(opt => (
-          <button
-            key={opt.value}
-            onClick={() => { setCity(opt.value); setStep(3); }}
-            className={`w-full text-left p-4 rounded-xl border transition-all ${
-              city === opt.value
-                ? 'border-green-400 bg-green-400/10 text-green-400'
-                : 'border-white/10 bg-white/5 text-gray-300 hover:border-white/30 hover:bg-white/10'
-            }`}
-          >
-            <div className="font-semibold">{opt.label}</div>
-            <div className="text-sm opacity-70 mt-1">{opt.desc}</div>
-          </button>
-        ))}
-      </div>
-    </div>,
-
-    // Step 3: 家庭温暖度（孤儿时改为成长环境）
+    // Step 2: 家庭温暖度（孤儿时改为成长环境）
     <div key="love" className="space-y-6">
       <h2 className="text-xl font-bold text-white">
         {structure === 'orphan' ? '成长环境有多少温暖？' : '家里有多少爱？'}
@@ -374,7 +343,7 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
 
       {/* 进度条 */}
       <div className="flex gap-1 px-6 mb-8">
-        {[0, 1, 2, 3].map(i => (
+        {[0, 1, 2].map(i => (
           <div
             key={i}
             className={`h-1 flex-1 rounded-full transition-all ${i <= step ? 'bg-white' : 'bg-white/15'}`}

@@ -14,7 +14,6 @@ interface Props {
 
 const STAT_LABELS: Record<string, string> = {
   intelligence: '智力',
-  eq: '情商',
   appearance: '颜值',
   fitness: '体能',
   luck: '运气',

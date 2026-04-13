@@ -78,9 +78,6 @@ export function checkRequirement(req: EventRequirement, state: GameState): boole
   if (req.minWealth) {
     if (!wealthAtLeast(birth.familyWealth, req.minWealth)) return false;
   }
-  if (req.birthCity) {
-    if (!req.birthCity.includes(birth.birthCity)) return false;
-  }
   return true;
 }
 
@@ -204,24 +201,36 @@ function rand(min: number, max: number): number {
 }
 
 function generateBirthStats(birth: BirthProfile): Stats {
-  const wealthBonus: Record<FamilyWealth, number> = {
-    poor: -15, working: -5, middle: 0, rich: 15, elite: 25,
+  // 财富按家庭条件定档（不完全随机）
+  const wealthRange: Record<FamilyWealth, [number, number]> = {
+    poor: [5, 20], working: [20, 35], middle: [35, 55], rich: [55, 75], elite: [75, 95],
   };
-  const wb = wealthBonus[birth.familyWealth];
-  // 世俗认可：家庭越好初始越高
-  const worldlyBase = Math.max(10, rand(20, 50) + wb + Math.round(birth.familyLove * 0.2));
+  const [wMin, wMax] = wealthRange[birth.familyWealth];
+  const wealth = rand(wMin, wMax);
+
+  // 父母学历影响智力和世俗
+  const eduBonus: Record<string, number> = { low: -5, mid: 0, high: 10 };
+  const eb = eduBonus[birth.parentEducation] ?? 0;
+
+  // 精英家庭全属性小幅加成
+  const eliteBoost = birth.familyWealth === 'elite' ? 8 : birth.familyWealth === 'rich' ? 4 : 0;
+
+  // 世俗认可：家庭条件 + 学历
+  const worldlyBase = rand(25, 45) + Math.round((wealth - 40) * 0.3) + Math.round(eb * 0.5) + eliteBoost;
   // 内心能量：主要看家庭爱
-  const innerBase = Math.max(10, Math.round(birth.familyLove * 0.6 + rand(10, 30)));
+  const innerBase = Math.round(birth.familyLove * 0.6 + rand(10, 30));
+  // 社交情商：家庭爱 + 家庭条件小幅影响
+  const socialBase = rand(25, 55) + Math.round(birth.familyLove * 0.2) + Math.round(eliteBoost * 0.5);
+
   return {
-    intelligence: rand(30, 80),
-    eq: Math.max(10, rand(20, 70) + Math.round(birth.familyLove * 0.2)),
-    appearance: rand(30, 80),
-    fitness: rand(40, 80),
+    intelligence: rand(30, 70) + eb + Math.round(eliteBoost * 0.5),
+    appearance: rand(30, 75) + Math.round(eliteBoost * 0.3),
+    fitness: rand(35, 75) + Math.round(eliteBoost * 0.5),
     luck: rand(20, 80),
-    wealth: Math.max(0, Math.min(100, rand(20, 60) + wb)),
-    worldly: Math.min(100, worldlyBase),
-    inner: innerBase,
-    social: rand(30, 60),
+    wealth,
+    worldly: Math.max(10, Math.min(100, worldlyBase)),
+    inner: Math.max(10, Math.min(100, innerBase)),
+    social: Math.max(10, Math.min(100, socialBase)),
   };
 }
 
@@ -255,13 +264,11 @@ export function simulateFullGame(): GameState {
   // 随机出生
   const wealths: import('../types').FamilyWealth[] = ['poor', 'working', 'middle', 'rich', 'elite'];
   const structures: import('../types').FamilyStructure[] = ['complete', 'single_parent', 'divorced', 'orphan'];
-  const cities: import('../types').BirthCity[] = ['rural', 'small_city', 'mid_city', 'mega_city', 'beijing_shanghai'];
   const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
   const birth: import('../types').BirthProfile = {
     familyWealth: pick(wealths),
     familyStructure: pick(structures),
-    birthCity: pick(cities),
     parentEducation: pick(['low', 'mid', 'high'] as const),
     familyLove: Math.floor(Math.random() * 80) + 10,
   };

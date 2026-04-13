@@ -79,7 +79,7 @@ export const ENDINGS: Ending[] = [
     description: '你的人生没有戏剧性的高峰，也没有跌入深渊。你爱过，被爱过，吵架过，和好过，失去过，得到过。你到最后，还是你自己。这不是"普通"，这是一种被低估的成就。',
     flavor: '她一生平静，但内心没有一处是荒的。',
     requirement: {
-      minStats: { inner: 60, social: 50, eq: 50 },
+      minStats: { inner: 60, social: 55 },
     },
     culturalQuotes: [
       {
@@ -381,7 +381,7 @@ export const ENDINGS: Ending[] = [
     flavor: '和解不是遗忘。是承认那些都是真的，然后，继续活。',
     requirement: {
       personalityMin: { structuralAwareness: 3, authenticity: 2 },
-      minStats: { inner: 50, eq: 55 },
+      minStats: { inner: 50, social: 55 },
     },
     culturalQuotes: [
       {
