@@ -1064,4 +1064,397 @@ export const ALL_EVENTS: EventCard[] = [
       },
     ],
   },
+
+  // ============================================================
+  // 随机意外事件——无论家境如何都可能发生
+  // ============================================================
+
+  {
+    id: 'romance_scam',
+    ageRange: [18, 35],
+    title: '一段奇怪的感情',
+    description: '网上认识了一个人，聊了几个月，感觉特别懂你。然后他开口借钱，说是暂时周转，很快还。你已经有点喜欢上他了。',
+    weight: 0.4,
+    choices: [
+      {
+        id: 'send_money',
+        text: '借了，你相信他',
+        statChanges: { wealth: -20, mental: -8 },
+        addTags: ['trauma_bond'],
+        personalityDelta: { structuralAwareness: 1, authenticity: -1 },
+        followUpText: '他消失了。那段时间你反复想：是不是我不够好？后来你才知道——他对每个人说的都是同一套话。这不是你的问题，这是一门生意。',
+      },
+      {
+        id: 'sense_something_wrong',
+        text: '感觉不对劲，停止联系，没给钱',
+        requirement: { minStats: { intelligence: 60 } },
+        statChanges: { mental: 2 },
+        personalityDelta: { structuralAwareness: 2, resistance: 1 },
+        followUpText: '你的直觉救了你。那种"感觉不对"是值得信任的信号。',
+        lockedHint: '（需要：足够的判断力）',
+      },
+      {
+        id: 'ask_friend',
+        text: '把聊天记录给朋友看，她说"这是诈骗"',
+        requirement: { hasTags: ['female_solidarity'] },
+        statChanges: { mental: 3, social: 1 },
+        personalityDelta: { connection: 2, structuralAwareness: 2 },
+        followUpText: '你幸运地有一个愿意说真话的人。不是所有人都这么幸运。',
+      },
+    ],
+  },
+
+  {
+    id: 'followed_at_night',
+    ageRange: [16, 35],
+    title: '那条路',
+    description: '深夜，你一个人回家，发现身后有人跟着你，走快他也走快，已经跟了两个路口了。',
+    weight: 0.5,
+    choices: [
+      {
+        id: 'enter_shop',
+        text: '走进最近的便利店，等了很久才离开',
+        statChanges: { mental: -3, fitness: 1 },
+        personalityDelta: { structuralAwareness: 2 },
+        followUpText: '那晚你安全回家了。但你此后很多年，走夜路都会回头看。这种代价是真实存在的，它只是没有被计入任何统计数字。',
+      },
+      {
+        id: 'call_someone',
+        text: '打电话给朋友，大声说出自己的位置，一路说话走完',
+        statChanges: { mental: -2, social: 2 },
+        personalityDelta: { connection: 1, structuralAwareness: 1 },
+        followUpText: '她陪你说话直到你进了家门。你们谁也没提这件事"有多严重"，因为你们都知道这有多正常。这才是最沉重的地方。',
+      },
+      {
+        id: 'confront',
+        text: '转过身，大声质问他在干什么',
+        requirement: { minStats: { fitness: 55 } },
+        statChanges: { mental: 2 },
+        addTags: ['rebel_spirit'],
+        personalityDelta: { resistance: 3, selfExpression: 2 },
+        followUpText: '他走了。你不知道他会不会再来。但你的声音在那条路上是真实存在的，它没有颤抖。',
+        lockedHint: '（需要：足够的体能支撑那一刻的勇气）',
+      },
+      {
+        id: 'freeze',
+        text: '僵住了，不知道该怎么做，一直走一直走',
+        statChanges: { mental: -6 },
+        addTags: ['male_gaze_trauma'],
+        personalityDelta: { selfExpression: -1, structuralAwareness: 1 },
+        followUpText: '你最后进了一个有灯光的地方，他不见了。事后你觉得自己太没用。但那叫"冻结反应"，是人在极度恐惧时最正常的生理反应。你没有做错任何事。',
+      },
+    ],
+  },
+
+  {
+    id: 'financial_trap',
+    ageRange: [22, 40],
+    title: '一个"机会"',
+    description: '有人介绍了一个"稳赚不赔的投资项目"，身边的朋友已经有人进了，说收益很好。你有一笔积蓄。',
+    weight: 0.35,
+    choices: [
+      {
+        id: 'invest_all',
+        text: '投进去了，被说动了',
+        statChanges: { wealth: -25, mental: -10 },
+        personalityDelta: { structuralAwareness: 2, thriving: -2 },
+        followUpText: '钱没了。那段时间你睡不着，反复想自己是不是太蠢了。但设计这个的人，专门研究过怎么让聪明人也相信它。这不是智商问题，是信息不对称的问题。',
+      },
+      {
+        id: 'research_first',
+        text: '查了很多资料，发现是庞氏骗局，没进',
+        requirement: { minStats: { intelligence: 65 } },
+        statChanges: { mental: 3 },
+        personalityDelta: { structuralAwareness: 2, resistance: 1 },
+        followUpText: '你没有被说服。那个"稳赚不赔"的感觉，恰恰是最大的警报。',
+        lockedHint: '（需要：足够的判断力）',
+      },
+      {
+        id: 'invest_small',
+        text: '只投了一小部分"试试水"',
+        statChanges: { wealth: -8, mental: -3 },
+        personalityDelta: { structuralAwareness: 1 },
+        followUpText: '损失不算太大。你后来想，那个"试试水"救了你，也让你记住了这个教训。',
+      },
+    ],
+  },
+
+  {
+    id: 'postpartum_depression',
+    ageRange: [27, 35],
+    title: '生完孩子之后',
+    description: '孩子出生了。你不知道为什么，你哭的次数比以前多很多，有时候对着孩子的脸，你感到一种说不清的恐惧和空洞。这不是你"应该有"的感受。',
+    weight: 0.6,
+    choices: [
+      {
+        id: 'hide_it',
+        text: '没跟任何人说，觉得这是自己的问题，不是好妈妈',
+        statChanges: { mental: -10, eq: -3 },
+        addTags: ['good_girl_conditioning'],
+        personalityDelta: { selfExpression: -2, thriving: -3, authenticity: -2 },
+        followUpText: '你把那种感觉压下去了。它没有消失，它变成了别的东西——麻木，或者某种持续很久的疲惫。',
+      },
+      {
+        id: 'tell_partner',
+        text: '告诉了伴侣，他说"你是不是太矫情了"',
+        statChanges: { mental: -7, social: -2 },
+        addTags: ['trauma_bond'],
+        personalityDelta: { selfExpression: -1, structuralAwareness: 2 },
+        followUpText: '他的那句话，比那段抑郁本身，伤得更深更久。',
+      },
+      {
+        id: 'seek_help',
+        text: '去看了医生，被诊断为产后抑郁，开始治疗',
+        statChanges: { mental: 5, eq: 3 },
+        personalityDelta: { selfExpression: 2, structuralAwareness: 2, thriving: 2 },
+        followUpText: '医生说这是病，不是性格问题，不是不爱孩子的证明。那句话，你哭了很久。',
+      },
+      {
+        id: 'mother_helps',
+        text: '妈妈来了，虽然她不懂，但她帮你抱着孩子，让你睡了一觉',
+        statChanges: { mental: 4, social: 2 },
+        personalityDelta: { connection: 2, thriving: 1 },
+        followUpText: '有时候，被帮助不需要对方完全理解你。那觉睡完之后，世界没有改变，但你有了一点力气。',
+      },
+    ],
+  },
+
+  // ============================================================
+  // 晚年觉醒事件链——触发"晚开的花"结局
+  // ============================================================
+
+  {
+    id: 'late_marriage_moment',
+    ageRange: [45, 55],
+    title: '某一天，你停住了',
+    description: '结婚二十多年了。他在沙发上看电视，你在厨房洗碗，窗外有人在放烟火。你突然想起来——你年轻时有一件很想做的事，你想不起来了，只记得有这件事。',
+    weight: 0.6,
+    choices: [
+      {
+        id: 'keep_washing',
+        text: '碗洗完了，烟火也灭了，你继续过',
+        statChanges: { mental: -4 },
+        personalityDelta: { thriving: -1, selfExpression: -1 },
+        followUpText: '你没有停下来。但那个问题留下来了，它会再问你的。',
+      },
+      {
+        id: 'start_asking',
+        text: '放下碗，站在窗口，开始认真想那件事是什么',
+        statChanges: { mental: 3, intelligence: 2 },
+        addTags: ['late_bloomer'],
+        personalityDelta: { selfExpression: 3, authenticity: 3, structuralAwareness: 2 },
+        followUpText: '你想起来了。那件事还在那里，等了你很多年。也许现在开始，还来得及。',
+      },
+      {
+        id: 'write_it_down',
+        text: '找了一张纸，开始写你这几十年没有说出口的话',
+        statChanges: { mental: 5 },
+        addTags: ['late_bloomer', 'creative_outlet'],
+        personalityDelta: { selfExpression: 4, authenticity: 3, thriving: 2 },
+        followUpText: '你写了整整三页。写完你意识到，你一直都有话说，只是没有地方说。',
+      },
+    ],
+  },
+
+  {
+    id: 'late_leave_decision',
+    ageRange: [48, 58],
+    title: '离开，还是留下',
+    description: '你有机会离开——也许是孩子大了，也许是你终于有了一点存款，也许是一个女性朋友告诉你她离婚后比以前快乐。你站在那个岔路口。',
+    weight: 0.5,
+    requirement: { hasTags: ['late_bloomer'] },
+    choices: [
+      {
+        id: 'leave_finally',
+        text: '离开。晚了二十年，但今天是最早的一天',
+        statChanges: { mental: -3, wealth: -10, social: -3 },
+        personalityDelta: { resistance: 4, selfExpression: 3, authenticity: 4, thriving: 3 },
+        followUpText: '所有人说你疯了，说你这把年纪了，说孩子怎么看你。你说：我还有一半的人生。那一半，我想是自己的。',
+      },
+      {
+        id: 'stay_but_change',
+        text: '留下，但开始要求一些东西属于你自己',
+        statChanges: { mental: 2, social: 1 },
+        personalityDelta: { selfExpression: 2, resistance: 2, authenticity: 2 },
+        followUpText: '你没有离开，但你不再是从前那个沉默的人了。改变可以从一句"不"开始。',
+      },
+      {
+        id: 'not_yet',
+        text: '还没准备好，再等等',
+        statChanges: { mental: -2 },
+        personalityDelta: { thriving: -1 },
+        followUpText: '等待有时候是积蓄力量，有时候是让时间替你做决定。只有你知道这次是哪种。',
+      },
+    ],
+  },
+
+  {
+    id: 'late_first_thing_for_self',
+    ageRange: [50, 60],
+    title: '第一次，为自己',
+    description: '你报了一个课——陶艺，写作，游泳，或者学一门语言。不为孩子，不为工作，就是因为你想。',
+    weight: 0.6,
+    requirement: { hasTags: ['late_bloomer'] },
+    choices: [
+      {
+        id: 'go_all_in',
+        text: '去了，而且每周都去，这成了你一周里最快乐的两小时',
+        statChanges: { mental: 8, social: 3 },
+        addTags: ['creative_outlet'],
+        personalityDelta: { authenticity: 3, selfExpression: 3, thriving: 4, connection: 2 },
+        followUpText: '你在课堂上认识了几个也是第一次为自己的女人。你们在课后喝咖啡，聊到很晚。你发现，五十岁也可以有新的朋友，新的开始。',
+      },
+      {
+        id: 'go_but_guilty',
+        text: '去了，但觉得有点愧疚，觉得这个时间应该用来做"更有用的事"',
+        statChanges: { mental: 3 },
+        personalityDelta: { authenticity: 1, thriving: 1, selfExpression: 1 },
+        followUpText: '那个愧疚是真实的，是几十年的训练的结果。但你还是去了。那个"还是去了"，比愧疚更重要。',
+      },
+    ],
+  },
+
+  // ============================================================
+  // 更多负向与复杂处境
+  // ============================================================
+
+  {
+    id: 'career_forced_quit',
+    ageRange: [28, 38],
+    title: '你被迫离职了',
+    description: '生完孩子后，公司明里暗里让你待不下去——不给你重要项目，绩效突然变差，开始频繁让你"自愿"加班到深夜。你明白那是什么意思。',
+    weight: 0.5,
+    requirement: { hasTags: ['second_shift_burden'] },
+    choices: [
+      {
+        id: 'quit_quietly',
+        text: '辞了，没有声张',
+        statChanges: { wealth: -12, mental: -6, intelligence: -3 },
+        personalityDelta: { structuralAwareness: 2, thriving: -2, resistance: -1 },
+        followUpText: '你离开了，悄悄的。那个位置很快被一个没有孩子的人填上了。没有人说这不公平，因为所有人都知道这很正常。',
+      },
+      {
+        id: 'fight_back_legal',
+        text: '去劳动仲裁，要求书面的离职原因',
+        statChanges: { wealth: -5, mental: -3, social: -4 },
+        addTags: ['glass_ceiling_seen', 'rebel_spirit'],
+        personalityDelta: { resistance: 4, selfExpression: 3, structuralAwareness: 3 },
+        followUpText: '没有赢，但你说出来了，写进了记录里。那些记录不会改变你的处境，但它证明了：这件事发生过。',
+      },
+      {
+        id: 'start_own',
+        text: '不等他们赶你，先自己出去单干',
+        requirement: { minStats: { wealth: 40, intelligence: 60 } },
+        statChanges: { wealth: -8, mental: -3 },
+        addTags: ['economic_independence_drive', 'rebel_spirit'],
+        personalityDelta: { resistance: 3, thriving: 2, authenticity: 2 },
+        followUpText: '你没有等那个门关上，你先开了另一扇。代价是有的。但那扇门是你自己开的。',
+        lockedHint: '（需要：有一定积蓄和判断力）',
+      },
+    ],
+  },
+
+  {
+    id: 'aging_parent_care',
+    ageRange: [36, 50],
+    title: '爸妈老了',
+    description: '爸妈开始需要照顾了。兄弟姐妹里，所有人默认地把这件事交给了你——因为你是女儿，或者因为你"看起来更有时间"。',
+    weight: 0.6,
+    choices: [
+      {
+        id: 'take_all',
+        text: '接了，一个人扛',
+        statChanges: { mental: -6, wealth: -8, fitness: -4, social: -3 },
+        addTags: ['second_shift_burden'],
+        personalityDelta: { thriving: -2, selfExpression: -1, connection: 1 },
+        followUpText: '没有人说谢谢，因为大家觉得这本来就是你该做的。你有时候对着镜子，认不出自己。',
+      },
+      {
+        id: 'negotiate_share',
+        text: '要求兄弟姐妹分担，明确分工',
+        statChanges: { mental: 2, social: -2 },
+        personalityDelta: { resistance: 3, selfExpression: 3, structuralAwareness: 2 },
+        followUpText: '他们说你计较、自私、不像个女儿。你说：我也是人。那个对话很艰难，但你说完之后，发现自己还在。',
+      },
+      {
+        id: 'hire_help',
+        text: '用自己的钱请了护工，把实际照护外包出去',
+        requirement: { minStats: { wealth: 55 } },
+        statChanges: { wealth: -12, mental: 3 },
+        personalityDelta: { authenticity: 2, thriving: 1 },
+        followUpText: '有人说你花钱买孝顺。你说：我在用我有的方式，尽我的力所能及。',
+        lockedHint: '（需要：有足够的经济能力）',
+      },
+    ],
+  },
+
+  {
+    id: 'depression_episode',
+    ageRange: [22, 50],
+    title: '某一段时间',
+    description: '你有一段时间起不来床，什么都不想做，不知道为什么活着，又不是没有原因，又说不清楚原因。',
+    weight: 0.4,
+    requirement: { maxStats: { mental: 35 } },
+    choices: [
+      {
+        id: 'push_through_alone',
+        text: '一个人撑过去了，没跟人说',
+        statChanges: { mental: -3, fitness: -3 },
+        personalityDelta: { selfExpression: -2, thriving: -2 },
+        followUpText: '你出来了。但你也把那段时间的自己关在了一个没人进得去的地方。',
+      },
+      {
+        id: 'get_help',
+        text: '去看了医生或心理咨询',
+        statChanges: { mental: 7, eq: 4 },
+        personalityDelta: { selfExpression: 2, thriving: 3, structuralAwareness: 2 },
+        followUpText: '你终于有人告诉你：这不是你的错，这是病，它可以被治。那句话比任何药物先起效。',
+      },
+      {
+        id: 'creative_outlet_helps',
+        text: '开始写日记、画画，或者做任何能让感受有去处的事',
+        statChanges: { mental: 4 },
+        addTags: ['creative_outlet', 'high_sensitivity'],
+        personalityDelta: { selfExpression: 3, authenticity: 2, thriving: 2 },
+        followUpText: '你不是在解决它，你是在给它一个容器。有时候，这就够了。',
+      },
+    ],
+  },
+
+  {
+    id: 'inheritance_inequality',
+    ageRange: [30, 50],
+    title: '遗产',
+    description: '父母分配财产，房子和大部分资产给了儿子（你的兄弟），说"女儿嫁出去了，是别人家的人"。',
+    weight: 0.4,
+    requirement: { minStats: { wealth: 30 } },
+    choices: [
+      {
+        id: 'accept_silently',
+        text: '接受了，没有说话',
+        statChanges: { wealth: -10, mental: -5 },
+        addTags: ['good_girl_conditioning'],
+        personalityDelta: { structuralAwareness: 2, resistance: -1, selfExpression: -1 },
+        followUpText: '你说"没关系"，然后回了自己家。那两个字咽下去的时候，你知道它们是假的。',
+      },
+      {
+        id: 'speak_up',
+        text: '提出异议，说这不公平',
+        statChanges: { mental: 2, social: -3, wealth: -5 },
+        addTags: ['rebel_spirit'],
+        personalityDelta: { selfExpression: 3, resistance: 3, structuralAwareness: 3 },
+        followUpText: '家里沉默了很久。你说出来了，哪怕没有改变结果。说出来本身是一件事。',
+      },
+      {
+        id: 'legal_action',
+        text: '查了法律，知道你有权利主张应得的份额',
+        requirement: { minStats: { intelligence: 60 } },
+        statChanges: { wealth: 5, social: -5, mental: -2 },
+        addTags: ['glass_ceiling_seen', 'economic_independence_drive'],
+        personalityDelta: { resistance: 4, structuralAwareness: 3, selfExpression: 2 },
+        followUpText: '家里说你贪心，说你不孝，说你为了钱不认亲。你说：这是我的权利。法律这样写的，不是我写的。',
+        lockedHint: '（需要：足够的判断力去找到那个依据）',
+      },
+    ],
+  },
 ];
