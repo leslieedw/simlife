@@ -230,15 +230,18 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
           >
             随机出生（快速开始）
           </button>
-          {onDebugSimulate && (
-            <button
-              onClick={onDebugSimulate}
-              className="w-full py-3 mt-2 border border-dashed border-amber-500/30 rounded-xl text-amber-500/60 text-xs hover:border-amber-500/60 hover:text-amber-500 transition-all"
-            >
-              DEV: 快速模拟 → 直达结局
-            </button>
-          )}
         </div>
+
+        {/* DEV 按钮 - 右下角小图标 */}
+        {onDebugSimulate && (
+          <button
+            onClick={onDebugSimulate}
+            className="fixed bottom-4 right-4 w-8 h-8 rounded-full border border-dashed border-amber-500/20 text-amber-500/40 text-[9px] font-mono hover:border-amber-500/50 hover:text-amber-500/80 transition-all flex items-center justify-center"
+            title="DEV: 快速模拟 → 直达结局"
+          >
+            ▶
+          </button>
+        )}
       </div>
     );
   }
