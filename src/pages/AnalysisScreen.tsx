@@ -84,33 +84,21 @@ export function AnalysisScreen({ personality, tags, onRestart }: Props) {
       <div className="pb-8">
         <div className="text-xs text-gray-500 uppercase tracking-widest mb-4">与你共鸣的灵魂</div>
         <div className="space-y-3">
+          {/* 作家卡 */}
           <div className="p-4 bg-white/[0.04] border border-white/8 rounded-xl">
-            <div className="flex items-start gap-3">
-              <div className="text-xs text-gray-500 w-8 flex-shrink-0 mt-0.5">作家</div>
-              <div>
-                <div className="text-white text-sm font-medium">{culturalMatch.writer.name}</div>
-                <div className="text-gray-500 text-xs mt-0.5">{culturalMatch.writer.work}</div>
-                <div className="text-gray-400 text-xs mt-1.5 leading-relaxed">{culturalMatch.writer.reason}</div>
-              </div>
-            </div>
+            <div className="text-xs text-gray-600 mb-2 uppercase tracking-wider">作家</div>
+            <div className="text-white text-sm font-medium">{culturalMatch.writer.name}</div>
+            <div className="text-gray-600 text-xs mt-0.5">{culturalMatch.writer.work}</div>
+            <div className="text-gray-400 text-xs mt-2 leading-relaxed">{culturalMatch.writer.reason}</div>
           </div>
-          <div className="p-4 bg-white/[0.04] border border-white/8 rounded-xl">
-            <div className="flex items-start gap-3">
-              <div className="text-xs text-gray-500 w-8 flex-shrink-0 mt-0.5">音乐</div>
-              <div>
-                <div className="text-white text-sm font-medium">{culturalMatch.musician.name}</div>
-                <div className="text-gray-400 text-xs mt-1.5 leading-relaxed">{culturalMatch.musician.reason}</div>
-              </div>
+
+          {/* 语录卡——这是重头戏 */}
+          <div className="p-5 bg-white/[0.03] border border-white/10 rounded-xl">
+            <div className="text-gray-300 text-sm leading-relaxed italic">
+              「{culturalMatch.resonantQuote.text}」
             </div>
-          </div>
-          <div className="p-4 bg-white/[0.04] border border-white/8 rounded-xl">
-            <div className="flex items-start gap-3">
-              <div className="text-xs text-gray-500 w-8 flex-shrink-0 mt-0.5">歌曲</div>
-              <div>
-                <div className="text-white text-sm font-medium">《{culturalMatch.song.title}》</div>
-                <div className="text-gray-500 text-xs mt-0.5">{culturalMatch.song.artist}</div>
-                <div className="text-gray-400 text-xs mt-1.5 leading-relaxed">{culturalMatch.song.reason}</div>
-              </div>
+            <div className="text-gray-600 text-xs mt-3 text-right">
+              —— {culturalMatch.resonantQuote.attribution}
             </div>
           </div>
         </div>

@@ -11,8 +11,8 @@ export interface DimensionResult {
 
 export interface CulturalMatch {
   writer: { name: string; work: string; reason: string };
-  musician: { name: string; reason: string };
-  song: { title: string; artist: string; reason: string };
+  // 一句真正共鸣的话——诗词、歌词、散文，来自世界各地
+  resonantQuote: { text: string; attribution: string };
 }
 
 export interface PersonalityResult {
@@ -234,67 +234,103 @@ function generateInsight(scores: PersonalityScores, tags: Set<HiddenTag>): strin
 function generateCulturalMatch(scores: PersonalityScores, tags: Set<HiddenTag>): CulturalMatch {
   const { selfExpression, resistance, structuralAwareness, connection, authenticity, thriving } = scores;
 
-  // 萧红型：贫困/逃脱/韧性
+  // 萧红型：逃离/韧性/贫困中生长
   if (tags.has('poverty_scar') || tags.has('academic_escape') || (resistance >= 3 && thriving >= 1))
     return {
-      writer: { name: '萧红', work: '《呼兰河传》《生死场》', reason: '她是用生命写作的人。贫穷、逃离、流浪——她把所有重量变成了语言里的光。' },
-      musician: { name: '张惠妹', reason: '她的声音里有在废墟上生长的力量，不脆弱，不假装。' },
-      song: { title: '原来你什么都不想要', artist: '张惠妹', reason: '在经历很多之后，终于知道什么是真正想要的。' },
+      writer: { name: '萧红', work: '《呼兰河传》', reason: '她一生都在逃离，也一生都在写那个逃不掉的地方。她的文字是废墟里长出来的花，不是温室里培育的。' },
+      resonantQuote: {
+        text: 'I am not afraid of storms, for I am learning how to sail my ship.',
+        attribution: 'Louisa May Alcott · 《小妇人》',
+      },
     };
 
-  // 张爱玲型：复杂关系/清醒/美丽的悲观
+  // 张爱玲型：清醒的悲观/关系里的处境
   if ((tags.has('trauma_bond') || tags.has('beauty_currency')) && structuralAwareness >= 2)
     return {
-      writer: { name: '张爱玲', work: '《倾城之恋》《半生缘》', reason: '她用最精准的语言写女性在关系里的处境，不美化，不煽情，只是看见。' },
-      musician: { name: '王菲', reason: '冷静、克制、但有无法忽视的情感内核——像张爱玲的文字一样。' },
-      song: { title: '容易受伤的女人', artist: '王菲', reason: '清醒地感受着，清醒地受着伤。' },
+      writer: { name: '张爱玲', work: '《半生缘》《倾城之恋》', reason: '她不美化爱情，不评判女人的选择，只是用极度精准的眼睛，把那些无法言说的处境，写成了语言。' },
+      resonantQuote: {
+        text: '也许每一个男子全都有过这样的两个女人，至少两个。娶了红玫瑰，久而久之，红的变了墙上的一抹蚊子血，白的还是"床前明月光"；娶了白玫瑰，白的便是衣服上沾的一粒饭黏子，红的却是心口上一颗朱砂痣。',
+        attribution: '张爱玲 · 《红玫瑰与白玫瑰》',
+      },
     };
 
-  // 伍尔夫型：内心世界/创意/自己的房间
+  // 伍尔夫型：内心世界/创造力/需要自己的空间
   if (tags.has('creative_outlet') || (selfExpression >= 3 && authenticity >= 3))
     return {
-      writer: { name: '弗吉尼亚·伍尔夫', work: '《一间自己的房间》《达洛维太太》', reason: '她在说：女性需要空间，需要自己的内心世界，需要被认真对待的思想。' },
-      musician: { name: '陈绮贞', reason: '用细腻的声音写内心世界，像在纸上画微小而真实的事物。' },
-      song: { title: '旅行的意义', artist: '陈绮贞', reason: '所有的旅行都是向内的，所有的答案都在自己这里。' },
+      writer: { name: '弗吉尼亚·伍尔夫', work: '《一间自己的房间》', reason: '她说女性需要钱和一间自己的屋子。她说的不只是书房，是一个没有人可以进来要求你的空间——哪怕只存在于内心。' },
+      resonantQuote: {
+        text: 'You cannot find peace by avoiding life.',
+        attribution: 'Virginia Woolf',
+      },
     };
 
   // 波伏娃型：看见结构/反抗/女性主义清醒
   if (structuralAwareness >= 4 || (resistance >= 4 && connection >= 2))
     return {
-      writer: { name: '西蒙·波伏娃', work: '《第二性》', reason: '她第一个系统地说出来：女人不是天生的，是被造就的。你也看见了这件事。' },
-      musician: { name: '椎名林檎', reason: '她在日本主流审美里活出了完全的自己，反叛又精准，像在用音乐做女性主义宣言。' },
-      song: { title: '我', artist: '王菲', reason: '我就是我，不需要解释，不需要被允许。' },
+      writer: { name: '西蒙·波伏娃', work: '《第二性》', reason: '她把"女人是什么"这个问题，从哲学的角度彻底拆开来看。她的清醒让很多人不舒服，但也让更多人，第一次能够命名自己的处境。' },
+      resonantQuote: {
+        text: 'I am not free while any woman is unfree, even when her shackles are very different from my own.',
+        attribution: 'Audre Lorde',
+      },
     };
 
-  // 三毛型：自由/流浪/理想主义
+  // 三毛型：自由/流浪/真实的代价
   if (resistance >= 3 && authenticity >= 3 && tags.has('rebel_spirit'))
     return {
-      writer: { name: '三毛', work: '《撒哈拉的故事》《雨季不再来》', reason: '她用一生证明，女性可以走很远，可以活出很不一样的故事。' },
-      musician: { name: '王菲', reason: '她的人生和音乐都在说：我可以走，我可以选，我可以是我自己。' },
-      song: { title: '走吧', artist: '王菲', reason: '有时候，走，就是答案。' },
+      writer: { name: '三毛', work: '《撒哈拉的故事》', reason: '她把"女人可以去很远的地方"这件事，用自己的人生做了证明。不是没有代价，是她觉得那个代价值得。' },
+      resonantQuote: {
+        text: 'Tell me, what is it you plan to do with your one wild and precious life?',
+        attribution: 'Mary Oliver · 《夏日》',
+      },
     };
 
-  // 亦舒型：独立/清醒/都市女性
+  // 亦舒型：经济独立/清醒/都市
   if (tags.has('economic_independence_drive') && authenticity >= 2)
     return {
-      writer: { name: '亦舒', work: '《我的前半生》《喜宝》', reason: '她写都市女性的清醒与妥协，从不判断，只是照见。' },
-      musician: { name: '陈珊妮', reason: '她的音乐有都市女性的冷静和锋利，清楚知道规则，也清楚知道不想遵守。' },
-      song: { title: '希望这世界上的每一个人', artist: '陈珊妮', reason: '带着疲惫的温柔，依然对世界抱有某种期待。' },
+      writer: { name: '亦舒', work: '《我的前半生》《喜宝》', reason: '她笔下的女人，要么非常清醒地选择妥协，要么非常清醒地拒绝妥协。她从不告诉你哪个更对。只是照见。' },
+      resonantQuote: {
+        text: '我要很多很多的爱，如果没有爱，那就很多很多的钱，如果两件都没有，有健康也是好的。',
+        attribution: '亦舒 · 《喜宝》',
+      },
     };
 
-  // 杨本芬型：普通女性/日常的重量/安静的尊严
-  if (thriving >= 1 && connection >= 1 && selfExpression >= -1)
+  // 奥德丽·洛德型：女性联结/边缘声音/共同体
+  if (connection >= 4 && tags.has('female_solidarity'))
     return {
-      writer: { name: '杨本芬', work: '《秋园》《浮木》', reason: '她七十岁开始写作，写普通中国女性的一生。普通不是渺小，是世界上大多数人真实的重量。' },
-      musician: { name: '李宇春', reason: '她不符合"女性应该的样子"，但她存在，真实而稳固。' },
-      song: { title: '下一站天后', artist: '王菲', reason: '每一个普通女孩，心里都有一个想成为自己的愿望。' },
+      writer: { name: 'Audre Lorde', work: '《Sister Outsider》', reason: '她是黑人、女性、酷儿、诗人。她说沉默不会保护你，说出来才会。她的写作是为了所有被边缘化的女性。' },
+      resonantQuote: {
+        text: 'It is not our differences that divide us. It is our inability to recognize, accept, and celebrate those differences.',
+        attribution: 'Audre Lorde · 《Our Dead Behind Us》',
+      },
     };
 
-  // 默认：席慕蓉型
+  // 杜拉斯型：深渊/欲望/复杂的内心
+  if (thriving <= -2 && (tags.has('trauma_bond') || selfExpression <= -3))
+    return {
+      writer: { name: '玛格丽特·杜拉斯', work: '《情人》《广岛之恋》', reason: '她写那些难以言说的感情——不道德的、令人困惑的、无法被归类的。她不解释，不辩护，只是把它们放在那里，非常诚实。' },
+      resonantQuote: {
+        text: '很早以前，在我还是少女的时候，一个男人朝我走来，他说：我比你年轻，请你不要像爱一个老女人一样爱我。',
+        attribution: '玛格丽特·杜拉斯 · 《情人》',
+      },
+    };
+
+  // 杨本芬型：普通女性/日常的尊严
+  if (thriving >= 1 && connection >= 1)
+    return {
+      writer: { name: '杨本芬', work: '《秋园》', reason: '她七十岁才开始写作，写的是她母亲和那一代普通中国女性的一生。她说：她们活过，她们应该被记住。' },
+      resonantQuote: {
+        text: '那些在暗处发光的人，只是因为没有人记录，不等于她们不存在。',
+        attribution: '杨本芬 · 《我本芬芳》',
+      },
+    };
+
+  // 席慕蓉型（默认）：诗意/温柔/时间
   return {
-    writer: { name: '席慕蓉', work: '《一棵开花的树》《无怨的青春》', reason: '她写女性对生命的温柔凝视——爱、时间、成长、消逝，都被她写成了诗。' },
-    musician: { name: '陈绮贞', reason: '她的音乐有席慕蓉诗歌的质感——细腻，安静，但有力量。' },
-    song: { title: '流年', artist: '陈绮贞', reason: '时光流过，但有些东西留下来了。' },
+    writer: { name: '席慕蓉', work: '《一棵开花的树》', reason: '她写时间、遗忘、爱与错过，用非常轻的笔触写非常重的事。她的诗不喊叫，但你读完之后，会在心里安静很久。' },
+    resonantQuote: {
+      text: '所有的结局都已写好，所有的泪水都已启程，却忘了给你一个吻，让你从此不再想起。',
+      attribution: '席慕蓉 · 《一棵开花的树》',
+    },
   };
 }
 
