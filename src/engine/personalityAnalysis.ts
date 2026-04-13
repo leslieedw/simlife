@@ -265,126 +265,172 @@ function generateInsight(scores: PersonalityScores, tags: Set<HiddenTag>): strin
 // 文化配对
 // ============================================================
 
+// 随机选一个
+function pickRandom<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// 每个作家的语录池
+interface WriterProfile {
+  writer: CulturalMatch['writer'];
+  quotes: CulturalMatch['resonantQuote'][];
+}
+
+const WRITER_PROFILES: Record<string, WriterProfile> = {
+  xiaohong: {
+    writer: { name: '萧红', work: '《呼兰河传》', reason: '她一生都在逃离，也一生都在写那个逃不掉的地方。她的文字是废墟里长出来的花，不是温室里培育的。' },
+    quotes: [
+      { text: '我一个人走了，不带一点留恋，不带一点犹豫，不带一点悲哀。', attribution: '萧红 · 《呼兰河传》' },
+      { text: '逆来顺受，你说我的生命可惜，我自己却不在乎。你看着很危险，我却自以为得意。', attribution: '萧红 · 《呼兰河传》' },
+      { text: '我不能选择怎么生怎么死，但我能决定怎么爱怎么活。这是我要的自由。', attribution: '萧红 · 精神' },
+      { text: '我不怕风暴，因为我正在学习驾驶自己的船。', attribution: 'Louisa May Alcott · 《小妇人》' },
+    ],
+  },
+  zhangailing: {
+    writer: { name: '张爱玲', work: '《半生缘》《倾城之恋》', reason: '她不美化爱情，不评判女人的选择，只是用极度精准的眼睛，把那些无法言说的处境，写成了语言。' },
+    quotes: [
+      { text: '也许每一个男子全都有过这样的两个女人，至少两个。娶了红玫瑰，久而久之，红的变了墙上的一抹蚊子血，白的还是"床前明月光"。', attribution: '张爱玲 · 《红玫瑰与白玫瑰》' },
+      { text: '生活是一袭华美的袍，爬满了蚤子。', attribution: '张爱玲' },
+      { text: '你如果认识从前的我，也许你会原谅现在的我。', attribution: '张爱玲 · 《倾城之恋》' },
+      { text: '因为懂得，所以慈悲。', attribution: '张爱玲' },
+      { text: '长的是磨难，短的是人生。', attribution: '张爱玲 · 《半生缘》' },
+    ],
+  },
+  woolf: {
+    writer: { name: '弗吉尼亚·伍尔夫', work: '《一间自己的房间》', reason: '她说女性需要钱和一间自己的屋子。她说的不只是书房，是一个没有人可以进来要求你的空间——哪怕只存在于内心。' },
+    quotes: [
+      { text: '不必行色匆匆，不必光芒四射，不必成为别人，只需做自己。', attribution: '弗吉尼亚·伍尔夫' },
+      { text: '你无法通过逃避生活来获得平静。', attribution: '弗吉尼亚·伍尔夫' },
+      { text: '一个人如果没有房间，就没有完整的自我。', attribution: '弗吉尼亚·伍尔夫 · 《一间自己的房间》' },
+      { text: '女人要有自己的钱和自己的房间。这不是贪婪，这是最基本的自由。', attribution: '弗吉尼亚·伍尔夫 · 《一间自己的房间》' },
+    ],
+  },
+  beauvoir: {
+    writer: { name: '西蒙·波伏娃', work: '《第二性》', reason: '她把"女人是什么"这个问题，从哲学的角度彻底拆开来看。她的清醒让很多人不舒服，但也让更多人，第一次能够命名自己的处境。' },
+    quotes: [
+      { text: '女人不是天生的，是被塑造的。', attribution: '西蒙·波伏娃 · 《第二性》' },
+      { text: '当任何一个女性还不自由的时候，我就不是自由的——即使她的枷锁和我的完全不同。', attribution: 'Audre Lorde' },
+      { text: '我太聪明，太渴望，太骄傲，不可能去过一种没有意义的生活。', attribution: '西蒙·波伏娃 · 《名士风流》' },
+      { text: '自由并不是轻松的选择。自由是艰难的选择之后，不后悔。', attribution: '西蒙·波伏娃 · 精神' },
+    ],
+  },
+  sanmao: {
+    writer: { name: '三毛', work: '《撒哈拉的故事》', reason: '她把"女人可以去很远的地方"这件事，用自己的人生做了证明。不是没有代价，是她觉得那个代价值得。' },
+    quotes: [
+      { text: '告诉我，你打算用你这狂野而珍贵的一生做什么？', attribution: 'Mary Oliver · 《夏日》' },
+      { text: '我不管多少人说不行，我要去，我要自己去，我要走到另一个地方去，去看看。', attribution: '三毛 · 《撒哈拉的故事》' },
+      { text: '心若没有栖息的地方，到哪里都是在流浪。', attribution: '三毛' },
+      { text: '如果有来生，要做一棵树，站成永恒，没有悲伤的姿势。', attribution: '三毛 · 《说给自己听》' },
+    ],
+  },
+  yishu: {
+    writer: { name: '亦舒', work: '《我的前半生》《喜宝》', reason: '她笔下的女人，要么非常清醒地选择妥协，要么非常清醒地拒绝妥协。她从不告诉你哪个更对。只是照见。' },
+    quotes: [
+      { text: '我要很多很多的爱，如果没有爱，那就很多很多的钱，如果两件都没有，有健康也是好的。', attribution: '亦舒 · 《喜宝》' },
+      { text: '能够说出的委屈，便不算委屈；能够抢走的爱人，便不算爱人。', attribution: '亦舒 · 《开到荼蘼》' },
+      { text: '做人凡事要静：静静地来，静静地去，静静努力，静静收获，切忌喧哗。', attribution: '亦舒' },
+      { text: '真正有气质的女人，从不炫耀自己拥有的一切。她不告诉人她读过什么书，去过什么地方，有多少件衣裳，买过什么珠宝，因为她没有自卑感。', attribution: '亦舒 · 《圆舞》' },
+    ],
+  },
+  lorde: {
+    writer: { name: 'Audre Lorde', work: '《Sister Outsider》', reason: '她是黑人、女性、酷儿、诗人。她说沉默不会保护你，说出来才会。她的写作是为了所有被边缘化的女性。' },
+    quotes: [
+      { text: '分裂我们的不是差异，是我们无法承认、接受和尊重那些差异。', attribution: 'Audre Lorde · 《Sister Outsider》' },
+      { text: '你的沉默保护不了你。', attribution: 'Audre Lorde · 《Sister Outsider》' },
+      { text: '关爱自己不是自我放纵，而是自我保存——这是一种政治行为。', attribution: 'Audre Lorde' },
+      { text: '我不是要变得自由。我本来就是自由的。', attribution: 'Toni Morrison' },
+    ],
+  },
+  duras: {
+    writer: { name: '玛格丽特·杜拉斯', work: '《情人》《广岛之恋》', reason: '她写那些难以言说的感情——不道德的、令人困惑的、无法被归类的。她不解释，不辩护，只是把它们放在那里，非常诚实。' },
+    quotes: [
+      { text: '很早以前，在我还是少女的时候，一个男人朝我走来，他说：我比你年轻，请你不要像爱一个老女人一样爱我。', attribution: '玛格丽特·杜拉斯 · 《情人》' },
+      { text: '爱是始终想触碰却又收回的手。', attribution: '玛格丽特·杜拉斯 · 《情人》' },
+      { text: '我在你身上认出了我曾经历过的所有悲伤和疲惫。我在你脸上看见了我自己。', attribution: '玛格丽特·杜拉斯 · 《广岛之恋》' },
+      { text: '毁灭我的，也是让我存在的。', attribution: '玛格丽特·杜拉斯 · 精神' },
+    ],
+  },
+  oliver: {
+    writer: { name: 'Mary Oliver', work: '《Wild Geese》《夏日》', reason: '她写的不是波澜壮阔的人生，是一个早晨的光，一片树叶，一群飞鸟。她说：你只需要让那个柔软的动物，爱它所爱的。' },
+    quotes: [
+      { text: '你不必做一个好人。你不必跪着穿过荒漠一百英里来忏悔。你只需让心中那只柔软的动物去爱它所爱的。', attribution: 'Mary Oliver · 《Wild Geese》' },
+      { text: '有人用一辈子才学会留意。我不想到最后才发现自己从来没有活过。', attribution: 'Mary Oliver · 《夏日》' },
+      { text: '注意力是祈祷最基本的形式。', attribution: 'Mary Oliver' },
+      { text: '你唯一的人生，是这一个。它一直在这里，等你去注意它。', attribution: 'Mary Oliver · 精神' },
+    ],
+  },
+  yangbenfen: {
+    writer: { name: '杨本芬', work: '《秋园》', reason: '她七十岁才开始写作，写的是她母亲和那一代普通中国女性的一生。她说：她们活过，她们应该被记住。' },
+    quotes: [
+      { text: '那些在暗处发光的人，只是因为没有人记录，不等于她们不存在。', attribution: '杨本芬 · 《我本芬芳》' },
+      { text: '没有什么是完美的，但一些事情已经很好了。', attribution: '杨本芬 · 《秋园》' },
+      { text: '有些花，是要等到霜降之后，才开得出那个颜色。', attribution: '席慕蓉 · 意境' },
+      { text: '她的故事没有人记得了，但她来过，她活过，这件事是真的。', attribution: '杨本芬 · 《秋园》精神' },
+    ],
+  },
+  ximurong: {
+    writer: { name: '席慕蓉', work: '《一棵开花的树》', reason: '她写时间、遗忘、爱与错过，用非常轻的笔触写非常重的事。她的诗不喊叫，但你读完之后，会在心里安静很久。' },
+    quotes: [
+      { text: '所有的结局都已写好，所有的泪水都已启程，却忘了给你一个吻，让你从此不再想起。', attribution: '席慕蓉 · 《一棵开花的树》' },
+      { text: '在长长的一生里，为什么，欢乐总是乍现就凋落？走得最急的，都是最美的时光。', attribution: '席慕蓉' },
+      { text: '我一直想要，和你一样的一颗心，我一直想要，可以和你并肩走的路。', attribution: '席慕蓉 · 《无怨的青春》' },
+      { text: '请让我成为你的故事里的一棵树，在你经过的时候，刚好开满了花。', attribution: '席慕蓉 · 《一棵开花的树》' },
+    ],
+  },
+};
+
 function generateCulturalMatch(scores: PersonalityScores, tags: Set<HiddenTag>): CulturalMatch {
   const { selfExpression, resistance, structuralAwareness, connection, authenticity, thriving } = scores;
 
-  // 萧红型：逃离/韧性/贫困中生长
-  if (tags.has('poverty_scar') || tags.has('academic_escape') || (resistance >= 3 && thriving >= 1))
-    return {
-      writer: { name: '萧红', work: '《呼兰河传》', reason: '她一生都在逃离，也一生都在写那个逃不掉的地方。她的文字是废墟里长出来的花，不是温室里培育的。' },
-      resonantQuote: {
-        text: 'I am not afraid of storms, for I am learning how to sail my ship.',
-        attribution: 'Louisa May Alcott · 《小妇人》',
-      },
-    };
+  let profile: WriterProfile;
 
-  // 张爱玲型：清醒的悲观/关系里的处境
-  if ((tags.has('trauma_bond') || tags.has('beauty_currency')) && structuralAwareness >= 2)
-    return {
-      writer: { name: '张爱玲', work: '《半生缘》《倾城之恋》', reason: '她不美化爱情，不评判女人的选择，只是用极度精准的眼睛，把那些无法言说的处境，写成了语言。' },
-      resonantQuote: {
-        text: '也许每一个男子全都有过这样的两个女人，至少两个。娶了红玫瑰，久而久之，红的变了墙上的一抹蚊子血，白的还是"床前明月光"；娶了白玫瑰，白的便是衣服上沾的一粒饭黏子，红的却是心口上一颗朱砂痣。',
-        attribution: '张爱玲 · 《红玫瑰与白玫瑰》',
-      },
-    };
+  // 萧红型：贫困 + 韧性（收紧条件：必须有贫困印记或学业逃脱标签）
+  if (tags.has('poverty_scar') && (resistance >= 2 || tags.has('academic_escape')))
+    profile = WRITER_PROFILES.xiaohong;
 
-  // 伍尔夫型：内心世界/创造力/需要自己的空间
-  if (tags.has('creative_outlet') || (selfExpression >= 3 && authenticity >= 3))
-    return {
-      writer: { name: '弗吉尼亚·伍尔夫', work: '《一间自己的房间》', reason: '她说女性需要钱和一间自己的屋子。她说的不只是书房，是一个没有人可以进来要求你的空间——哪怕只存在于内心。' },
-      resonantQuote: {
-        text: 'You cannot find peace by avoiding life.',
-        attribution: 'Virginia Woolf',
-      },
-    };
+  // 张爱玲型：关系创伤 + 清醒的悲观
+  else if ((tags.has('trauma_bond') || tags.has('beauty_currency')) && structuralAwareness >= 3)
+    profile = WRITER_PROFILES.zhangailing;
 
-  // 波伏娃型：看见结构/反抗/女性主义清醒
-  if (structuralAwareness >= 4 || (resistance >= 4 && connection >= 2))
-    return {
-      writer: { name: '西蒙·波伏娃', work: '《第二性》', reason: '她把"女人是什么"这个问题，从哲学的角度彻底拆开来看。她的清醒让很多人不舒服，但也让更多人，第一次能够命名自己的处境。' },
-      resonantQuote: {
-        text: 'I am not free while any woman is unfree, even when her shackles are very different from my own.',
-        attribution: 'Audre Lorde',
-      },
-    };
+  // 伍尔夫型：创造力 + 需要自己的空间
+  else if (tags.has('creative_outlet') && authenticity >= 3)
+    profile = WRITER_PROFILES.woolf;
 
-  // 三毛型：自由/流浪/真实的代价
-  if (resistance >= 3 && authenticity >= 3 && tags.has('rebel_spirit'))
-    return {
-      writer: { name: '三毛', work: '《撒哈拉的故事》', reason: '她把"女人可以去很远的地方"这件事，用自己的人生做了证明。不是没有代价，是她觉得那个代价值得。' },
-      resonantQuote: {
-        text: 'Tell me, what is it you plan to do with your one wild and precious life?',
-        attribution: 'Mary Oliver · 《夏日》',
-      },
-    };
+  // 波伏娃型：高度结构性意识 + 反抗
+  else if (structuralAwareness >= 5 || (structuralAwareness >= 4 && resistance >= 4))
+    profile = WRITER_PROFILES.beauvoir;
 
-  // 亦舒型：经济独立/清醒/都市
-  if (tags.has('economic_independence_drive') && authenticity >= 2)
-    return {
-      writer: { name: '亦舒', work: '《我的前半生》《喜宝》', reason: '她笔下的女人，要么非常清醒地选择妥协，要么非常清醒地拒绝妥协。她从不告诉你哪个更对。只是照见。' },
-      resonantQuote: {
-        text: '我要很多很多的爱，如果没有爱，那就很多很多的钱，如果两件都没有，有健康也是好的。',
-        attribution: '亦舒 · 《喜宝》',
-      },
-    };
+  // 三毛型：反骨 + 真实 + 自由
+  else if (tags.has('rebel_spirit') && authenticity >= 4 && resistance >= 3)
+    profile = WRITER_PROFILES.sanmao;
 
-  // 奥德丽·洛德型：女性联结/边缘声音/共同体
-  if (connection >= 4 && tags.has('female_solidarity'))
-    return {
-      writer: { name: 'Audre Lorde', work: '《Sister Outsider》', reason: '她是黑人、女性、酷儿、诗人。她说沉默不会保护你，说出来才会。她的写作是为了所有被边缘化的女性。' },
-      resonantQuote: {
-        text: 'It is not our differences that divide us. It is our inability to recognize, accept, and celebrate those differences.',
-        attribution: 'Audre Lorde · 《Our Dead Behind Us》',
-      },
-    };
+  // 亦舒型：经济独立 + 清醒
+  else if (tags.has('economic_independence_drive') && authenticity >= 3)
+    profile = WRITER_PROFILES.yishu;
 
-  // 杜拉斯型：深渊/欲望/复杂的内心
-  if (thriving <= -2 && (tags.has('trauma_bond') || selfExpression <= -3))
-    return {
-      writer: { name: '玛格丽特·杜拉斯', work: '《情人》《广岛之恋》', reason: '她写那些难以言说的感情——不道德的、令人困惑的、无法被归类的。她不解释，不辩护，只是把它们放在那里，非常诚实。' },
-      resonantQuote: {
-        text: '很早以前，在我还是少女的时候，一个男人朝我走来，他说：我比你年轻，请你不要像爱一个老女人一样爱我。',
-        attribution: '玛格丽特·杜拉斯 · 《情人》',
-      },
-    };
+  // Audre Lorde型：深度女性联结 + 发声
+  else if (connection >= 5 && tags.has('female_solidarity'))
+    profile = WRITER_PROFILES.lorde;
 
-  // Mary Oliver型：自然/感受/活在此刻
-  if (tags.has('high_sensitivity') && thriving >= 1 && !tags.has('creative_outlet'))
-    return {
-      writer: { name: 'Mary Oliver', work: '《Wild Geese》《夏日》', reason: '她写的不是波澜壮阔的人生，是一个早晨的光，一片树叶，一群飞鸟。她说：你只需要让那个柔软的动物，爱它所爱的。' },
-      resonantQuote: {
-        text: 'You do not have to be good. You do not have to walk on your knees for a hundred miles through the desert, repenting.',
-        attribution: 'Mary Oliver · 《Wild Geese》',
-      },
-    };
+  // 杜拉斯型：深渊/消耗/创伤
+  else if (thriving <= -3 && (tags.has('trauma_bond') || selfExpression <= -4))
+    profile = WRITER_PROFILES.duras;
 
-  // 迟来觉醒型：晚开的花
-  if (tags.has('late_bloomer'))
-    return {
-      writer: { name: '杨本芬', work: '《秋园》', reason: '她七十岁才开始写作，写的是她母亲和那一代普通中国女性的一生。她用行动证明了：开始，什么时候都不晚。' },
-      resonantQuote: {
-        text: '有些花，是要等到霜降之后，才开得出那个颜色。',
-        attribution: '席慕蓉 · 《一棵开花的树》意境',
-      },
-    };
+  // Mary Oliver型：高敏感 + 活在此刻
+  else if (tags.has('high_sensitivity') && thriving >= 0)
+    profile = WRITER_PROFILES.oliver;
 
-  // 杨本芬型：普通女性/日常的尊严
-  if (thriving >= 1 && connection >= 1)
-    return {
-      writer: { name: '杨本芬', work: '《秋园》', reason: '她七十岁才开始写作，写的是她母亲和那一代普通中国女性的一生。她说：她们活过，她们应该被记住。' },
-      resonantQuote: {
-        text: '那些在暗处发光的人，只是因为没有人记录，不等于她们不存在。',
-        attribution: '杨本芬 · 《我本芬芳》',
-      },
-    };
+  // 杨本芬型：晚开的花 / 普通女性的尊严
+  else if (tags.has('late_bloomer') || (thriving >= 1 && connection >= 1))
+    profile = WRITER_PROFILES.yangbenfen;
 
-  // 席慕蓉型（默认）：诗意/温柔/时间
+  // 席慕蓉型（默认）
+  else
+    profile = WRITER_PROFILES.ximurong;
+
   return {
-    writer: { name: '席慕蓉', work: '《一棵开花的树》', reason: '她写时间、遗忘、爱与错过，用非常轻的笔触写非常重的事。她的诗不喊叫，但你读完之后，会在心里安静很久。' },
-    resonantQuote: {
-      text: '所有的结局都已写好，所有的泪水都已启程，却忘了给你一个吻，让你从此不再想起。',
-      attribution: '席慕蓉 · 《一棵开花的树》',
-    },
+    writer: profile.writer,
+    resonantQuote: pickRandom(profile.quotes),
   };
 }
 
