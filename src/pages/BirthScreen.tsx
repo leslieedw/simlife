@@ -75,7 +75,7 @@ function pickRandomStats(): string[] {
 const COVER_QUOTES = [
   { text: '一个人如果没有房间，就没有完整的自我。', attribution: '弗吉尼亚·伍尔夫' },
   { text: '女人不是天生的，是被塑造的。', attribution: '西蒙·波伏娃' },
-  { text: '你的沉默保护不了你。', attribution: 'Audre Lorde' },
+  { text: '你的沉默保护不了你。', attribution: '奥德丽·洛德' },
   { text: '我生来就是高山而非溪流。', attribution: '张桂梅' },
   { text: '我要很多很多的爱，如果没有，那就很多很多的钱。', attribution: '亦舒' },
   { text: '心若没有栖息的地方，到哪里都是在流浪。', attribution: '三毛' },
@@ -84,7 +84,7 @@ const COVER_QUOTES = [
   { text: '女人啊，你创造了世界，世界却从未属于你。', attribution: '改自波伏娃' },
   { text: '我不管多少人说不行，我要去，我要自己去看看。', attribution: '三毛' },
   { text: '走吧，走吧，人总要学着自己长大。', attribution: '王菲' },
-  { text: '我不是要变得自由。我本来就是自由的。', attribution: 'Toni Morrison' },
+  { text: '我不是要变得自由。我本来就是自由的。', attribution: '托尼·莫里森' },
 ];
 
 const WEALTH_OPTIONS: { value: FamilyWealth; label: string; desc: string }[] = [

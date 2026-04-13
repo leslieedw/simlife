@@ -194,6 +194,10 @@ const PERSONALITY_TYPES: PersonalityType[] = [
 ];
 
 function generateTypeName(scores: PersonalityScores, tags: Set<HiddenTag>): { name: string; subtitle: string } {
+  // 边界：所有分数都是 0（玩家跳过了所有选择）
+  const allZero = Object.values(scores).every(v => v === 0);
+  if (allZero) return { name: '旁观者', subtitle: '她站在所有岔路口，但一步都没有迈出去' };
+
   // 评分所有类型
   const scored = PERSONALITY_TYPES
     .map(t => ({ ...t, s: t.score(scores, tags) }))
@@ -251,6 +255,8 @@ function generateKeywords(scores: PersonalityScores, tags: Set<HiddenTag>): stri
 // ============================================================
 
 function generateInsight(scores: PersonalityScores, tags: Set<HiddenTag>): string {
+  const allZero = Object.values(scores).every(v => v === 0);
+  if (allZero) return '你看完了所有的选项，但没有选。也许是因为每一个都不够好，也许是因为你还没有准备好。旁观本身，也是一种姿态。';
   if (tags.has('survived_violence') && scores.thriving >= 2)
     return '你经历的那些，没有人应该经历。你活了下来，这是你做过的最勇敢的事，即使没有人颁奖给你。';
   if (tags.has('good_girl_conditioning') && scores.resistance >= 4)
