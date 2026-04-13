@@ -10,10 +10,12 @@ interface Props {
 const DEROGATORY_CHARS = [
   '妖', '奸', '婊', '嫉', '妒', '嫌', '奴', '妄', '娼', '婪',
   '嫖', '妨', '姘', '媚', '佞', '妓', '嫡', '妾', '嬲', '耍',
-  '妖', '嫂', '婢', '妃', '嫁', '娶', '妥', '妮', '媳', '妆',
+  '婢', '嫁', '娶', '妥', '媳', '妆', '嫩', '娱', '妞', '婆',
+  '姦', '妲', '嬉', '妄', '妊', '娩', '婳', '嫪', '妤', '姬',
 ];
 const POSITIVE_CHARS = [
   '好', '妙', '娟', '婉', '婷', '姿', '娴', '媛', '嫣', '姝',
+  '娜', '妍', '婧', '嫚', '姣', '媞',
 ];
 
 // 随机数据池
@@ -89,17 +91,18 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
   const coverStats = useMemo(() => COVER_STATS[Math.floor(Math.random() * COVER_STATS.length)], []);
   // 生成背景散落的女字旁汉字
   const bgChars = useMemo(() => {
-    const chars: { char: string; x: number; y: number; size: number; opacity: number; negative: boolean }[] = [];
-    for (let i = 0; i < 40; i++) {
-      const isNeg = Math.random() < 0.75; // 75% 贬义
+    const chars: { char: string; x: number; y: number; size: number; opacity: number; negative: boolean; rotate: number }[] = [];
+    for (let i = 0; i < 80; i++) {
+      const isNeg = Math.random() < 0.75;
       const pool = isNeg ? DEROGATORY_CHARS : POSITIVE_CHARS;
       chars.push({
         char: pool[Math.floor(Math.random() * pool.length)],
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: 14 + Math.random() * 28,
-        opacity: 0.04 + Math.random() * 0.06,
+        x: Math.random() * 96 + 2,
+        y: Math.random() * 96 + 2,
+        size: 16 + Math.random() * 36,
+        opacity: 0.06 + Math.random() * 0.1,
         negative: isNeg,
+        rotate: Math.random() * 40 - 20,
       });
     }
     return chars;
@@ -253,7 +256,7 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
                 fontSize: `${c.size}px`,
                 opacity: c.opacity,
                 color: c.negative ? '#ef4444' : '#d4a853',
-                transform: `rotate(${Math.random() * 30 - 15}deg)`,
+                transform: `rotate(${c.rotate}deg)`,
               }}
             >
               {c.char}
