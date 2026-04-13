@@ -114,6 +114,7 @@ export const ENDINGS: Ending[] = [
     requirement: {
       hasTags: ['second_shift_burden', 'good_girl_conditioning'],
       maxStats: { mental: 50 },
+      minStats: { mental: 36 },
     },
     culturalQuotes: [
       {
@@ -231,6 +232,210 @@ export const ENDINGS: Ending[] = [
       {
         text: '人生最重要的，是你自己如何定义它。',
         attribution: '萧红·《生死场》精神',
+        type: 'prose',
+      },
+    ],
+  },
+
+  {
+    id: 'trapped_in_marriage',
+    title: '那个笼子叫做家',
+    rarity: 'common',
+    description: '你留在了那段婚姻里。不是因为幸福，是因为出不去——钱不够，孩子太小，父母不支持，或者你已经不记得自己离开了能做什么。日子一天一天过，你活着，但那个叫做"你"的东西，越来越模糊。',
+    flavor: '困住她的，不只是那扇门。',
+    requirement: {
+      hasTags: ['trauma_bond', 'second_shift_burden'],
+      maxStats: { mental: 35, wealth: 35 },
+    },
+    culturalQuotes: [
+      {
+        text: '她的人生是一座房子，每一扇窗都有人守着。',
+        attribution: '萧红 · 《生死场》意境',
+        type: 'prose',
+      },
+      {
+        text: '笼子是用来关鸟的，但有时候，鸟自己也不知道门是开着的。',
+        attribution: '西蒙·波伏娃 · 《第二性》精神',
+        type: 'prose',
+      },
+      {
+        text: '我把岁月都给了你，你把你的沉默给了我。',
+        attribution: '张爱玲风格',
+        type: 'prose',
+      },
+      {
+        text: '熟悉的地方没有风景，熟悉的人没有爱情，熟悉的我没有自己。',
+        attribution: '陈绮贞 · 歌意',
+        type: 'lyric',
+      },
+    ],
+  },
+
+  {
+    id: 'lived_for_others',
+    title: '她的一生都给了别人',
+    rarity: 'common',
+    description: '你是一个好女儿、好妻子、好母亲，可能还是好员工。你把每一个人照顾得很好。到最后，你自己的名字，几乎只在别人需要你的时候被人叫起。你不知道你喜欢什么颜色，你很久没有想过这个问题了。',
+    flavor: '她不是不存在，她只是被用完了。',
+    requirement: {
+      hasTags: ['good_girl_conditioning', 'second_shift_burden'],
+      maxStats: { mental: 35 },
+    },
+    culturalQuotes: [
+      {
+        text: '世界是一个舞台，女人是道具，男人是演员，观众是整个社会。',
+        attribution: '改自波伏娃，女性主义表述',
+        type: 'prose',
+      },
+      {
+        text: '我生来就是为了消耗自己，让别人活得舒服一点。',
+        attribution: '杨本芬 · 《秋园》精神',
+        type: 'prose',
+      },
+      {
+        text: '爱人啊，你总是说你很累，但你从来不问我累不累。',
+        attribution: '亦舒风格',
+        type: 'prose',
+      },
+      {
+        text: '她是每个人的港湾，却不是自己的家。',
+        attribution: '民谣意境',
+        type: 'lyric',
+      },
+    ],
+  },
+
+  {
+    id: 'broken_and_lost',
+    title: '她碎掉了',
+    rarity: 'uncommon',
+    description: '那些事情叠在一起——经济、关系、健康、孤立——每一件单独发生也许都能撑过去，但是一起来，她撑不住了。她不是脆弱，是超过了所有人的极限。这个结局不评判她。它只是说：她承受了太多。',
+    flavor: '压垮她的，不是最后那根稻草，是那一整座山。',
+    requirement: {
+      maxStats: { mental: 20, social: 20 },
+    },
+    culturalQuotes: [
+      {
+        text: '有些人的眼泪，从来不让别人看见，因为没有人告诉她，她可以软下来。',
+        attribution: '萧红 · 精神',
+        type: 'prose',
+      },
+      {
+        text: '这个世界不欠你温柔，但你欠自己。',
+        attribution: '三毛 · 散文意境',
+        type: 'prose',
+      },
+      {
+        text: '就算全世界都不相信你，你也要相信自己。——虽然她最终没能做到这件事。',
+        attribution: '致那些没能撑下来的人',
+        type: 'prose',
+      },
+      {
+        text: '黑暗中，我试图找到一盏灯，却忘了，我自己也可以发光。',
+        attribution: '玛格丽特·杜拉斯 · 意境',
+        type: 'prose',
+      },
+    ],
+  },
+
+  {
+    id: 'built_something_real',
+    title: '她留下了什么',
+    rarity: 'rare',
+    description: '你没有走那条最安全的路，但你走完了你选择的那一条。你做过的事留下了——也许是你写的东西，你建立的项目，你带过的人，你种下的那棵树。不一定有人记住你的名字，但那些痕迹是真实的。你来过，你做了事，这比什么都重要。',
+    flavor: '功名是别人给的，痕迹是自己留的。',
+    requirement: {
+      hasTags: ['economic_independence_drive'],
+      personalityMin: { thriving: 3, selfExpression: 2 },
+      minStats: { intelligence: 65, wealth: 55 },
+    },
+    culturalQuotes: [
+      {
+        text: '如果你的梦想够大，它就会有自己的引力。',
+        attribution: '三毛 · 《梦里花落知多少》',
+        type: 'prose',
+      },
+      {
+        text: 'The most courageous act is still to think for yourself. Aloud.',
+        attribution: 'Coco Chanel',
+        type: 'prose',
+      },
+      {
+        text: '我不要做历史的旁观者，我要做历史的书写者。',
+        attribution: '西蒙·波伏娃 · 精神',
+        type: 'prose',
+      },
+      {
+        text: '你种下的，比你想的更深，比你看见的更广。',
+        attribution: 'Audre Lorde · 《Sister Outsider》',
+        type: 'prose',
+      },
+    ],
+  },
+
+  {
+    id: 'made_peace_with_it',
+    title: '与自己和解',
+    rarity: 'uncommon',
+    description: '你做过一些你现在也不确定对不对的选择。你有一些遗憾，偶尔还会在夜里翻出来想。但是你不再恨自己了。你开始理解：在那个时候，拥有那些资源，那个选择已经是你能做到最好的了。这不是放弃，这是一种真正的接受。',
+    flavor: '和解不是遗忘。是承认那些都是真的，然后，继续活。',
+    requirement: {
+      personalityMin: { structuralAwareness: 3, authenticity: 2 },
+      minStats: { mental: 50, eq: 55 },
+    },
+    culturalQuotes: [
+      {
+        text: '也许所有人都是这样，先在心里的某处住下，然后才在真实的地方找到家。',
+        attribution: '杨本芬 · 《我本芬芳》',
+        type: 'prose',
+      },
+      {
+        text: '原谅自己，是一件比原谅别人更难的事。但它值得。',
+        attribution: '席慕蓉 · 散文',
+        type: 'prose',
+      },
+      {
+        text: '人生不是用来后悔的，是用来理解的。',
+        attribution: '弗吉尼亚·伍尔夫 · 精神',
+        type: 'prose',
+      },
+      {
+        text: '走了那么远，你终于回到了自己这里。',
+        attribution: '三毛 · 《滚滚红尘》',
+        type: 'lyric',
+      },
+    ],
+  },
+
+  {
+    id: 'economic_prisoner',
+    title: '那把锁叫做"没钱"',
+    rarity: 'common',
+    description: '你不是没想过改变，你不是不知道那段关系不对，你不是不想离开那个城市、那份工作、那种生活。但是钱不够。每次你快要有足够的底气，就会有另一件事把它耗掉。经济依赖是一种看不见的锁，它让所有的门看起来都是关着的。',
+    flavor: '穷不是罪，但这个社会让穷的女性付出了最高的代价。',
+    requirement: {
+      maxStats: { wealth: 25 },
+      personalityMin: { structuralAwareness: 1 },
+    },
+    culturalQuotes: [
+      {
+        text: '我要很多很多的爱，如果没有爱，那就很多很多的钱。如果两件都没有，我就什么也不是了。',
+        attribution: '亦舒 · 《喜宝》改写',
+        type: 'prose',
+      },
+      {
+        text: '贫穷是一种暴力，只不过没有人坐牢。',
+        attribution: '改自女性主义经济学思想',
+        type: 'prose',
+      },
+      {
+        text: '女人没有经济独立，一切自由都是别人施舍的。',
+        attribution: '西蒙·波伏娃 · 《第二性》',
+        type: 'prose',
+      },
+      {
+        text: '我知道那扇门在哪里，但我没有钥匙。',
+        attribution: '萧红风格',
         type: 'prose',
       },
     ],

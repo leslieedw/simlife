@@ -169,6 +169,24 @@ function generateTypeName(scores: PersonalityScores, tags: Set<HiddenTag>): { na
   if (resistance >= 3 && authenticity >= 2)
     return { name: '越界的人', subtitle: '她轻轻地或者用力地走出了那条线' };
 
+  // 新增人格类型
+  if (resistance >= 4 && selfExpression <= -3)
+    return { name: '压抑的火焰', subtitle: '她体内有很多力气，但还没有找到出口' };
+  if (tags.has('second_shift_burden') && connection >= 2 && thriving <= -1)
+    return { name: '疲惫的照顾者', subtitle: '她爱得很深，但忘了自己也需要被爱' };
+  if (tags.has('high_sensitivity') && thriving <= -1 && selfExpression >= 2)
+    return { name: '在碎片里找自己', subtitle: '她感受到的太多，世界的容量又太小' };
+  if (structuralAwareness >= 4 && resistance <= -2)
+    return { name: '清醒的妥协者', subtitle: '她看透了一切，但还是选择了留下' };
+  if (tags.has('late_bloomer') && thriving >= 2)
+    return { name: '迟来的觉醒者', subtitle: '她来得很晚，但她来了，而且是全部的自己' };
+  if (connection >= 3 && authenticity >= 3 && resistance >= 1)
+    return { name: '温柔的革命者', subtitle: '她的温柔不是软弱，是一种选择' };
+  if (tags.has('poverty_scar') && thriving >= 1 && resistance >= 2)
+    return { name: '从贫瘠里长出来的人', subtitle: '那片土地没有养分，但她还是长起来了' };
+  if (structuralAwareness >= 3 && tags.has('glass_ceiling_seen') && selfExpression >= 2)
+    return { name: '命名者', subtitle: '她给那些沉默已久的事情，第一次起了名字' };
+
   return { name: '行走中的人', subtitle: '人生还没走完，她也还在成为自己' };
 }
 
@@ -198,6 +216,10 @@ function generateKeywords(scores: PersonalityScores, tags: Set<HiddenTag>): stri
   if (tags.has('rebel_spirit')) kw.push('反骨');
   if (tags.has('good_girl_conditioning')) kw.push('好女孩训导');
   if (tags.has('beauty_currency')) kw.push('容貌货币化');
+  if (tags.has('late_bloomer')) kw.push('晚开的花');
+  if (tags.has('glass_ceiling_seen')) kw.push('天花板');
+  if (tags.has('second_shift_burden')) kw.push('隐形劳动');
+  if (tags.has('poverty_scar')) kw.push('贫穷的印记');
   return kw.slice(0, 6);
 }
 
@@ -224,6 +246,18 @@ function generateInsight(scores: PersonalityScores, tags: Set<HiddenTag>): strin
     return '活在自己的标准里不容易，尤其在一个一直告诉你"女人应该"的世界。你做到了，哪怕有代价。';
   if (scores.thriving <= -4)
     return '生存模式是真实的重量。你一直在撑着，即使没有人知道那有多重。你不是不够好，是压着你的太重。';
+  if (tags.has('late_bloomer') && scores.thriving >= 2)
+    return '你花了很长时间才走到这里。有人说你太晚了——但你知道吗，那些"太晚了"都是别人的时间表，不是你的。你的时钟，从来只有你自己能设。';
+  if (tags.has('second_shift_burden') && scores.selfExpression <= 0)
+    return '你照顾了那么多人，有没有人问过你，你还好吗？你值得被照顾，不是因为你做了什么，而是因为你也是一个人。';
+  if (scores.resistance >= 4 && scores.selfExpression <= -3)
+    return '你体内有很多力气，但它还没找到出口。那种憋着的感觉——那是真实的力量在积蓄，不是软弱。';
+  if (scores.structuralAwareness >= 4 && scores.resistance <= -2)
+    return '你看见了那些不公平，却选择了留在里面。这不是愚蠢，这是复杂的生存。看见和离开，是两件不同的事。';
+  if (tags.has('glass_ceiling_seen') && scores.selfExpression >= 2)
+    return '你给那些一直存在却没有名字的东西，起了名字。这是一件被严重低估的事——命名是改变的开始。';
+  if (tags.has('poverty_scar') && scores.thriving >= 1)
+    return '那种贫瘠的土壤没有教你该怎么长，但你还是长起来了。这不是奇迹，这是韧性——只有在那种土地上生长过的人才知道那需要多少力气。';
   return '你这一生所有的选择，包括那些你最后悔的，都是在你拥有的那些条件下，你能做到的最好。这不是开脱，这是事实。';
 }
 
@@ -311,6 +345,26 @@ function generateCulturalMatch(scores: PersonalityScores, tags: Set<HiddenTag>):
       resonantQuote: {
         text: '很早以前，在我还是少女的时候，一个男人朝我走来，他说：我比你年轻，请你不要像爱一个老女人一样爱我。',
         attribution: '玛格丽特·杜拉斯 · 《情人》',
+      },
+    };
+
+  // Mary Oliver型：自然/感受/活在此刻
+  if (tags.has('high_sensitivity') && thriving >= 1 && !tags.has('creative_outlet'))
+    return {
+      writer: { name: 'Mary Oliver', work: '《Wild Geese》《夏日》', reason: '她写的不是波澜壮阔的人生，是一个早晨的光，一片树叶，一群飞鸟。她说：你只需要让那个柔软的动物，爱它所爱的。' },
+      resonantQuote: {
+        text: 'You do not have to be good. You do not have to walk on your knees for a hundred miles through the desert, repenting.',
+        attribution: 'Mary Oliver · 《Wild Geese》',
+      },
+    };
+
+  // 迟来觉醒型：晚开的花
+  if (tags.has('late_bloomer'))
+    return {
+      writer: { name: '杨本芬', work: '《秋园》', reason: '她七十岁才开始写作，写的是她母亲和那一代普通中国女性的一生。她用行动证明了：开始，什么时候都不晚。' },
+      resonantQuote: {
+        text: '有些花，是要等到霜降之后，才开得出那个颜色。',
+        attribution: '席慕蓉 · 《一棵开花的树》意境',
       },
     };
 
