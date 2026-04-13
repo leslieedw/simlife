@@ -153,7 +153,7 @@ interface PersonalityType {
 const PERSONALITY_TYPES: PersonalityType[] = [
   // ── Fire types (反抗/力量) ──
   { name: '野火', subtitle: '越烧越亮',
-    score: (s) => (s.resistance >= 9 ? 5 : 0) + (s.selfExpression >= 7 ? 4 : 0) },
+    score: (s, t) => (s.resistance >= 9 ? 3 : 0) + (s.selfExpression >= 8 ? 3 : 0) + (t.has('rebel_spirit') ? 3 : 0) },
   { name: '闷烧', subtitle: '火在里面，出口堵了',
     score: (s) => (s.resistance >= 5 ? 4 : 0) + (s.selfExpression <= 0 ? 5 : 0) },
   { name: '火柴', subtitle: '只亮了一下，但她记得那道光',
