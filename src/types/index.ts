@@ -9,7 +9,8 @@ export interface Stats {
   fitness: number;       // 体能 0-100
   luck: number;          // 运气 0-100
   wealth: number;        // 财富 0-100
-  mental: number;        // 心理健康 0-100
+  worldly: number;       // 世俗认可 0-100��社会/体制对你人生的评分，低不代表差）
+  inner: number;         // 内心能量 0-100（真实的心理状态，创伤降、真实选择升）
   social: number;        // 社会关系 0-100
 }
 

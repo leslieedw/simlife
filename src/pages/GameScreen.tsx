@@ -17,7 +17,8 @@ const STAT_LABELS: Record<string, string> = {
   fitness: '体能',
   luck: '运气',
   wealth: '财富',
-  mental: '心理',
+  worldly: '世俗',
+  inner: '内心',
   social: '社交',
 };
 

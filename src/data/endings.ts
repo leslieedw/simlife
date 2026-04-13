@@ -11,7 +11,7 @@ export const ENDINGS: Ending[] = [
     requirement: {
       hasTags: ['childless_by_choice'],
       personalityMin: { authenticity: 4, selfExpression: 3 },
-      minStats: { mental: 60 },
+      minStats: { inner: 60 },
     },
     culturalQuotes: [
       {
@@ -46,7 +46,7 @@ export const ENDINGS: Ending[] = [
     requirement: {
       hasTags: ['survived_violence'],
       personalityMin: { resistance: 3 },
-      minStats: { mental: 45 },
+      minStats: { inner: 45 },
     },
     culturalQuotes: [
       {
@@ -79,7 +79,7 @@ export const ENDINGS: Ending[] = [
     description: '你的人生没有戏剧性的高峰，也没有跌入深渊。你爱过，被爱过，吵架过，和好过，失去过，得到过。你到最后，还是你自己。这不是"普通"，这是一种被低估的成就。',
     flavor: '她一生平静，但内心没有一处是荒的。',
     requirement: {
-      minStats: { mental: 60, social: 50, eq: 50 },
+      minStats: { inner: 60, social: 50, eq: 50 },
     },
     culturalQuotes: [
       {
@@ -113,8 +113,8 @@ export const ENDINGS: Ending[] = [
     flavor: '她从未休息，因为没有人告诉她，她也值得被照顾。',
     requirement: {
       hasTags: ['second_shift_burden', 'good_girl_conditioning'],
-      maxStats: { mental: 50 },
-      minStats: { mental: 36 },
+      maxStats: { inner: 50 },
+      minStats: { inner: 36 },
     },
     culturalQuotes: [
       {
@@ -148,7 +148,7 @@ export const ENDINGS: Ending[] = [
     flavor: '她在最深处，也没有熄灭。这已经是奇迹。',
     requirement: {
       hasTags: ['trauma_bond'],
-      maxStats: { mental: 30, social: 25 },
+      maxStats: { inner: 30, social: 25 },
     },
     culturalQuotes: [
       {
@@ -245,7 +245,7 @@ export const ENDINGS: Ending[] = [
     flavor: '困住她的，不只是那扇门。',
     requirement: {
       hasTags: ['trauma_bond', 'second_shift_burden'],
-      maxStats: { mental: 35, wealth: 35 },
+      maxStats: { inner: 35, wealth: 35 },
     },
     culturalQuotes: [
       {
@@ -279,7 +279,7 @@ export const ENDINGS: Ending[] = [
     flavor: '她不是不存在，她只是被用完了。',
     requirement: {
       hasTags: ['good_girl_conditioning', 'second_shift_burden'],
-      maxStats: { mental: 35 },
+      maxStats: { inner: 35 },
     },
     culturalQuotes: [
       {
@@ -312,7 +312,7 @@ export const ENDINGS: Ending[] = [
     description: '那些事情叠在一起——经济、关系、健康、孤立——每一件单独发生也许都能撑过去，但是一起来，她撑不住了。她不是脆弱，是超过了所有人的极限。这个结局不评判她。它只是说：她承受了太多。',
     flavor: '压垮她的，不是最后那根稻草，是那一整座山。',
     requirement: {
-      maxStats: { mental: 20, social: 20 },
+      maxStats: { inner: 20, social: 20 },
     },
     culturalQuotes: [
       {
@@ -381,7 +381,7 @@ export const ENDINGS: Ending[] = [
     flavor: '和解不是遗忘。是承认那些都是真的，然后，继续活。',
     requirement: {
       personalityMin: { structuralAwareness: 3, authenticity: 2 },
-      minStats: { mental: 50, eq: 55 },
+      minStats: { inner: 50, eq: 55 },
     },
     culturalQuotes: [
       {

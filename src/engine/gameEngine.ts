@@ -197,6 +197,10 @@ function generateBirthStats(birth: BirthProfile): Stats {
     poor: -15, working: -5, middle: 0, rich: 15, elite: 25,
   };
   const wb = wealthBonus[birth.familyWealth];
+  // 世俗认可：家庭越好初始越高
+  const worldlyBase = Math.max(10, rand(20, 50) + wb + Math.round(birth.familyLove * 0.2));
+  // 内心能量：主要看家庭爱
+  const innerBase = Math.max(10, Math.round(birth.familyLove * 0.6 + rand(10, 30)));
   return {
     intelligence: rand(30, 80),
     eq: Math.max(10, rand(20, 70) + Math.round(birth.familyLove * 0.2)),
@@ -204,7 +208,8 @@ function generateBirthStats(birth: BirthProfile): Stats {
     fitness: rand(40, 80),
     luck: rand(20, 80),
     wealth: Math.max(0, Math.min(100, rand(20, 60) + wb)),
-    mental: Math.max(10, Math.round(birth.familyLove * 0.6 + rand(10, 30))),
+    worldly: Math.min(100, worldlyBase),
+    inner: innerBase,
     social: rand(30, 60),
   };
 }
