@@ -186,29 +186,34 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
       <div className="min-h-screen bg-[#0f0f0f] flex flex-col justify-center items-center px-6">
         <div className="max-w-lg w-full text-center">
           {/* 引子 */}
-          <p className="text-gray-600 text-xs italic mb-8">
+          <p className="text-gray-600 text-xs italic mb-10">
             「{coverQuote.text}」
             <span className="block mt-1 text-gray-700">—— {coverQuote.attribution}</span>
           </p>
 
           {/* 标题 */}
-          <h1 className="text-4xl font-bold text-white tracking-wide mb-3">她的一生</h1>
-          <p className="text-gray-500 text-sm mb-2">每一个选择，都算数</p>
+          <h1 className="text-4xl font-bold text-white tracking-wide mb-6">她的一生</h1>
 
           {/* 简介 */}
-          <div className="mt-8 mb-10 px-4">
-            <p className="text-gray-400 text-sm leading-relaxed">
-              一个东亚女孩，从出生到六十岁。
-            </p>
-            <p className="text-gray-500 text-xs leading-relaxed mt-2">
-              她会遇到好女孩训导、容貌焦虑、职场天花板、婚姻压力、经济依赖……
+          <div className="mb-10 px-2">
+            <p className="text-gray-500 text-xs leading-loose">
+              全球 1.3 亿女孩从未踏入过学校。
               <br />
-              有些选项看起来很好，代价藏在后面。
+              每三个女性中有一个经历过暴力。
               <br />
-              有些路走不了，不是因为你不够好，是因为门本来就没开。
+              财富 500 强的女性 CEO 不到 10%。
+              <br />
+              在一些地方，她们在出生之前就消失了。
             </p>
-            <p className="text-gray-600 text-xs mt-3 italic">
-              这不是一个有标准答案的游戏。
+            <p className="text-gray-400 text-sm leading-relaxed mt-5">
+              你有没有想过，如果当时做了另一个选择，
+              <br />
+              你的人生会通向哪里？
+            </p>
+            <p className="text-gray-600 text-xs mt-5 italic">
+              这不是一个有标准答案的游戏。没有最优解。
+              <br />
+              我们只是幸运的幸存者，回头看一遍来时的路。
             </p>
           </div>
 
