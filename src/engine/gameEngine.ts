@@ -232,6 +232,52 @@ function generateBirthTags(birth: BirthProfile): Set<HiddenTag> {
 }
 
 // ============================================================
+// 调试：快速模拟完整人生
+// ============================================================
+
+export function simulateFullGame(): GameState {
+  // 随机出生
+  const wealths: import('../types').FamilyWealth[] = ['poor', 'working', 'middle', 'rich', 'elite'];
+  const structures: import('../types').FamilyStructure[] = ['complete', 'single_parent', 'divorced', 'orphan'];
+  const cities: import('../types').BirthCity[] = ['rural', 'small_city', 'mid_city', 'mega_city', 'beijing_shanghai'];
+  const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
+
+  const birth: import('../types').BirthProfile = {
+    familyWealth: pick(wealths),
+    familyStructure: pick(structures),
+    birthCity: pick(cities),
+    parentEducation: pick(['low', 'mid', 'high'] as const),
+    familyLove: Math.floor(Math.random() * 80) + 10,
+  };
+
+  let state = createInitialState(birth);
+
+  // 遍历所有年龄，每个年龄抽事件 + 随机选可用选项
+  for (const age of AGE_TIMELINE) {
+    state = { ...state, age };
+    const event = drawEvent(state);
+    if (!event) continue;
+
+    // 从可用选项里随机选一个
+    const available = event.choices.filter(c => isChoiceAvailable(c, state));
+    if (available.length === 0) continue;
+    const choice = pick(available);
+    state = applyChoice(state, event, choice);
+
+    // 如果选项触发了提前结局
+    if (state.phase === 'ending') break;
+  }
+
+  // 判定结局
+  if (state.phase !== 'ending') {
+    const endingId = determineEnding(state);
+    state = { ...state, phase: 'ending', endingId };
+  }
+
+  return state;
+}
+
+// ============================================================
 // 结局判定
 // ============================================================
 

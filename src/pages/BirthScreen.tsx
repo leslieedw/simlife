@@ -3,6 +3,7 @@ import type { BirthProfile, FamilyWealth, FamilyStructure, BirthCity } from '../
 
 interface Props {
   onComplete: (birth: BirthProfile) => void;
+  onDebugSimulate?: () => void;
 }
 
 const WEALTH_OPTIONS: { value: FamilyWealth; label: string; desc: string }[] = [
@@ -28,7 +29,7 @@ const CITY_OPTIONS: { value: BirthCity; label: string; desc: string }[] = [
   { value: 'beijing_shanghai', label: '北上广深', desc: '最顶级的起点之一' },
 ];
 
-export function BirthScreen({ onComplete }: Props) {
+export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
   const [step, setStep] = useState(0);
   const [wealth, setWealth] = useState<FamilyWealth | null>(null);
   const [structure, setStructure] = useState<FamilyStructure | null>(null);
@@ -195,15 +196,23 @@ export function BirthScreen({ onComplete }: Props) {
         )}
       </div>
 
-      {/* 随机出生 */}
+      {/* 随机出生 + 调试按钮 */}
       {step === 0 && (
-        <div className="px-6 pb-10 max-w-lg mx-auto w-full">
+        <div className="px-6 pb-10 max-w-lg mx-auto w-full space-y-3">
           <button
             onClick={handleRandom}
             className="w-full py-3 border border-white/20 rounded-xl text-gray-400 text-sm hover:border-white/40 hover:text-gray-200 transition-all"
           >
             随机出生（快速开始）
           </button>
+          {onDebugSimulate && (
+            <button
+              onClick={onDebugSimulate}
+              className="w-full py-3 border border-dashed border-amber-500/30 rounded-xl text-amber-500/60 text-xs hover:border-amber-500/60 hover:text-amber-500 transition-all"
+            >
+              DEV: 快速模拟完整人生 → 直达结局
+            </button>
+          )}
         </div>
       )}
     </div>

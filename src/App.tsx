@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { GameState, BirthProfile } from './types';
-import { createInitialState, drawEvent, applyChoice, getNextAge, determineEnding, AGE_TIMELINE } from './engine/gameEngine';
+import { createInitialState, drawEvent, applyChoice, getNextAge, determineEnding, AGE_TIMELINE, simulateFullGame } from './engine/gameEngine';
 import { BirthScreen } from './pages/BirthScreen';
 import { GameScreen } from './pages/GameScreen';
 import { EndingScreen } from './pages/EndingScreen';
@@ -78,13 +78,19 @@ export default function App() {
     setGameState(prev => prev ? { ...prev, phase: 'analysis' } : prev);
   }
 
+  function handleDebugSimulate() {
+    const finalState = simulateFullGame();
+    setGameState(finalState);
+    setSkippedAges([]);
+  }
+
   function handleRestart() {
     setGameState(null);
     setSkippedAges([]);
   }
 
   if (!gameState) {
-    return <BirthScreen onComplete={handleBirthComplete} />;
+    return <BirthScreen onComplete={handleBirthComplete} onDebugSimulate={handleDebugSimulate} />;
   }
 
   if (gameState.phase === 'ending') {
