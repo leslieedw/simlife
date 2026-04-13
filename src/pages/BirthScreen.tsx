@@ -256,7 +256,7 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
       <div className="min-h-screen bg-[#0f0f0f] flex flex-col justify-center items-center px-6 relative overflow-hidden">
 
         {/* 版本号 */}
-        <div className="fixed top-3 right-3 text-[9px] text-gray-700 font-mono z-20">v0.1.0</div>
+        <div className="fixed top-3 right-3 text-[9px] text-gray-600 font-mono z-20">v0.2.0</div>
 
         {/* 背景：女字旁汉字散落 */}
         <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
@@ -280,9 +280,9 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
 
         <div className="max-w-lg w-full text-center relative z-10">
           {/* 引子 */}
-          <p className="text-gray-600 text-xs italic mb-10">
+          <p className="text-gray-500 text-xs italic mb-10">
             「{coverQuote.text}」
-            <span className="block mt-1 text-gray-700">—— {coverQuote.attribution}</span>
+            <span className="block mt-1 text-gray-600">—— {coverQuote.attribution}</span>
           </p>
 
           {/* 标题 */}
@@ -322,7 +322,7 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
           </button>
 
           {/* 作者 */}
-          <p className="text-[10px] text-gray-700 mt-6">by LeslieDW</p>
+          <p className="text-[10px] text-gray-600 mt-6">by LeslieDW</p>
         </div>
 
         {/* DEV 按钮 - 右下角小图标 */}
