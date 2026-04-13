@@ -9,6 +9,7 @@ interface Props {
   onChoice: (choiceId: string) => void;
   onContinue: () => void;
   onSkip: () => void;
+  onEndEarly: () => void;
 }
 
 const STAT_LABELS: Record<string, string> = {
@@ -75,7 +76,7 @@ function buildTimePassedText(skippedAges: number[]): string {
   return `从${first}岁到${last}岁，生活平静地流过，没有什么值得一说的。`;
 }
 
-export function GameScreen({ state, totalAges, currentAgeIndex, skippedAges, onChoice, onContinue, onSkip }: Props) {
+export function GameScreen({ state, totalAges, currentAgeIndex, skippedAges, onChoice, onContinue, onSkip, onEndEarly }: Props) {
   const { age, stats, currentEvent, phase } = state;
   const progress = (currentAgeIndex / (totalAges - 1)) * 100;
   const timePassedText = buildTimePassedText(skippedAges);
@@ -171,13 +172,22 @@ export function GameScreen({ state, totalAges, currentAgeIndex, skippedAges, onC
               })}
             </div>
 
-            {/* 跳过按钮 */}
-            <button
-              onClick={onSkip}
-              className="mt-4 self-center text-xs text-gray-600 hover:text-gray-400 transition-colors"
-            >
-              不想选 · 换一道题
-            </button>
+            {/* 跳过 / 提前结束 */}
+            <div className="mt-4 flex justify-center gap-4">
+              <button
+                onClick={onSkip}
+                className="text-xs text-gray-600 hover:text-gray-400 transition-colors"
+              >
+                换一道题
+              </button>
+              <span className="text-gray-700">·</span>
+              <button
+                onClick={onEndEarly}
+                className="text-xs text-gray-600 hover:text-gray-400 transition-colors"
+              >
+                就活到这里
+              </button>
+            </div>
           </>
         ) : phase === 'result' && state.lifeHistory.length > 0 ? (
           <>

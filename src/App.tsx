@@ -83,6 +83,12 @@ export default function App() {
     setGameState(newState);
   }
 
+  function handleEndEarly() {
+    if (!gameState) return;
+    const endingId = determineEnding(gameState);
+    setGameState({ ...gameState, phase: 'ending', endingId, currentEvent: null });
+  }
+
   function handleViewAnalysis() {
     setGameState(prev => prev ? { ...prev, phase: 'analysis' } : prev);
   }
@@ -134,6 +140,7 @@ export default function App() {
       onChoice={handleChoice}
       onContinue={handleContinue}
       onSkip={handleSkip}
+      onEndEarly={handleEndEarly}
     />
   );
 }
