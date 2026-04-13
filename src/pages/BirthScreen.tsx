@@ -168,8 +168,9 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
     <div className="min-h-screen bg-[#0f0f0f] flex flex-col">
       {/* 顶部标题 */}
       <div className="text-center pt-12 pb-8 px-6">
-        <h1 className="text-3xl font-bold text-white tracking-wide">人生</h1>
-        <p className="text-gray-500 text-sm mt-2">SimLife · 每一个选择，都算数</p>
+        <p className="text-gray-600 text-xs italic mb-4">「一个人如果没有房间，就没有完整的自我。」</p>
+        <h1 className="text-3xl font-bold text-white tracking-wide">她的一生</h1>
+        <p className="text-gray-500 text-sm mt-2">每一个选择，都算数</p>
       </div>
 
       {/* 进度条 */}

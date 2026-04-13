@@ -22,6 +22,13 @@ const RARITY_LABEL: Record<string, string> = {
   hidden: '隐藏结局',
 };
 
+const RARITY_PERCENT: Record<string, string> = {
+  common: '约 40% 的人到达这里',
+  uncommon: '约 15% 的人到达这里',
+  rare: '不到 5% 的人到达这里',
+  hidden: '不到 1% 的人见过这个结局',
+};
+
 export function EndingScreen({ ending, history, onViewAnalysis, onRestart }: Props) {
   const quote = useMemo(() => {
     const quotes = ending.culturalQuotes;
@@ -33,8 +40,11 @@ export function EndingScreen({ ending, history, onViewAnalysis, onRestart }: Pro
 
       {/* 结局标题 */}
       <div className="pt-16 pb-8 text-center">
-        <div className={`text-xs uppercase tracking-widest mb-3 ${RARITY_STYLE[ending.rarity]}`}>
+        <div className={`text-xs uppercase tracking-widest mb-1 ${RARITY_STYLE[ending.rarity]}`}>
           {RARITY_LABEL[ending.rarity]}
+        </div>
+        <div className="text-[10px] text-gray-600 mb-3">
+          {RARITY_PERCENT[ending.rarity]}
         </div>
         <h1 className="text-3xl font-bold text-white mb-5">{ending.title}</h1>
         <p className="text-gray-300 leading-relaxed text-sm">{ending.description}</p>

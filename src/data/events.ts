@@ -2843,4 +2843,84 @@ export const ALL_EVENTS: EventCard[] = [
       },
     ],
   },
+
+  // ============================================================
+  // 溢出危机事件——当属性跌到谷底时强制触发
+  // ============================================================
+
+  {
+    id: 'debt_crisis',
+    ageRange: [18, 55],
+    title: '债务深渊',
+    description: '你已经一分钱都没有了。下个月的房租、信用卡的催款、朋友借的钱——所有的数字都在追你。你站在一个你从来没想过自己会到的地方。',
+    weight: 3,
+    requirement: { hasTags: ['in_debt'], maxStats: { wealth: 5 } },
+    choices: [
+      {
+        id: 'borrow_from_dangerous',
+        text: '找了一个利息很高的地方借钱，先活过这个月',
+        statChanges: { wealth: 10, inner: -8 },
+        personalityDelta: { thriving: -3, structuralAwareness: 2 },
+        followUpText: '你续了一条命。但那条命是用更大的坑换来的。利滚利的速度，比你挣钱的速度快得多。',
+      },
+      {
+        id: 'sell_everything',
+        text: '把能卖的都卖了，从头来过',
+        statChanges: { wealth: 8, inner: -3, appearance: -5 },
+        removeTags: ['in_debt'],
+        personalityDelta: { resistance: 2, thriving: -1, authenticity: 2 },
+        followUpText: '你的东西都没了。但债也清了一部分。你发现有些东西失去了之后，你反而觉得轻了。',
+      },
+      {
+        id: 'someone_offers_help',
+        text: '有个人说可以"帮你"——用你不想付出的方式',
+        statChanges: { wealth: 15, inner: -12, worldly: -5 },
+        addTags: ['trauma_bond', 'beauty_currency'],
+        personalityDelta: { selfExpression: -3, authenticity: -3, thriving: -3 },
+        followUpText: '你用了一些你以前绝对不会用的东西来还债。那段时间你尽量不照镜子。',
+      },
+      {
+        id: 'seek_legal_help',
+        text: '去了法律援助中心，了解破产保护',
+        requirement: { minStats: { intelligence: 50 } },
+        statChanges: { wealth: 3, inner: 3 },
+        removeTags: ['in_debt'],
+        personalityDelta: { structuralAwareness: 3, resistance: 2, selfExpression: 1 },
+        followUpText: '原来有法律保护这种处境的人。你不知道为什么没人早点告诉你。',
+        lockedHint: '（需要：有足够的判断力找到这个渠道）',
+      },
+    ],
+  },
+
+  {
+    id: 'inner_breakdown',
+    ageRange: [15, 55],
+    title: '你撑不住了',
+    description: '有一天你发现自己站在某个地方——阳台、天桥、浴室——你不知道自己怎么到那里的。你的身体在那里，但你不在了。这不是一个选择题，这是一个求救信号。',
+    weight: 3,
+    requirement: { maxStats: { inner: 5 } },
+    choices: [
+      {
+        id: 'call_someone',
+        text: '你拿出手机，拨了一个号码，不知道会不会有人接',
+        statChanges: { inner: 10, social: 3 },
+        personalityDelta: { selfExpression: 3, connection: 2, thriving: 1 },
+        followUpText: '有人接了。她什么都没说，就是听着。你哭了很久。那个电话没有解决任何问题，但它让你决定今天先不放弃。',
+      },
+      {
+        id: 'walk_away_slowly',
+        text: '你转身，一步一步走回去了。你不知道为什么，但你走了',
+        statChanges: { inner: 5 },
+        personalityDelta: { resistance: 2, thriving: 1 },
+        followUpText: '你活了下来。这件事没有观众，没有掌声，没有人知道那一天你做了什么。但你知道。',
+      },
+      {
+        id: 'go_to_hospital',
+        text: '你去了医院急诊，说"我需要帮助"',
+        statChanges: { inner: 12, eq: 5, wealth: -5 },
+        personalityDelta: { selfExpression: 4, thriving: 3, authenticity: 3 },
+        followUpText: '说出"我需要帮助"这五个字，是你那一年做过的最难的事。也是最重要的。',
+      },
+    ],
+  },
 ];

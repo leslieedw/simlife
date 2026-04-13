@@ -129,7 +129,18 @@ export function applyChoice(state: GameState, event: EventCard, choice: ChoiceOp
 
   if (choice.statChanges) {
     for (const [key, delta] of Object.entries(choice.statChanges) as [keyof Stats, number][]) {
-      newStats[key] = Math.max(0, Math.min(100, newStats[key] + delta));
+      // 先计算原始值（允许负数，用于触发溢出事件）
+      const raw = newStats[key] + delta;
+      newStats[key] = Math.max(0, Math.min(100, raw));
+
+      // 溢出惩罚：财富降到 0 → 触发负债
+      if (key === 'wealth' && raw < -10 && !newTags.has('in_debt')) {
+        newTags.add('in_debt');
+      }
+      // 溢出惩罚：内心降到 0 → 加重连锁
+      if (key === 'inner' && raw < -10) {
+        newStats.social = Math.max(0, newStats.social - 5); // 内心崩溃连带社交退缩
+      }
     }
   }
 

@@ -74,6 +74,15 @@ export default function App() {
     setGameState(newState);
   }
 
+  function handleSkip() {
+    if (!gameState) return;
+    // 跳过当前事件，直接快进到下一个事件
+    const stateWithoutEvent: GameState = { ...gameState, currentEvent: null, phase: 'playing' };
+    const { newState, skippedAges: s } = advanceToNextEvent(stateWithoutEvent);
+    setSkippedAges([gameState.age, ...s]);
+    setGameState(newState);
+  }
+
   function handleViewAnalysis() {
     setGameState(prev => prev ? { ...prev, phase: 'analysis' } : prev);
   }
@@ -124,6 +133,7 @@ export default function App() {
       skippedAges={skippedAges}
       onChoice={handleChoice}
       onContinue={handleContinue}
+      onSkip={handleSkip}
     />
   );
 }

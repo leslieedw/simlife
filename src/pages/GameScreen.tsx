@@ -8,6 +8,7 @@ interface Props {
   skippedAges: number[];
   onChoice: (choiceId: string) => void;
   onContinue: () => void;
+  onSkip: () => void;
 }
 
 const STAT_LABELS: Record<string, string> = {
@@ -74,7 +75,7 @@ function buildTimePassedText(skippedAges: number[]): string {
   return `从${first}岁到${last}岁，生活平静地流过，没有什么值得一说的。`;
 }
 
-export function GameScreen({ state, totalAges, currentAgeIndex, skippedAges, onChoice, onContinue }: Props) {
+export function GameScreen({ state, totalAges, currentAgeIndex, skippedAges, onChoice, onContinue, onSkip }: Props) {
   const { age, stats, currentEvent, phase } = state;
   const progress = (currentAgeIndex / (totalAges - 1)) * 100;
   const timePassedText = buildTimePassedText(skippedAges);
@@ -169,6 +170,14 @@ export function GameScreen({ state, totalAges, currentAgeIndex, skippedAges, onC
                 );
               })}
             </div>
+
+            {/* 跳过按钮 */}
+            <button
+              onClick={onSkip}
+              className="mt-4 self-center text-xs text-gray-600 hover:text-gray-400 transition-colors"
+            >
+              不想选 · 换一道题
+            </button>
           </>
         ) : phase === 'result' && state.lifeHistory.length > 0 ? (
           <>
