@@ -1,10 +1,25 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import type { BirthProfile, FamilyWealth, FamilyStructure, BirthCity } from '../types';
 
 interface Props {
   onComplete: (birth: BirthProfile) => void;
   onDebugSimulate?: () => void;
 }
+
+const COVER_QUOTES = [
+  { text: '一个人如果没有房间，就没有完整的自我。', attribution: '弗吉尼亚·伍尔夫' },
+  { text: '女人不是天生的，是被塑造的。', attribution: '西蒙·波伏娃' },
+  { text: '你的沉默保护不了你。', attribution: 'Audre Lorde' },
+  { text: '我生来就是高山而非溪流。', attribution: '张桂梅' },
+  { text: '我要很多很多的爱，如果没有，那就很多很多的钱。', attribution: '亦舒' },
+  { text: '心若没有栖息的地方，到哪里都是在流浪。', attribution: '三毛' },
+  { text: '逆来顺受，你说我的生命可惜，我自己却不在乎。', attribution: '萧红' },
+  { text: '如果有来生，要做一棵树，站成永恒，没有悲伤的姿势。', attribution: '三毛' },
+  { text: '女人啊，你创造了世界，世界却从未属于你。', attribution: '改自波伏娃' },
+  { text: '我不管多少人说不行，我要去，我要自己去看看。', attribution: '三毛' },
+  { text: '走吧，走吧，人总要学着自己长大。', attribution: '王菲' },
+  { text: '我不是要变得自由。我本来就是自由的。', attribution: 'Toni Morrison' },
+];
 
 const WEALTH_OPTIONS: { value: FamilyWealth; label: string; desc: string }[] = [
   { value: 'poor', label: '贫困家庭', desc: '温饱都成问题，改变命运靠自己' },
@@ -30,8 +45,9 @@ const CITY_OPTIONS: { value: BirthCity; label: string; desc: string }[] = [
 ];
 
 export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(-1); // -1 = cover page
   const [wealth, setWealth] = useState<FamilyWealth | null>(null);
+  const coverQuote = useMemo(() => COVER_QUOTES[Math.floor(Math.random() * COVER_QUOTES.length)], []);
   const [structure, setStructure] = useState<FamilyStructure | null>(null);
   const [city, setCity] = useState<BirthCity | null>(null);
   const [love, setLove] = useState(50);
@@ -164,13 +180,70 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
     </div>,
   ];
 
+  // ====== 封面页 ======
+  if (step === -1) {
+    return (
+      <div className="min-h-screen bg-[#0f0f0f] flex flex-col justify-center items-center px-6">
+        <div className="max-w-lg w-full text-center">
+          {/* 引子 */}
+          <p className="text-gray-600 text-xs italic mb-8">
+            「{coverQuote.text}」
+            <span className="block mt-1 text-gray-700">—— {coverQuote.attribution}</span>
+          </p>
+
+          {/* 标题 */}
+          <h1 className="text-4xl font-bold text-white tracking-wide mb-3">她的一生</h1>
+          <p className="text-gray-500 text-sm mb-2">每一个选择，都算数</p>
+
+          {/* 简介 */}
+          <div className="mt-8 mb-10 px-4">
+            <p className="text-gray-400 text-sm leading-relaxed">
+              一个东亚女孩，从出生到六十岁。
+            </p>
+            <p className="text-gray-500 text-xs leading-relaxed mt-2">
+              她会遇到好女孩训导、容貌焦虑、职场天花板、婚姻压力、经济依赖……
+              <br />
+              有些选项看起来很好，代价藏在后面。
+              <br />
+              有些路走不了，不是因为你不够好，是因为门本来就没开。
+            </p>
+            <p className="text-gray-600 text-xs mt-3 italic">
+              这不是一个有标准答案的游戏。
+            </p>
+          </div>
+
+          {/* 按钮 */}
+          <button
+            onClick={() => setStep(0)}
+            className="w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-100 transition-all mb-3"
+          >
+            开始她的一生
+          </button>
+          <button
+            onClick={handleRandom}
+            className="w-full py-3 border border-white/20 rounded-xl text-gray-400 text-sm hover:border-white/40 hover:text-gray-200 transition-all"
+          >
+            随机出生（快速开始）
+          </button>
+          {onDebugSimulate && (
+            <button
+              onClick={onDebugSimulate}
+              className="w-full py-3 mt-2 border border-dashed border-amber-500/30 rounded-xl text-amber-500/60 text-xs hover:border-amber-500/60 hover:text-amber-500 transition-all"
+            >
+              DEV: 快速模拟 → 直达结局
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ====== 出生配置页（step 0-3） ======
   return (
     <div className="min-h-screen bg-[#0f0f0f] flex flex-col">
       {/* 顶部标题 */}
-      <div className="text-center pt-12 pb-8 px-6">
-        <p className="text-gray-600 text-xs italic mb-4">「一个人如果没有房间，就没有完整的自我。」</p>
-        <h1 className="text-3xl font-bold text-white tracking-wide">她的一生</h1>
-        <p className="text-gray-500 text-sm mt-2">每一个选择，都算数</p>
+      <div className="text-center pt-10 pb-6 px-6">
+        <h1 className="text-xl font-bold text-white tracking-wide">她的一生</h1>
       </div>
 
       {/* 进度条 */}
@@ -187,35 +260,13 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
       <div className="flex-1 px-6 pb-6 max-w-lg mx-auto w-full">
         {steps[step]}
 
-        {step > 0 && (
-          <button
-            onClick={() => setStep(step - 1)}
-            className="mt-4 text-sm text-gray-500 hover:text-gray-300 transition-colors"
-          >
-            ← 返回
-          </button>
-        )}
+        <button
+          onClick={() => setStep(step - 1)}
+          className="mt-4 text-sm text-gray-500 hover:text-gray-300 transition-colors"
+        >
+          ← 返回
+        </button>
       </div>
-
-      {/* 随机出生 + 调试按钮 */}
-      {step === 0 && (
-        <div className="px-6 pb-10 max-w-lg mx-auto w-full space-y-3">
-          <button
-            onClick={handleRandom}
-            className="w-full py-3 border border-white/20 rounded-xl text-gray-400 text-sm hover:border-white/40 hover:text-gray-200 transition-all"
-          >
-            随机出生（快速开始）
-          </button>
-          {onDebugSimulate && (
-            <button
-              onClick={onDebugSimulate}
-              className="w-full py-3 border border-dashed border-amber-500/30 rounded-xl text-amber-500/60 text-xs hover:border-amber-500/60 hover:text-amber-500 transition-all"
-            >
-              DEV: 快速模拟完整人生 → 直达结局
-            </button>
-          )}
-        </div>
-      )}
     </div>
   );
 }
