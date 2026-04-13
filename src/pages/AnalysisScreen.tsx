@@ -11,7 +11,6 @@ function DimensionBar({ score, leftLabel, rightLabel, label, description, dualEd
   score: number; leftLabel: string; rightLabel: string;
   label: string; description: string; dualEdge?: string;
 }) {
-  const pct = ((score + 10) / 20) * 100;
   const barWidth = Math.abs(score) * 5;
   const isRight = score >= 0;
 

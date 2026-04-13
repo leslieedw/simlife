@@ -401,7 +401,6 @@ export const ALL_EVENTS: EventCard[] = [
     ageRange: [11, 13],
     title: '初潮',
     description: '它来了。你已经知道这件事，但真正发生的那一天，你感受到了什么？',
-    lacksTag: ['first_period_early'],
     choices: [
       {
         id: 'feel_disgusted',
@@ -1645,7 +1644,7 @@ export const ALL_EVENTS: EventCard[] = [
         id: 'see_others',
         text: '你最先看见的，是你帮助过、影响过的那些人',
         statChanges: { inner: 5, social: 3, eq: 3 },
-        personalityDelta: { connection: 3, empathy: 2, thriving: 2 },
+        personalityDelta: { connection: 3, authenticity: 2, thriving: 2 },
         followUpText: '你以为自己只是路过，但你是一些人人生里的重要事件。',
       },
     ],
