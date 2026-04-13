@@ -1,4 +1,4 @@
-import type { GameState } from '../types';
+import type { GameState, HiddenTag } from '../types';
 import { isChoiceAvailable } from '../engine/gameEngine';
 
 interface Props {
@@ -19,6 +19,29 @@ const STAT_LABELS: Record<string, string> = {
   wealth: '财富',
   mental: '心理',
   social: '社交',
+};
+
+// 需要展示在状态栏的标签及其中文名/样式
+const VISIBLE_TAGS: Record<string, { label: string; color: string }> = {
+  married:                  { label: '已婚', color: 'bg-pink-500/20 text-pink-300 border-pink-500/30' },
+  divorced:                 { label: '离异', color: 'bg-gray-500/20 text-gray-300 border-gray-500/30' },
+  has_children:             { label: '有孩子', color: 'bg-sky-500/20 text-sky-300 border-sky-500/30' },
+  never_married:            { label: '未婚', color: 'bg-violet-500/20 text-violet-300 border-violet-500/30' },
+  childless_by_choice:      { label: '丁克', color: 'bg-violet-500/20 text-violet-300 border-violet-500/30' },
+  higher_education:         { label: '大学', color: 'bg-blue-500/20 text-blue-300 border-blue-500/30' },
+  dropped_out:              { label: '辍学', color: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
+  abroad_experience:        { label: '海外', color: 'bg-teal-500/20 text-teal-300 border-teal-500/30' },
+  entrepreneur:             { label: '创业', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
+  addiction:                { label: '上瘾', color: 'bg-red-500/20 text-red-300 border-red-500/30' },
+  in_debt:                  { label: '负债', color: 'bg-red-500/20 text-red-300 border-red-500/30' },
+  trauma_bond:              { label: '创伤依赖', color: 'bg-rose-500/20 text-rose-300 border-rose-500/30' },
+  survived_violence:        { label: '幸存者', color: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
+  economic_independence_drive: { label: '经济自主', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
+  female_solidarity:        { label: '女性联结', color: 'bg-purple-500/20 text-purple-300 border-purple-500/30' },
+  orphan_born:              { label: '孤儿', color: 'bg-gray-500/20 text-gray-300 border-gray-500/30' },
+  rebel_spirit:             { label: '反骨', color: 'bg-orange-500/20 text-orange-300 border-orange-500/30' },
+  glass_ceiling_seen:       { label: '看见天花板', color: 'bg-slate-500/20 text-slate-300 border-slate-500/30' },
+  late_bloomer:             { label: '晚开的花', color: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30' },
 };
 
 function StatBar({ label, value }: { label: string; value: number }) {
@@ -78,6 +101,23 @@ export function GameScreen({ state, totalAges, currentAgeIndex, skippedAges, onC
             <StatBar key={key} label={STAT_LABELS[key] ?? key} value={val} />
           ))}
         </div>
+
+        {/* 状态标签 */}
+        {(() => {
+          const visibleEntries = Array.from(state.hiddenTags)
+            .filter((tag): tag is HiddenTag => tag in VISIBLE_TAGS)
+            .map(tag => ({ tag, ...VISIBLE_TAGS[tag] }));
+          if (visibleEntries.length === 0) return null;
+          return (
+            <div className="flex flex-wrap gap-1.5 mt-2.5 pt-2.5 border-t border-white/5">
+              {visibleEntries.map(({ tag, label, color }) => (
+                <span key={tag} className={`text-[10px] px-2 py-0.5 rounded-full border ${color}`}>
+                  {label}
+                </span>
+              ))}
+            </div>
+          );
+        })()}
       </div>
 
       {/* 主体内容 */}

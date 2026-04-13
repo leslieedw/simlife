@@ -1113,6 +1113,261 @@ export const ALL_EVENTS: EventCard[] = [
   },
 
   // ============================================================
+  // 家境相关的随机灾难——穷人更脆弱
+  // ============================================================
+
+  {
+    id: 'family_medical_crisis',
+    ageRange: [16, 45],
+    title: '一场大病',
+    description: '家里有人突然生了重病——也许是你自己，也许是你最在乎的人。住院、手术、费用像水一样流出去。你第一次意识到，"没钱"可以杀死一个人。',
+    weight: 0.45,
+    requirement: { maxStats: { wealth: 45 }, lacksTag: ['orphan_born'] },
+    choices: [
+      {
+        id: 'borrow_everywhere',
+        text: '到处借钱，亲戚朋友能借的都借了',
+        statChanges: { wealth: -20, mental: -8, social: -5 },
+        addTags: ['in_debt', 'poverty_scar'],
+        personalityDelta: { structuralAwareness: 3, thriving: -2 },
+        followUpText: '你欠了很多人的钱。他们说"不急"，但你知道那些眼神变了。贫穷不只是数字，是一整张关系网的塌方。',
+      },
+      {
+        id: 'give_up_treatment',
+        text: '放弃了部分治疗，因为真的付不起',
+        statChanges: { wealth: -8, mental: -12 },
+        addTags: ['poverty_scar'],
+        personalityDelta: { structuralAwareness: 3, thriving: -3, selfExpression: -1 },
+        followUpText: '那个决定后来一直压在你心里。你没有选错，你只是没有选的余地。',
+      },
+      {
+        id: 'crowdfund_online',
+        text: '发了轻松筹，把尊严和金额一起公开了',
+        statChanges: { wealth: -5, mental: -6, social: -3 },
+        personalityDelta: { structuralAwareness: 2, selfExpression: 1 },
+        followUpText: '有些人帮了，有些人截图讨论你是不是"真的穷"。你第一次知道，穷的时候连求助都需要被审核。',
+      },
+    ],
+  },
+
+  {
+    id: 'sudden_job_loss',
+    ageRange: [23, 45],
+    title: '突然失业',
+    description: '公司裁员，你在名单上。经济形势不好，下家不好找。你的存款只够撑两三个月。',
+    weight: 0.4,
+    choices: [
+      {
+        id: 'scramble_for_anything',
+        text: '什么工作都接，先活下来',
+        statChanges: { wealth: -5, mental: -6, intelligence: -2 },
+        personalityDelta: { thriving: -2, resistance: 1, structuralAwareness: 1 },
+        followUpText: '你做了很多以前不会做的事。有些事让你觉得自己在往下走。但你还在走。',
+      },
+      {
+        id: 'retrain_skill',
+        text: '趁这段时间学一门新技能，重新规划',
+        requirement: { minStats: { intelligence: 55, wealth: 30 } },
+        statChanges: { wealth: -10, intelligence: 5, mental: 2 },
+        personalityDelta: { thriving: 2, resistance: 2, authenticity: 2 },
+        followUpText: '那段空窗期后来变成了转折点。不是所有停下来都是后退。',
+        lockedHint: '（需要：一定的积蓄和学习能力）',
+      },
+      {
+        id: 'spiral_down',
+        text: '找不到工作，开始不出门，不回消息',
+        statChanges: { mental: -10, social: -5, wealth: -8 },
+        personalityDelta: { thriving: -3, selfExpression: -2 },
+        followUpText: '日子变成了一个又一个一样的灰色。你知道应该动起来，但你动不了。这不是懒，是系统过载。',
+      },
+    ],
+  },
+
+  {
+    id: 'substance_coping',
+    ageRange: [20, 45],
+    title: '麻醉',
+    description: '你有一段时间开始依赖某种东西来撑过每一天——酒、安眠药、或者更危险的东西。最初只是偶尔，后来变成了每天。',
+    weight: 0.3,
+    requirement: { maxStats: { mental: 30 } },
+    choices: [
+      {
+        id: 'deeper_in',
+        text: '继续，你需要它才能正常运转',
+        statChanges: { mental: -8, fitness: -8, wealth: -5 },
+        addTags: ['addiction'],
+        personalityDelta: { thriving: -3, selfExpression: -2, authenticity: -2 },
+        followUpText: '它不是在帮你，它只是在推迟崩溃的时间，同时让崩溃变得更大。',
+      },
+      {
+        id: 'hit_bottom_then_stop',
+        text: '有一天发生了一件事，你意识到不能再这样了',
+        statChanges: { mental: 3, fitness: -3, eq: 3 },
+        removeTags: ['addiction'],
+        personalityDelta: { selfExpression: 2, resistance: 2, thriving: 1, structuralAwareness: 2 },
+        followUpText: '停下来是最难的那一步。你做到了。那不是一个瞬间的英雄时刻，是一个每天重复的选择。',
+      },
+      {
+        id: 'get_professional_help',
+        text: '去看了成瘾方面的专业医生',
+        requirement: { minStats: { wealth: 35 } },
+        statChanges: { mental: 5, wealth: -10, eq: 4 },
+        removeTags: ['addiction'],
+        personalityDelta: { selfExpression: 3, thriving: 2, authenticity: 2 },
+        followUpText: '你不是弱者，你是一个在痛苦面前选择了求助的人。那比硬撑勇敢得多。',
+        lockedHint: '（需要：有一定的经济能力支持治疗）',
+      },
+    ],
+  },
+
+  {
+    id: 'gambling_trap',
+    ageRange: [20, 45],
+    title: '赌一把',
+    description: '有人带你玩了"小游戏"——线上赌博、赌球、地下麻将。赢了两次之后，你觉得自己手气不错。',
+    weight: 0.3,
+    choices: [
+      {
+        id: 'get_hooked',
+        text: '越玩越大，输了想回本，回本了想赢更多',
+        statChanges: { wealth: -25, mental: -10 },
+        addTags: ['addiction', 'in_debt'],
+        personalityDelta: { thriving: -3, structuralAwareness: 1 },
+        followUpText: '赌桌设计过了的——赢的概率刚好够让你不走，输的频率刚好够吸干你。你不是运气不好，你是进了一个设计好的系统。',
+      },
+      {
+        id: 'stop_early',
+        text: '输了一次之后就停了，把APP删了',
+        statChanges: { wealth: -5, mental: 1 },
+        personalityDelta: { resistance: 2, structuralAwareness: 2 },
+        followUpText: '你没有赢。但你也没有输掉更多。那个"够了"的判断力，后来救了你很多次。',
+      },
+      {
+        id: 'borrow_to_gamble',
+        text: '借钱翻本，越借越多',
+        statChanges: { wealth: -30, mental: -12, social: -5 },
+        addTags: ['addiction', 'in_debt'],
+        personalityDelta: { thriving: -4, authenticity: -2 },
+        followUpText: '你开始骗你最亲的人。你恨自己，但你停不下来。这叫成瘾，不叫道德败坏。但后果是真实的。',
+      },
+    ],
+  },
+
+  {
+    id: 'natural_disaster_poor',
+    ageRange: [10, 50],
+    title: '天灾',
+    description: '洪水、地震、或者一场大火。家没了，或者家里受了很大的损失。你站在废墟前，不知道从哪里开始。',
+    weight: 0.25,
+    requirement: { maxStats: { wealth: 40 } },
+    choices: [
+      {
+        id: 'rebuild_from_zero',
+        text: '什么都没了，从零开始',
+        statChanges: { wealth: -20, mental: -8, fitness: -3 },
+        addTags: ['poverty_scar'],
+        personalityDelta: { thriving: -2, structuralAwareness: 2, resistance: 2 },
+        followUpText: '你看见了一件事：当灾难来的时候，穷人和富人经历的是完全不同的故事。保险、存款、社会资源——你什么都没有。',
+      },
+      {
+        id: 'community_helps',
+        text: '邻居和朋友帮了你，凑了一些钱和物资',
+        statChanges: { wealth: -10, mental: -3, social: 3 },
+        addTags: ['female_solidarity'],
+        personalityDelta: { connection: 3, thriving: 1, structuralAwareness: 1 },
+        followUpText: '那些帮你的人，有些比你更穷。但他们还是来了。你记住了这件事，以后你也会这样做。',
+      },
+      {
+        id: 'relocate',
+        text: '离开了，去城市找活路',
+        statChanges: { wealth: -5, mental: -5, social: -4 },
+        personalityDelta: { resistance: 2, thriving: -1 },
+        followUpText: '你成了城市里一个没有根的人。但你活着。根可以重新长。',
+      },
+    ],
+  },
+
+  {
+    id: 'rich_family_scandal',
+    ageRange: [14, 30],
+    title: '纸牌屋',
+    description: '你家看起来什么都有——好房子、好车、好学校。直到有一天，爸爸的生意出了事，或者你发现那些钱有问题，一夜之间什么都变了。',
+    weight: 0.3,
+    requirement: { minStats: { wealth: 65 }, lacksTag: ['orphan_born'] },
+    choices: [
+      {
+        id: 'world_collapses',
+        text: '世界塌了，你从什么都有变成了什么都没有',
+        statChanges: { wealth: -40, mental: -10, social: -8 },
+        addTags: ['poverty_scar'],
+        personalityDelta: { structuralAwareness: 3, thriving: -2 },
+        followUpText: '你以前的朋友不再接你电话了。你第一次知道，有些关系是用钱养着的。',
+      },
+      {
+        id: 'adapt_quickly',
+        text: '你很快学会了另一种活法，比以前更有韧性',
+        requirement: { minStats: { intelligence: 55 } },
+        statChanges: { wealth: -25, mental: -3, intelligence: 3 },
+        personalityDelta: { resistance: 3, authenticity: 3, structuralAwareness: 2, thriving: 1 },
+        followUpText: '你发现你不需要那些东西也可以活。那种发现很疼，但也很真实。',
+        lockedHint: '（需要：有足够的判断力来适应）',
+      },
+      {
+        id: 'denial',
+        text: '不愿意接受，继续维持以前的消费习惯，开始借钱',
+        statChanges: { wealth: -30, mental: -5, social: -2 },
+        addTags: ['in_debt'],
+        personalityDelta: { authenticity: -2, structuralAwareness: -1 },
+        followUpText: '你用信用卡续命。那些数字在月底到来的时候，和你的恐惧一起长大。',
+      },
+    ],
+  },
+
+  {
+    id: 'workplace_sexual_harassment',
+    ageRange: [20, 40],
+    title: '那些"不算什么"的事',
+    description: '上司碰了你的手，或者讲了关于你身体的笑话，或者在加班时锁了办公室的门。同事说"他就那样"。HR说"有证据吗"。',
+    weight: 0.5,
+    choices: [
+      {
+        id: 'endure_for_job',
+        text: '忍着，你需要这份工作',
+        statChanges: { mental: -8, eq: -3 },
+        addTags: ['male_gaze_trauma'],
+        personalityDelta: { selfExpression: -2, thriving: -2, structuralAwareness: 2 },
+        followUpText: '你每天都在上班和崩溃之间走钢丝。没有人看见那条钢丝，因为你假装它不存在。',
+      },
+      {
+        id: 'record_and_report',
+        text: '开始悄悄记录，攒够了证据去投诉',
+        requirement: { minStats: { intelligence: 55 } },
+        statChanges: { mental: -5, social: -3 },
+        addTags: ['glass_ceiling_seen', 'rebel_spirit'],
+        personalityDelta: { resistance: 4, selfExpression: 3, structuralAwareness: 3 },
+        followUpText: '过程比你想的更艰难。有些人说你"搞事情"，有些人悄悄说"谢谢你"。结果不一定公正，但记录在那里了。',
+        lockedHint: '（需要：有足够的判断力来收集证据）',
+      },
+      {
+        id: 'quit_immediately',
+        text: '辞职了，不愿意再待一天',
+        statChanges: { wealth: -8, mental: 3 },
+        personalityDelta: { resistance: 2, authenticity: 3, thriving: 1 },
+        followUpText: '你损失了收入。你保住了那个你不想变成的自己。有些账，只有自己算得清。',
+      },
+      {
+        id: 'tell_female_colleagues',
+        text: '跟几个女同事说了，发现她们也有类似经历',
+        requirement: { hasTags: ['female_solidarity'] },
+        statChanges: { mental: 2, social: 2 },
+        addTags: ['glass_ceiling_seen'],
+        personalityDelta: { connection: 3, structuralAwareness: 3, selfExpression: 2 },
+        followUpText: '你们一起站出来了，或者没有，但你们知道了彼此的存在。一个人是投诉，三个人是模式。',
+      },
+    ],
+  },
+
+  // ============================================================
   // 随机意外事件——无论家境如何都可能发生
   // ============================================================
 

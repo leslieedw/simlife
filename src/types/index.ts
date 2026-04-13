@@ -63,6 +63,10 @@ export type HiddenTag =
   | 'never_married'             // 主动选择不进入婚姻
   | 'abroad_experience'         // 有出国经历
   | 'entrepreneur'              // 有创业经历
+  // ── 状态类标签（会在游戏中显示）──
+  | 'addiction'                 // 上瘾：酒精/药物/赌博依赖
+  | 'divorced'                  // 离异
+  | 'in_debt'                   // 负债
   // ── 出生家庭结构标签（由出生背景自动生成）──
   | 'has_mother'                // 有/曾有母亲
   | 'has_father'                // 有/曾有父亲
