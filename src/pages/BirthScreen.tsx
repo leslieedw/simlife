@@ -215,9 +215,11 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
       </div>
     </div>,
 
-    // Step 3: 家庭温暖度
+    // Step 3: 家庭温暖度（孤儿时改为成长环境）
     <div key="love" className="space-y-6">
-      <h2 className="text-xl font-bold text-white">家里有多少爱？</h2>
+      <h2 className="text-xl font-bold text-white">
+        {structure === 'orphan' ? '成长环境有多少温暖？' : '家里有多少爱？'}
+      </h2>
       <p className="text-gray-400 text-sm">这决定了你最初的心理底色</p>
       <div className="space-y-4">
         <div className="flex justify-between text-sm text-gray-400">
@@ -231,31 +233,45 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
           className="w-full accent-rose-400"
         />
         <div className="text-center text-sm text-gray-400">
-          {love < 20 && '几乎没有爱，你一个人长大'}
-          {love >= 20 && love < 40 && '偶尔有温暖，但经常感到孤独'}
-          {love >= 40 && love < 60 && '普通家庭，平平淡淡'}
-          {love >= 60 && love < 80 && '家里还不错，经常被关心'}
-          {love >= 80 && '充满爱的家庭，你是被珍视的'}
+          {structure === 'orphan' ? (
+            <>
+              {love < 20 && '福利院人太多，没人顾得上你'}
+              {love >= 20 && love < 40 && '有人照顾基本生活，但没有人真的在乎你'}
+              {love >= 40 && love < 60 && '有一两个阿姨对你还不错'}
+              {love >= 60 && love < 80 && '遇到了好的寄养家庭或照顾者'}
+              {love >= 80 && '被真心对待过，虽然不是亲生的'}
+            </>
+          ) : (
+            <>
+              {love < 20 && '几乎没有爱，你一个人长大'}
+              {love >= 20 && love < 40 && '偶尔有温暖，但经常感到孤独'}
+              {love >= 40 && love < 60 && '普通家庭，平平淡淡'}
+              {love >= 60 && love < 80 && '家里还不错，经常被关心'}
+              {love >= 80 && '充满爱的家庭，你是被珍视的'}
+            </>
+          )}
         </div>
       </div>
-      <div className="space-y-2">
-        <p className="text-gray-400 text-sm">父母学历</p>
-        <div className="flex gap-3">
-          {(['low', 'mid', 'high'] as const).map(e => (
-            <button
-              key={e}
-              onClick={() => setEducation(e)}
-              className={`flex-1 py-2 rounded-lg text-sm transition-all ${
-                education === e
-                  ? 'bg-purple-500 text-white'
-                  : 'bg-white/5 text-gray-400 hover:bg-white/10'
-              }`}
-            >
-              {e === 'low' ? '小学/初中' : e === 'mid' ? '高中/大专' : '本科以上'}
-            </button>
-          ))}
+      {structure !== 'orphan' && (
+        <div className="space-y-2">
+          <p className="text-gray-400 text-sm">父母学历</p>
+          <div className="flex gap-3">
+            {(['low', 'mid', 'high'] as const).map(e => (
+              <button
+                key={e}
+                onClick={() => setEducation(e)}
+                className={`flex-1 py-2 rounded-lg text-sm transition-all ${
+                  education === e
+                    ? 'bg-purple-500 text-white'
+                    : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                }`}
+              >
+                {e === 'low' ? '小学/初中' : e === 'mid' ? '高中/大专' : '本科以上'}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       <button
         onClick={handleComplete}
         className="w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-100 transition-all mt-4"
