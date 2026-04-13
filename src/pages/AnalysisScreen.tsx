@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import type { PersonalityScores, HiddenTag } from '../types';
 import { generatePersonalityAnalysis } from '../engine/personalityAnalysis';
 
@@ -41,7 +41,7 @@ function DimensionBar({ score, leftLabel, rightLabel, label, description, dualEd
 }
 
 export function AnalysisScreen({ personality, tags, onRestart }: Props) {
-  const result = generatePersonalityAnalysis(personality, tags);
+  const result = useMemo(() => generatePersonalityAnalysis(personality, tags), [personality, tags]);
   const { culturalMatch } = result;
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
