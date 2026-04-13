@@ -3,12 +3,12 @@
 // ============================================================
 
 export interface Stats {
-  intelligence: number;  // 智力 0-100
-  eq: number;            // 情商 0-100
-  appearance: number;    // 颜值 0-100
+  intelligence: number;  // 智识 0-100
+  eq: number;            // 情感智力 0-100
+  appearance: number;    // 外貌 0-100
   fitness: number;       // 体能 0-100
   luck: number;          // 运气 0-100
-  wealth: number;        // 财富 0-100 (家庭给的起点)
+  wealth: number;        // 财富 0-100
   mental: number;        // 心理健康 0-100
   social: number;        // 社会关系 0-100
 }
@@ -26,40 +26,47 @@ export interface BirthProfile {
   familyStructure: FamilyStructure;
   birthCity: BirthCity;
   parentEducation: 'low' | 'mid' | 'high';
-  familyLove: number;    // 家庭温暖度 0-100，影响心理健康基线
+  familyLove: number;
 }
 
 // ============================================================
-// 隐性标记（Vulnerability / Trait tags）
+// 隐性标记——女性成长的结构性印记
 // ============================================================
 
 export type HiddenTag =
-  | 'childhood_trauma'      // 童年创伤
-  | 'lack_of_love'          // 缺乏关爱
-  | 'witnessed_violence'    // 目睹暴力
-  | 'poverty_scar'          // 贫困烙印
-  | 'overprotected'         // 过度保护
-  | 'prodigy'               // 天才迹象
-  | 'resilient'             // 天生韧性
-  | 'rebel_spirit'          // 叛逆基因
-  | 'people_pleaser'        // 讨好型人格萌芽
-  | 'ambitious'             // 强烈野心
-  | 'toxic_relationship'    // 深陷有毒关系
-  | 'addiction_risk'        // 成瘾风险
-  | 'creative_soul'         // 创造力觉醒
-  | 'street_smart';         // 江湖智慧
+  | 'good_girl_conditioning'    // 好女孩驯化：从小被要求听话、不哭、不生气
+  | 'beauty_currency'           // 容貌货币化：意识到外貌可以换取好处或保护
+  | 'internalized_misogyny'     // 内化厌女：不信任其他女性，视女性为竞争者
+  | 'maternal_wound'            // 母性创伤：与母亲关系复杂，爱恨交织
+  | 'male_gaze_trauma'          // 凝视创伤：过早被男性注视/骚扰，身体不再属于自己
+  | 'protective_relationship'   // 保护性依赖：依靠某个男性获得安全感，代价未知
+  | 'academic_escape'           // 学业逃脱：用成绩/学历作为逃离原生家庭的工具
+  | 'early_sexualization'       // 早期性化：在准备好之前被推入成人世界
+  | 'female_solidarity'         // 女性联结：有真实的、能托底的女性友谊
+  | 'creative_outlet'           // 创意出口：通过创作、写作、音乐处理无法言说的感受
+  | 'economic_independence_drive' // 经济自主意识：把财务独立视为最重要的自由
+  | 'body_shame'                // 身体羞耻：对自己的身体感到陌生或厌恶
+  | 'high_sensitivity'          // 高敏感体质：对情感和环境高度敏感（创造力与痛苦并存）
+  | 'trauma_bond'               // 创伤联结：与施害者产生情感依赖
+  | 'glass_ceiling_seen'        // 看见了天花板：清晰感受到职场/社会的性别壁垒
+  | 'second_shift_burden'       // 第二班次：同时承担职业与全部家务的重量
+  | 'survived_violence'         // 幸存者：经历过身体或性暴力并活了下来
+  | 'childless_by_choice'       // 主动不婚不育
+  | 'late_bloomer'              // 晚开的花：在沉默很久之后，终于开始活出自己
+  | 'poverty_scar'              // 贫困烙印
+  | 'rebel_spirit';             // 反骨：不愿被定义，一直在越界
 
 // ============================================================
-// 性格维度（用于最终分析）
+// 人格维度——女性成长六维
 // ============================================================
 
 export interface PersonalityScores {
-  adventure: number;     // 冒险 vs 稳健        (-10 ~ +10)
-  rational: number;      // 理性 vs 感性         (-10 ~ +10)
-  extrovert: number;     // 外向 vs 内省         (-10 ~ +10)
-  resilience: number;    // 坚韧 vs 顺从         (-10 ~ +10)
-  materialistic: number; // 物质 vs 理想         (-10 ~ +10)
-  empathy: number;       // 利他 vs 自我         (-10 ~ +10)
+  selfExpression: number;       // 自我压抑 ↔ 自我表达       (-10 ~ +10)
+  resistance: number;           // 顺应驯化 ↔ 反抗越界       (-10 ~ +10)
+  structuralAwareness: number;  // 自我归因 ↔ 看见结构       (-10 ~ +10)
+  connection: number;           // 孤立竞争 ↔ 女性联结       (-10 ~ +10)
+  authenticity: number;         // 表演取悦 ↔ 活出真实       (-10 ~ +10)
+  thriving: number;             // 生存挣扎 ↔ 生命绽放       (-10 ~ +10)
 }
 
 // ============================================================
@@ -67,12 +74,12 @@ export interface PersonalityScores {
 // ============================================================
 
 export type GamePhase =
-  | 'birth'        // 出生设置
-  | 'playing'      // 游戏进行中
-  | 'event'        // 显示事件/选择
-  | 'result'       // 年度结果
-  | 'ending'       // 结局
-  | 'analysis';    // 性格分析
+  | 'birth'
+  | 'playing'
+  | 'event'
+  | 'result'
+  | 'ending'
+  | 'analysis';
 
 export interface GameState {
   phase: GamePhase;
@@ -81,7 +88,7 @@ export interface GameState {
   stats: Stats;
   hiddenTags: Set<HiddenTag>;
   personality: PersonalityScores;
-  lifeHistory: LifeEvent[];       // 已发生的事件记录
+  lifeHistory: LifeEvent[];
   currentEvent: EventCard | null;
   endingId: string | null;
 }
@@ -95,7 +102,7 @@ export interface EventRequirement {
   maxStats?: Partial<Stats>;
   hasTags?: HiddenTag[];
   lacksTag?: HiddenTag[];
-  minWealth?: FamilyWealth;       // 至少这个家庭条件
+  minWealth?: FamilyWealth;
   ageRange?: [number, number];
   birthCity?: BirthCity[];
 }
@@ -103,16 +110,13 @@ export interface EventRequirement {
 export interface ChoiceOption {
   id: string;
   text: string;
-  // 此选项是否可见/可选
   requirement?: EventRequirement;
-  lockedHint?: string;            // 锁定时显示的提示文字
-  // 选择后的效果
+  lockedHint?: string;
   statChanges?: Partial<Stats>;
   addTags?: HiddenTag[];
   removeTags?: HiddenTag[];
   personalityDelta?: Partial<PersonalityScores>;
-  followUpText?: string;          // 选择后的结果描述
-  // 特殊触发
+  followUpText?: string;
   triggerEnding?: string;
 }
 
@@ -121,13 +125,13 @@ export interface EventCard {
   ageRange: [number, number];
   title: string;
   description: string;
-  requirement?: EventRequirement;  // 触发此事件的条件
+  requirement?: EventRequirement;
   choices: ChoiceOption[];
-  weight?: number;                 // 抽取权重，默认1
+  weight?: number;
 }
 
 // ============================================================
-// 生命记录（历史日志）
+// 生命记录
 // ============================================================
 
 export interface LifeEvent {
@@ -140,8 +144,14 @@ export interface LifeEvent {
 }
 
 // ============================================================
-// 结局
+// 结局 + 文化配对语录
 // ============================================================
+
+export interface CulturalQuote {
+  text: string;
+  attribution: string;
+  type: 'lyric' | 'poem' | 'prose';
+}
 
 export interface Ending {
   id: string;
@@ -151,7 +161,9 @@ export interface Ending {
     personalityMin?: Partial<PersonalityScores>;
     hasTags?: HiddenTag[];
     minStats?: Partial<Stats>;
+    maxStats?: Partial<Stats>;
   };
   rarity: 'common' | 'uncommon' | 'rare' | 'hidden';
-  flavor: string;  // 一句话感悟
+  flavor: string;
+  culturalQuotes: CulturalQuote[];
 }
