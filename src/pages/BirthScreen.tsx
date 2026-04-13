@@ -255,6 +255,9 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
     return (
       <div className="min-h-screen bg-[#0f0f0f] flex flex-col justify-center items-center px-6 relative overflow-hidden">
 
+        {/* 版本号 */}
+        <div className="fixed top-3 right-3 text-[9px] text-gray-700 font-mono z-20">v0.1.0</div>
+
         {/* 背景：女字旁汉字散落 */}
         <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
           {bgChars.map((c, i) => (
@@ -317,6 +320,9 @@ export function BirthScreen({ onComplete, onDebugSimulate }: Props) {
           >
             随机出生（快速开始）
           </button>
+
+          {/* 作者 */}
+          <p className="text-[10px] text-gray-700 mt-6">by LeslieDW</p>
         </div>
 
         {/* DEV 按钮 - 右下角小图标 */}
